@@ -153,12 +153,16 @@ public class JpaDAO<E> {
 
 	public double sumWithNamedQuery(String queryName) {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
-
 		Query query = entityManager.createNamedQuery(queryName);
-		double result = (Double)query.getSingleResult();
+
+		Object result = query.getSingleResult();
+
+		// If the result is null, return 0.0 (or handle as needed)
+		double sum = (result != null) ? ((Double) result).doubleValue() : 0.0;
+
 		entityManager.close();
 
-		return result;
+		return sum;
 	}
 
 	public void close() {

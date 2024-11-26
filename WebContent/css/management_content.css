@@ -1,0 +1,63 @@
+/* Main content */
+.content {
+    margin-left: 250px; /* Same width as sidebar */
+    padding: 20px;
+}
+.btn-search {
+    background-color: #6C5CE7; /* Purple button */
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.btn-search:hover {
+    background-color: #5B4CC3;
+}
+.btn-add {
+    float: right;
+    background-color: #6C5CE7; /* Purple button */
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.btn-add:hover {
+    background-color: #5B4CC3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.pagination {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination button {
+    background-color: #6C5CE7;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}

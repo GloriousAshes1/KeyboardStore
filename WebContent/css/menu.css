@@ -1,0 +1,53 @@
+/* Side menu styling */
+.sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #1A2B48; /* Dark blue */
+    padding-top: 20px;
+    color: white;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+/* Sidebar links */
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 15px 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.sidebar a:hover {
+    background-color: #303750; /* Slightly darker on hover */
+}
+
+.sidebar .menu-item {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .menu-item img {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.sidebar .username {
+    margin-top: auto;
+    padding: 20px;
+    font-size: 16px;
+}
+
+.sidebar .logout {
+    padding: 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
