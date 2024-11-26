@@ -1,0 +1,106 @@
+.profile{
+}
+.main-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.head{
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 100px;
+    max-width: 100%;
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 24px;
+    line-height: 1.2;
+    text-align: left;
+    box-sizing: border-box;
+}
+.main-form .main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 550px;
+    width: 90%;
+    height: auto;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #757575;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.main-form .card{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    background-color: #ffffff;
+    overflow: hidden;
+    border: 1px solid #ffffff;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.main-form .detail{
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #000000;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.main-form .text-wrappers {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 20px;
+    line-height: 1.5;
+}
+.main-form .text-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 20px;
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+.main-form .input-box{
+    border: none;
+    width: fit-content;
+    height: 40px;
+}
+.main-form .btn{
+    margin-left: auto;
+    background-color: #44a0f7;
+    font-family: "Poppins", Helvetica;
+    border: none;
+    color: #ffffff;
+    border-radius: 5px;
+}
+footer {
+    width: 100%;
+    position: relative; /* Hoặc `fixed` nếu muốn footer luôn nằm ở dưới */
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #f8f9fa;
+}
+#custom-disabled:disabled {
+    color: #000; /* Màu chữ giống với ô bình thường */
+    background-color: #fff; /* Màu nền giống với ô bình thường */
+    opacity: 1; /* Loại bỏ hiệu ứng mờ */
+    cursor: not-allowed; /* Giữ lại hiệu ứng con trỏ */
+}

@@ -1,0 +1,206 @@
+.product-detail-form{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #ffffff;
+    position: relative;
+    margin: 0px;
+    padding: 0;
+    box-sizing: border-box;
+}
+.product-detail-form .main{
+    position: relative;
+    width: 90%;
+    max-width: 1400px;
+    height: auto;
+    max-height: 100vh;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    overflow: hidden;
+}
+.product-detail-form .product-title{
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: inline-flex;
+    justify-content: space-between;
+}
+.product-detail-form .product-name{
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 30px;
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+.product-detail-form .average-rate{
+    justify-content: center;
+    align-items: center;
+}
+.product-detail-form .product-content{
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+}
+.product-detail-form .product-img{
+    width: 400px;
+    height: 300px;
+    display: flex;
+}
+.product-detail-form .row{
+}
+.product-detail-form .detail{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.product-detail-form .brand{
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.product-detail-form .description{
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 15px;
+}
+.product-detail-form .row1{
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.product-detail-form .font{
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 20px;
+}
+.product-detail-form .btn-add-to-cart{
+    min-height: 40px;
+    min-width: 125px;
+    background-color: #44a0f7;
+    font-family: "Poppins", Helvetica;
+    border: none;
+    color: #ffffff;
+    border-radius: 5px;
+}
+.product-detail-form .reviews{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: auto; /* Đảm bảo các review không tràn ra ngoài */
+    margin-bottom: 50px; /* Tạo khoảng cách với footer */
+}
+.product-detail-form .header-container{
+    display: flex;
+
+}
+.product-detail-form .reviews-header {
+    display: flex;
+    width: 100%;
+    align-items: start;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 13px 0 0 11px;
+}
+.product-detail-form .reviews-title {
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 30px;
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+.product-detail-form .write-review-btn {
+    background-color: #757575;
+    min-height: 40px;
+    min-width: 125px;
+    font-family: "Poppins", Helvetica;
+    border: none;
+    color: #ffffff;
+    border-radius: 5px;
+}
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
+    margin: 37px 0 0 11px;
+    max-width: 100%; /* Đảm bảo không tràn container */
+    box-sizing: border-box;
+}
+
+.review-card {
+    border-radius: 8px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: fit-content; /* Đảm bảo card ôm vừa nội dung */
+    min-width: 200px; /* Card có độ rộng tối thiểu */
+    padding: 5px;
+    border: 1px solid #d9d9d9;
+    flex-grow: 0; /* Ngăn card mở rộng quá mức */
+}
+.review-rating {
+    align-self: start;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rating-star {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 20px;
+    align-self: stretch;
+    margin: auto 0;
+}
+.review-content {
+    display: flex;
+    margin-top: 24px;
+    width: 100%;
+    flex-direction: column;
+    font-family: Inter, sans-serif;
+}
+
+.review-title {
+    align-self: start;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.48px;
+    line-height: 1.2;
+}
+
+.review-text {
+    flex: 1;
+    margin-top: 4px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.reviewer {
+    display: flex;
+    margin-top: 24px;
+    width: 100%;
+    align-items: start;
+    gap: 12px;
+    font: 16px/1.4 Inter, sans-serif;
+}
+footer {
+    width: 100%;
+    position: relative; /* Hoặc `fixed` nếu muốn footer luôn nằm ở dưới */
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #f8f9fa;
+}
+

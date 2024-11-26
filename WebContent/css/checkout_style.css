@@ -1,0 +1,153 @@
+.checkout_form {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+.checkout_form .div {
+    display: flex; /* Kích hoạt Flexbox */
+    align-items: flex-start; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    background-color: #f0f0f0;
+    width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
+    height: 100%; /* Chiều cao toàn màn hình */
+    position: relative;
+    margin: 0px; /* Loại bỏ khoảng cách mặc định */
+    padding: 0; /* Loại bỏ padding mặc định */
+    box-sizing: border-box;
+}
+.checkout_form .main-form {
+    position: relative;
+    width: 90%;
+    max-width: 1400px;
+    height: auto;
+    margin: 30px;
+    box-sizing: border-box;
+    border: 1px solid #ccc; /* Thêm viền nếu cần */
+    border-radius: 10px;
+    background-color: #fff; /* Nổi bật nội dung */
+    padding: 20px; /* Khoảng cách bên trong */
+}
+.checkout_form .container {
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    max-width: 1170px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+}
+.checkout_form .checkout-card {
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    max-width: 1170px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+}
+.checkout_form .checkout-detail-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #000000;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.checkout_form .card-title {
+    display: flex; /* Đặt các phần tử con thành hàng ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    width: auto;
+    max-width: 100%;
+    margin: 10px 16px;
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 24px;
+    line-height: 1.2;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.checkout_form .text-wrappers {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 16px;
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.checkout_form .text-wrapper {
+    display: flex; /* Sử dụng Flexbox để tách nhãn và giá trị */
+    justify-content: space-between; /* Đẩy nhãn và giá trị ra 2 đầu */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    width: 100%; /* Chiếm toàn bộ chiều rộng của `checkout-detail-card` */
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 20px;
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+.checkout_form .edit-cart {
+    display: block;
+    margin-right: auto;
+    text-align: center;
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 30px;
+    line-height: 1.2;
+    width: fit-content;
+}
+.checkout_form .edit-cart:hover {
+    background-color: #fbfcfc; /* Thay đổi màu nền nhẹ */
+}
+.checkout_form .edit-cart:active {
+    transform: scale(0.95); /* Thu nhỏ nút một chút */
+}
+.checkout_form .information-container{
+    flex : 1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+.checkout_form .information-card{
+    width: 100%;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ffffff;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.checkout_form .information-detail-card{
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #000000;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.checkout_form .place-order{
+    display: block;
+    margin-left: auto;
+    text-align: center;
+    font-family: "Poppins", Helvetica, sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 30px;
+    line-height: 1.2;
+    width: fit-content;
+}
+.checkout_form .input-box{
+    width: 400px;
+    height: 40px;
+}
