@@ -1,32 +1,20 @@
 package com.keyboardstore.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.keyboardstore.entity.Customer;
+import com.keyboardstore.entity.OrderDetail;
+import com.keyboardstore.entity.Product;
+import com.keyboardstore.entity.ProductOrder;
+import com.paypal.api.payments.*;
+import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.PayPalRESTException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.keyboardstore.entity.Customer;
-import com.keyboardstore.entity.Product;
-import com.keyboardstore.entity.ProductOrder;
-import com.keyboardstore.entity.OrderDetail;
-import com.paypal.api.payments.Amount;
-import com.paypal.api.payments.Details;
-import com.paypal.api.payments.Item;
-import com.paypal.api.payments.ItemList;
-import com.paypal.api.payments.Links;
-import com.paypal.api.payments.Payer;
-import com.paypal.api.payments.PayerInfo;
-import com.paypal.api.payments.Payment;
-import com.paypal.api.payments.PaymentExecution;
-import com.paypal.api.payments.RedirectUrls;
-import com.paypal.api.payments.ShippingAddress;
-import com.paypal.api.payments.Transaction;
-import com.paypal.base.rest.APIContext;
-import com.paypal.base.rest.PayPalRESTException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class PaymentServices {
 	private static final String CLIENT_ID = "AVrq6buBDpZl8IVKyTOp5W2KS6RwFVyLLM-X6mRXIe8mHVM_n8dLBKK25MR_cSVzxtBeqipJFM3kI6TP";

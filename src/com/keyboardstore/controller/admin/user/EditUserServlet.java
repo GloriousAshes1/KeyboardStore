@@ -1,13 +1,13 @@
 package com.keyboardstore.controller.admin.user;
 
-import java.io.IOException;
+import com.keyboardstore.controller.BaseServlet;
+import com.keyboardstore.service.UserServices;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.keyboardstore.controller.BaseServlet;
-import com.keyboardstore.service.UserServices;
+import java.io.IOException;
 
 @WebServlet("/admin/edit_user")
 public class EditUserServlet extends BaseServlet {

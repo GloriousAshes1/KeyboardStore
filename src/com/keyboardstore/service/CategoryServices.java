@@ -1,16 +1,15 @@
 package com.keyboardstore.service;
 
-import java.io.IOException;
-import java.util.List;
+import com.keyboardstore.dao.CategoryDAO;
+import com.keyboardstore.dao.ProductDAO;
+import com.keyboardstore.entity.Category;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.keyboardstore.dao.CategoryDAO;
-import com.keyboardstore.dao.ProductDAO;
-import com.keyboardstore.entity.Category;
+import java.io.IOException;
+import java.util.List;
 
 public class CategoryServices{
 	

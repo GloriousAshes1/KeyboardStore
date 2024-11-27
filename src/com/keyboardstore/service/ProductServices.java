@@ -1,11 +1,9 @@
 package com.keyboardstore.service;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import com.keyboardstore.dao.CategoryDAO;
+import com.keyboardstore.dao.ProductDAO;
+import com.keyboardstore.entity.Category;
+import com.keyboardstore.entity.Product;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -13,11 +11,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
-import com.keyboardstore.dao.CategoryDAO;
-import com.keyboardstore.dao.ProductDAO;
-import com.keyboardstore.entity.Category;
-import com.keyboardstore.entity.Product;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class ProductServices {
 	private EntityManager entityManager;
@@ -65,7 +67,7 @@ public class ProductServices {
 	public void createProduct() throws ServletException, IOException {
 		String productName = request.getParameter("productName");
 		
-		Product existProduct = productDAO.findByTitle(productName);
+		Product existProduct = productDAO.findByProductName(productName);
 		if (existProduct != null) {
 			String message = "Could not create new Product because the productName '" + productName + "' already exists.";
 			listProducts(message);
@@ -82,51 +84,68 @@ public class ProductServices {
 			listProducts(message);
 		}
 	}
-	
+
 	public void readProductFields(Product product) throws ServletException, IOException {
-	    String productName = request.getParameter("productName");
-	    String code = request.getParameter("code");
-	    String brand = request.getParameter("brand");
-	    String description = request.getParameter("description");
-	    float price = Float.parseFloat(request.getParameter("sellingPrice"));
-	    
-	    final String newFormat = "yyyy-MM-dd";
-	    SimpleDateFormat sdf = new SimpleDateFormat(newFormat);
-	    Date publishDate = null;
-	    
-	    try {
-	        String publishDateString = request.getParameter("publishDate");
-	        if (publishDateString != null && !publishDateString.isEmpty()) {
-	            publishDate = sdf.parse(publishDateString);
-	        } else {
-	            throw new ServletException("Publish date is required and cannot be empty.");
-	        }
-	    } catch (ParseException ex) {
-	        ex.printStackTrace();
-	        throw new ServletException("Error parsing date (format is yyyy-MM-dd)");
-	    }
-	    
-	    product.setProductName(productName);
-	    product.setCode(code);
-	    product.setBrand(brand);
-	    product.setDescription(description);
-	    product.setSellingPrice(price);
-	    product.setPublishDate(publishDate);
-	    
-	    Integer categoryId = Integer.parseInt(request.getParameter("category"));        
-	    Category category = categoryDAO.get(categoryId);
-	    product.setCategory(category);
-	    
-	    int stock = 1;
-	    product.setStock(stock);
-	    
-	    Part part = request.getPart("image");
-	    if (part != null && part.getSize() > 0) {
-	        long size = part.getSize();
-	        String image = "123";
-	        product.setImage(image);
-	    }
+		String productName = request.getParameter("productName");
+		String code = request.getParameter("code");
+		String brand = request.getParameter("brand");
+		String description = request.getParameter("description");
+		float price = Float.parseFloat(request.getParameter("sellingPrice"));
+
+		final String newFormat = "yyyy-MM-dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(newFormat);
+		Date publishDate = null;
+
+		try {
+			String publishDateString = request.getParameter("publishDate");
+			if (publishDateString != null && !publishDateString.isEmpty()) {
+				publishDate = sdf.parse(publishDateString);
+			} else {
+				throw new ServletException("Publish date is required and cannot be empty.");
+			}
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+			throw new ServletException("Error parsing date (format is yyyy-MM-dd)");
+		}
+
+		// Set fields on the Product object
+		product.setProductName(productName);
+		product.setCode(code);
+		product.setBrand(brand);
+		product.setDescription(description);
+		product.setSellingPrice(price);
+		product.setPublishDate(publishDate);
+
+		// Retrieve and set category
+		Integer categoryId = Integer.parseInt(request.getParameter("category"));
+		Category category = categoryDAO.get(categoryId);
+		product.setCategory(category);
+
+		// Set default stock
+		int stock = 1;
+		product.setStock(stock);
+
+		// Handle the image upload to S3
+		Part part = request.getPart("image");
+		if (part != null && part.getSize() > 0) {
+			String bucketName = "phuduyloc"; // Replace with your bucket name
+			String keyName = "images/" + productName + "_" + System.currentTimeMillis(); // Unique key for image
+
+			// Save the uploaded image to a temporary file
+			File tempFile = File.createTempFile("temp-image", ".tmp");
+			try (InputStream inputStream = part.getInputStream()) {
+				Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			}
+
+			// Upload the image to S3
+			com.keyboardstore.service.S3Service s3Service = new S3Service();
+			String imageUrl = s3Service.uploadFile(bucketName, keyName, tempFile.getAbsolutePath());
+
+			// Set the image URL in the Product object
+			product.setImage(imageUrl); // Assuming you have a field like imageUrl in your Product entity
+		}
 	}
+
 
 	public void editProduct() throws ServletException, IOException {
 		Integer ProductId = Integer.parseInt(request.getParameter("id"));
@@ -144,13 +163,13 @@ public class ProductServices {
 
 	public void updateProduct() throws ServletException, IOException {
 		Integer ProductId = Integer.parseInt(request.getParameter("ProductId"));
-		String title = request.getParameter("title");
+		String productName = request.getParameter("productName");
 		
 		Product existProduct = productDAO.get(ProductId);
-		Product productByTitle = productDAO.findByTitle(title);
+		Product productByName = productDAO.findByProductName(productName);
 		
-		if (productByTitle != null && !existProduct.equals(productByTitle)) {
-			String message = "Couldn't update Product because there's another Product having same title.";
+		if (productByName != null && !existProduct.equals(productByName)) {
+			String message = "Couldn't update product because there's another product having same name.";
 			listProducts(message);
 			return;
 		}

@@ -100,7 +100,7 @@ public class ProductDAOTest {
 	@Test
 	public void testFindByName() {
 		String title = "Counter-Strike 2";
-		Product product = productDAO.findByTitle(title);
+		Product product = productDAO.findByProductName(title);
 
 		System.out.println(product.getCode());
 		System.out.println(product.getSellingPrice());

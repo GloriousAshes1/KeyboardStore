@@ -1,14 +1,14 @@
-package com.keyboardstore.controller.admin.game;
+package com.keyboardstore.controller.admin.product;
 
 import com.keyboardstore.controller.BaseServlet;
 import com.keyboardstore.service.ProductServices;
 
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @WebServlet("/admin/update_game")
 @MultipartConfig(
@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 		maxFileSize = 1024 *100,	   // 100 KB
 		maxRequestSize = 1024 * 1024   // 1 MB
 )
-public class UpdateGameServlet extends BaseServlet {
+public class UpdateProductServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
-    public UpdateGameServlet() {
+    public UpdateProductServlet() {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 

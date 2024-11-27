@@ -18,7 +18,7 @@
 </head>
 <body>
 	<jsp:directive.include file="header.jsp"/>
-	<div class="page-heading" align="center">
+	<div class="page-heading">
 		<hr width="60%"/>
 		<h2>
 			<c:if test="${product != null}">
@@ -29,13 +29,13 @@
 			</c:if>
 		</h2>	
 	</div>
-	<div align="center">
+	<div>
 		<c:if test="${product != null}">
-			<form action="update_game" method="post" id="gameForm" enctype='multipart/form-data' style="max-width: 400px; margin:0 auto;">
-			<input type="hidden" name="gameId" value="${product.gameId}"/>
+			<form action="update_product" method="post" id="productForm" enctype='multipart/form-data' style="max-width: 400px; margin:0 auto;">
+			<input type="hidden" name="productId" value="${product.productId}"/>
 		</c:if>
 		<c:if test="${product == null}">
-			<form action="create_game" method="post" id="gameForm" enctype='multipart/form-data' style="max-width: 400px; margin:0 auto;">
+			<form action="create_product" method="post" id="productForm" enctype='multipart/form-data' style="max-width: 400px; margin:0 auto;">
 		</c:if>
 				<table>
 					<tr>
@@ -56,16 +56,16 @@
 						</td>
 					</tr>
 					<tr>
-						<td align="right">Title:</td>
-						<td align="left"><input type="text" name = "title" id="title" value= "${product.title}" required size="20"/></td>
+						<td align="right">Product Name:</td>
+						<td align="left"><input type="text" name = "productName" id="productName" value= "${product.productName}" required size="20"/></td>
 					</tr>
 					<tr>
-						<td align="right">Developer</td>
-						<td align="left"><input type="text" name = "developer" id="developer" value= "${product.developer}" required size="20"/></td>
+						<td align="right">Brand</td>
+						<td align="left"><input type="text" name = "brand" id="brand" value= "${product.brand}" required size="20"/></td>
 					</tr>
 					<tr>
-						<td align="right">Publisher:</td>
-						<td align="left"><input type="text" name = "publisher"  id="publisher" value= "${product.publisher}" required size="20"/></td>
+						<td align="right">Code:</td>
+						<td align="left"><input type="text" name = "code"  id="code" value= "${product.code}" required size="20"/></td>
 					</tr>					
 					<tr>
 						<td align="right">Publish Date:</td>
@@ -89,7 +89,7 @@
 					</tr>
 					<tr>
 						<td align="right">Price:</td>
-						<td align="left"><input type="text" name = "price"  id="price" value= "${product.price}" required size="20"/></td>
+						<td align="left"><input type="text" name = "sellingPrice"  id="sellingPrice" value= "${product.sellingPrice}" required size="20"/></td>
 					</tr>
 					<tr>
 						<td align="right">Description:</td>

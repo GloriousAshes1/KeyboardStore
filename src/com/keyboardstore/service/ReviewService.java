@@ -1,20 +1,18 @@
 package com.keyboardstore.service;
 
 import com.keyboardstore.dao.ProductDAO;
-import com.keyboardstore.entity.Product;
-import com.keyboardstore.entity.Customer;
 import com.keyboardstore.dao.ReviewDAO;
-
-import java.io.IOException;
-import java.util.List;
+import com.keyboardstore.entity.Customer;
+import com.keyboardstore.entity.Product;
+import com.keyboardstore.entity.Review;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.keyboardstore.entity.Review;
+import java.io.IOException;
+import java.util.List;
 
 public class ReviewService{
 	private ReviewDAO reviewDAO;

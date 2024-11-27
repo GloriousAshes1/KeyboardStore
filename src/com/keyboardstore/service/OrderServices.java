@@ -1,27 +1,22 @@
 package com.keyboardstore.service;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.keyboardstore.controller.frontend.shoppingcart.ShoppingCart;
+import com.keyboardstore.dao.OrderDAO;
+import com.keyboardstore.entity.Customer;
+import com.keyboardstore.entity.OrderDetail;
+import com.keyboardstore.entity.Product;
+import com.keyboardstore.entity.ProductOrder;
+import com.paypal.api.payments.ItemList;
+import com.paypal.api.payments.Payment;
+import com.paypal.api.payments.ShippingAddress;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.keyboardstore.controller.frontend.shoppingcart.ShoppingCart;
-import com.keyboardstore.dao.OrderDAO;
-import com.keyboardstore.entity.Customer;
-import com.keyboardstore.entity.Product;
-import com.keyboardstore.entity.ProductOrder;
-import com.keyboardstore.entity.OrderDetail;
-import com.paypal.api.payments.ItemList;
-import com.paypal.api.payments.Payment;
-import com.paypal.api.payments.ShippingAddress;
+import java.io.IOException;
+import java.util.*;
 
 public class OrderServices {
 

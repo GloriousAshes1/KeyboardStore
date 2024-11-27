@@ -1,15 +1,14 @@
 package com.keyboardstore.service;
 
-import java.io.IOException;
-import java.util.List;
+import com.keyboardstore.dao.UserDAO;
+import com.keyboardstore.entity.Users;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.keyboardstore.dao.UserDAO;
-import com.keyboardstore.entity.Users;
+import java.io.IOException;
+import java.util.List;
 
 public class UserServices {
 	private UserDAO userDAO;
@@ -21,46 +20,50 @@ public class UserServices {
 
 		userDAO = new UserDAO();
 	}
-	
+
 	public void listUser()throws ServletException, IOException {
-		listUser(null);
+		listUser(null, null);
 	}
-	
-	public void listUser(String message)throws ServletException, IOException {
+
+	public void listUser(String message, String messageType) throws ServletException, IOException {
 		List<Users> listUsers = userDAO.listAll();
-		
+
 		request.setAttribute("listUsers", listUsers);
-		if(message!=null) {
+		if (message != null) {
 			request.setAttribute("message", message);
+			request.setAttribute("messageType", messageType);  // Pass message type
 		}
-		
+
 		String listPage = "user_list.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listPage);
-		
 		requestDispatcher.forward(request, response);
-		
 	}
-	
+
 	public void createUser() throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String fullname = request.getParameter("fullname");
 		String password = request.getParameter("password");
 		String role = request.getParameter("role");
-		
+
 		Users existUser = userDAO.findByEmail(email);
-		
-		if(existUser!=null) {
-			String message = "Create user fail. A user with email: "+email+" already existed";
+
+		if (existUser != null) {
+			String message = "Create user fail. A user with email: " + email + " already existed";
 			request.setAttribute("message", message);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+			request.setAttribute("messageType", "error");  // Set message type as error
+			// Set attributes to retain entered data
+			request.setAttribute("email", email);
+			request.setAttribute("fullname", fullname);
+			request.setAttribute("role", role);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("user_form.jsp");
 			dispatcher.forward(request, response);
-		}
-		else {
-			Users newUser = new Users(email, fullname, password, role);
+		} else {
+			Users newUser = new Users(email, fullname, password,role);
 			userDAO.create(newUser);
-			listUser("New user created successfully");
+			listUser("New user created successfully", "success");  // Success message type
 		}
 	}
+
 	public void editUser() throws ServletException, IOException {
 		int userId = Integer.parseInt(request.getParameter("id"));
 		Users user = userDAO.get(userId);
@@ -82,28 +85,36 @@ public class UserServices {
 		Users userByEmail = userDAO.findByEmail(email);
 		
 		if(userByEmail != null && userByEmail.getUserId() != userById.getUserId()) {
-			String message = "Could not update user. User with email " + email + " is already exists.";
+			String message = "Could not update user. User with email " + email + " already exists.";
 			request.setAttribute("message", message);
-			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
-			dispatcher.forward(request, response);
-		}
-		else {
-			Users user = new Users(userId, email,fullName,password,role);
+			request.setAttribute("messageType", "error");  // Error message type
+			// Set attributes to retain entered data
+			request.setAttribute("email", email);
+			request.setAttribute("fullname", fullName);
+			request.setAttribute("role", role);
+		} else {
+			Users user = new Users(email, fullName, password,role);
 			userDAO.update(user);
-			
+
 			String message = "User is updated successfully";
-			listUser(message);
+			listUser(message, "success");  // Success message type
 		}
 	}
 
 	public void deleteUser() throws ServletException, IOException {
 		int userId = Integer.parseInt(request.getParameter("id"));
 		userDAO.delete(userId);
-		
-		String message = "User with ID " + userId + "has been deleted successfully";
-		listUser(message);
-	}	
+
+		String message = "User with ID " + userId + " has been deleted successfully";
+		listUser(message, "success");  // Success message type
+	}
+
+	public void showUserNewForm() throws ServletException, IOException {
+		String newPage = "user_form.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(newPage);
+		requestDispatcher.forward(request, response);
+	}
+
 	public void login() throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");

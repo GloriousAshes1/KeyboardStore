@@ -1,25 +1,27 @@
-package com.keyboardstore.controller.admin.game;
+package com.keyboardstore.controller.admin.user;
 
 import com.keyboardstore.controller.BaseServlet;
-import com.keyboardstore.service.ProductServices;
+import com.keyboardstore.service.UserServices;
 
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-@WebServlet("/admin/edit_game")
-public class EditGameServlet extends BaseServlet {
+@WebServlet("/admin/new_user")
+public class NewUserServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
-    public EditGameServlet() {
+
+    public NewUserServlet() {
     }
+
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		ProductServices productServices = new ProductServices(request, response);
-		productServices.editProduct();
+		UserServices userServices = new UserServices(request, response);
+		userServices.showUserNewForm();
 	}
 
 }

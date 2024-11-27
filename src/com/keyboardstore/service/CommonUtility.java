@@ -1,10 +1,9 @@
 package com.keyboardstore.service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class CommonUtility {
 	public static void generateCountryList(HttpServletRequest request) {
