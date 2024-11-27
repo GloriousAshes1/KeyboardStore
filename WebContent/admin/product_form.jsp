@@ -18,18 +18,15 @@
 </head>
 <body>
 	<jsp:directive.include file="header.jsp"/>
-	<div class="page-heading">
-		<hr width="60%"/>
-		<h2>
+	<div class="content">
+		<h2 class="page-heading" align="center">
 			<c:if test="${product != null}">
 				Edit Product
 			</c:if>
 			<c:if test="${product == null}">
 				Create New Product
 			</c:if>
-		</h2>	
-	</div>
-	<div>
+		</h2>
 		<c:if test="${product != null}">
 			<form action="update_product" method="post" id="productForm" enctype='multipart/form-data' style="max-width: 400px; margin:0 auto;">
 			<input type="hidden" name="productId" value="${product.productId}"/>
@@ -107,8 +104,9 @@
 					</tr>
 				</table>
 			</form>
+		<jsp:directive.include file="footer.jsp"/>
 	</div>
-	<jsp:directive.include file="footer.jsp"/>
+
 </body>
 <script type="text/javascript">
 	$(document).ready(function() {

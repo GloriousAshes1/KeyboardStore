@@ -19,7 +19,7 @@
 	<h1 align="center">User Management</h1>
 	<div class="d-flex justify-content-between align-items-center mb-3">
 		<!-- Search Form -->
-		<form method="GET" action="search_user" style="margin-bottom: 20px;">
+		<form method="GET" action="#search_user" style="margin-bottom: 20px;">
 			<input type="text" name="query" placeholder="Search..." style="padding: 10px; width: 300px;">
 			<button class="btn-search" type="submit">Search</button>
 		</form>
@@ -61,7 +61,7 @@
 	</c:if>
 
 	<!-- User List Table -->
-	<table class="table table-hover">
+	<table class="custom-table table-hover">
 		<thead>
 		<tr>
 			<th>Index</th>

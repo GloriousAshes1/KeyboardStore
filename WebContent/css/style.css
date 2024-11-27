@@ -1,11 +1,11 @@
-.custom-table {
-    width: 70%;
-    table-layout: auto;
-    margin: 0 auto;
-}
-.custom-table th, .custom-table td {
-    text-align: center;
-}
+/*.custom-table {*/
+/*    width: 70%;*/
+/*    table-layout: auto;*/
+/*    margin: 0 auto;*/
+/*}*/
+/*.custom-table th, .custom-table td {*/
+/*    text-align: center;*/
+/*}*/
 .page-heading {
     margin-top: 20px;
 }
@@ -62,15 +62,7 @@
 form {
     margin-top: 20px;
 }
-table {
-    margin: 0 auto;
-    border-collapse: separate;
-    border-spacing: 10px;
-}
-td {
-    text-align: left;
-    padding: 5px;
-}
+
 input[type="text"],
 input[type="password"] {
     width: 200px;

@@ -52,7 +52,7 @@
 </c:if>
 <div class ="content">
 	<!-- Dynamic Form Title -->
-	<h2 class="page-heading">
+	<h2 class="page-heading" align="center">
 		${user != null ? 'Edit User' : 'Create New User'}
 	</h2>
 	<form id="userForm" action="${user != null ? 'update_user' : 'create_user'}" method="post">
@@ -102,7 +102,7 @@
 			</tr>
 		</table>
 	</form>
+	<jsp:directive.include file="footer.jsp"/>
 </div>
-<jsp:directive.include file="footer.jsp"/>
 </body>
 </html>

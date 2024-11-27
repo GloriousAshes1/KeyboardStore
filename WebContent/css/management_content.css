@@ -31,27 +31,35 @@
     background-color: #5B4CC3;
 }
 
-table {
-    width: 100%; /* Ensure the table takes full width of its container */
-    table-layout: fixed; /* Makes columns resize automatically */
-    border-collapse: collapse; /* Ensures borders don't double up */
+.custom-table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: auto;
 }
 
-th, td {
+.table th, .table td {
+    border: 1px solid #ddd; /* Add border between rows */
     padding: 8px;
     text-align: left;
-    word-wrap: break-word; /* Prevents overflow of long text */
-    border: 1px solid #ddd; /* Add borders for both header and data cells */
+    white-space: nowrap; /* Prevent text from wrapping */
 }
 
-th {
+.table th {
     background-color: #f2f2f2;
-    border-bottom: 2px solid #000; /* Adds a thicker border between header and content */
+    font-weight: bold;
 }
 
-/* Optional: Style for the table rows */
-tr:nth-child(even) {
-    background-color: #f9f9f9; /* Zebra striping for rows */
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1; /* Add hover effect */
+}
+
+.table td a {
+    text-decoration: none;
+    color: blue;
+}
+
+.table td a:hover {
+    text-decoration: underline;
 }
 
 .pagination {

@@ -39,15 +39,16 @@ public class ProductServices {
 	}
 
 	public void listProducts() throws ServletException, IOException {
-		listProducts(null);
+		listProducts(null,null);
 	}
 
-	public void listProducts(String message) throws ServletException, IOException {
+	public void listProducts(String message, String messageType) throws ServletException, IOException {
 		List<Product> listProducts = productDAO.listAll();
 		request.setAttribute("listProducts", listProducts);
 		
 		if(message != null) {
 			request.setAttribute("message", message);
+			request.setAttribute("messageType", messageType);  // Pass message type
 		}
 		
 		String listPage = "product_list.jsp";
@@ -70,7 +71,8 @@ public class ProductServices {
 		Product existProduct = productDAO.findByProductName(productName);
 		if (existProduct != null) {
 			String message = "Could not create new Product because the productName '" + productName + "' already exists.";
-			listProducts(message);
+			String messageType = "error";
+			listProducts(message,messageType);
 			return;
 		}
 		
@@ -81,7 +83,8 @@ public class ProductServices {
 		
 		if (createdProduct.getProductId() > 0) {
 			String message = "A new Product has been created successfully";
-			listProducts(message);
+			String messageType = "success";
+			listProducts(message,messageType);
 		}
 	}
 
@@ -170,7 +173,8 @@ public class ProductServices {
 		
 		if (productByName != null && !existProduct.equals(productByName)) {
 			String message = "Couldn't update product because there's another product having same name.";
-			listProducts(message);
+			String messageType = "error";
+			listProducts(message,messageType);
 			return;
 		}
 		
@@ -179,7 +183,8 @@ public class ProductServices {
 		productDAO.update(existProduct);
 		
 		String message = "The Product has been updated successfully";
-		listProducts(message);
+		String messageType = "success";
+		listProducts(message,messageType);
 	}
 
 	public void deleteProduct() throws ServletException, IOException {
@@ -188,7 +193,8 @@ public class ProductServices {
 		productDAO.delete(ProductId);
 		
 		String message = "The Product has been deleted successfully.";
-		listProducts(message);
+		String messageType = "success";
+		listProducts(message,messageType);
 	}
 
 	public void listProductsByCategory() throws ServletException, IOException {

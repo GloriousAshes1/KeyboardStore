@@ -14,17 +14,55 @@
 <jsp:directive.include file="header.jsp"/>
 <div class="content">
 	<h1 align="center">Product Management</h1>
-	<a href="new_product">Create new product</a>
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<!-- Search Form -->
+		<form method="GET" action="#search_product" style="margin-bottom: 20px;">
+			<input type="text" name="query" placeholder="Search..." style="padding: 10px; width: 300px;">
+			<button class="btn-search" type="submit">Search</button>
+		</form>
+		<!-- Add User Button -->
+		<form method="GET" action="new_product">
+			<button type="submit" class="btn-add">+ Add Product</button>
+		</form>
+	</div>
+	<!-- Toastr Notifications -->
+	<c:if test="${message != null}">
+		<script>
+			$(document).ready(function() {
+				toastr.options = {
+					closeButton: true,
+					debug: false,
+					newestOnTop: true,
+					progressBar: true,
+					positionClass: "toast-top-right",
+					preventDuplicates: true,
+					showDuration: "300",
+					hideDuration: "1000",
+					timeOut: "5000",
+					extendedTimeOut: "1000",
+					showEasing: "swing",
+					hideEasing: "linear",
+					showMethod: "fadeIn",
+					hideMethod: "fadeOut"
+				};
 
+				const messageType = "${messageType}";
+				const message = "${message}";
+
+				if (messageType === "success") toastr.success(message);
+				else if (messageType === "error") toastr.error(message);
+				else if (messageType === "warning") toastr.warning(message);
+				else if (messageType === "info") toastr.info(message);
+			});
+		</script>
+	</c:if>
 <c:if test="${message != null}">
 	<div align="center">
 		<h4><i>${message}</i></h4>
 	</div>
 </c:if>
-</div>
 
-<div class="content">
-	<table class="table table-hover">
+	<table class="custom-table table-hover">
 		<thead>
 			<tr>
 				<th>Index</th>
