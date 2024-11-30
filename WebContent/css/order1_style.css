@@ -117,14 +117,6 @@
     object-fit: contain;
     width: 24px;
 }
-footer {
-    width: 100%;
-    position: relative;
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-    background-color: #f8f9fa;
-}
 .information-container{
     width: 100%;
     box-sizing: border-box;
@@ -137,17 +129,15 @@ footer {
     background-color: #ffffff;
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid #ffffff;
+    border: 1px solid #000;
+    margin: 10px;
     padding: 5px;
     box-sizing: border-box;
 }
-.information-detail-card{
-    background-color: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid #000000;
-    padding: 10px;
-    box-sizing: border-box;
+.information-detail-card {
+    display: flex; /* Biến thông tin thành hàng ngang */
+    flex-wrap: wrap; /* Đảm bảo không bị tràn nếu không đủ không gian */
+    gap: 16px; /* Khoảng cách giữa các phần tử con */
 }
 .text-wrappers {
     display: flex;
@@ -159,6 +149,11 @@ footer {
     color: #1e1e1e;
     font-size: 20px;
     line-height: 1.5;
+}
+.text-wrappers {
+    flex: 1; /* Để các thẻ có kích thước bằng nhau */
+    min-width: 300px; /* Đảm bảo thẻ không quá nhỏ */
+    max-width: 50%; /* Giới hạn kích thước tối đa để chúng nằm song song */
 }
 .text-wrapper {
     display: flex; /* Sử dụng Flexbox để tách nhãn và giá trị */
@@ -190,5 +185,5 @@ footer {
     color: #000; /* Màu chữ giống với ô bình thường */
     background-color: #fff; /* Màu nền giống với ô bình thường */
     opacity: 1; /* Loại bỏ hiệu ứng mờ */
-    cursor: not-allowed; /* Giữ lại hiệu ứng con trỏ */
+    border: none;
 }

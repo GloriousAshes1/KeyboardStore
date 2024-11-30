@@ -3,7 +3,8 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 98px 40px;
+    padding: 40px;
+    gap: 20px;
     font: 500 30px Montserrat, sans-serif;
 }
 
@@ -19,7 +20,7 @@
 
 .product-grid {
     display: flex;
-    gap: 39px;
+    gap: 40px;
     flex-wrap: wrap;
     font: 400 16px/1.4 Inter, sans-serif;
 }
@@ -37,11 +38,14 @@
 }
 
 .product-image {
-    aspect-ratio: 1.98;
-    object-fit: contain;
-    object-position: center;
-    width: 100%;
+    aspect-ratio: 2;
+    width: 265px;
     min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
 }
 
 .product-content {

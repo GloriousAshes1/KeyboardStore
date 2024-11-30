@@ -102,5 +102,4 @@ footer {
     color: #000; /* Màu chữ giống với ô bình thường */
     background-color: #fff; /* Màu nền giống với ô bình thường */
     opacity: 1; /* Loại bỏ hiệu ứng mờ */
-    cursor: not-allowed; /* Giữ lại hiệu ứng con trỏ */
 }

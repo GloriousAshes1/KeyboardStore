@@ -14,8 +14,7 @@
     max-width: 1400px;
     height: auto;
     max-height: 100vh;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin: 5px;
     box-sizing: border-box;
     border-radius: 10px;
     background-color: #fff;
@@ -45,11 +44,19 @@
     position: relative;
     display: inline-flex;
     flex-direction: row;
+    width: 100%;
+    gap: 15px;
 }
-.product-detail-form .product-img{
+.product-detail-form .product-img {
     width: 400px;
     height: 300px;
+    min-width: 400px;
+    min-height: 300px;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0; /* Màu nền placeholder */
+    border: 1px solid #ddd; /* Khung để dễ nhìn */
 }
 .product-detail-form .row{
 }

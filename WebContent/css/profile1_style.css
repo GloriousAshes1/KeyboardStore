@@ -11,8 +11,8 @@
 }
 .head{
     display: flex;
-    justify-content: flex-start;
-    margin-left: 100px;
+    justify-content: center;
+    margin-top: 20px;
     max-width: 100%;
     font-family: "Poppins", Helvetica, sans-serif;
     font-weight: 500;
@@ -28,7 +28,7 @@
     justify-content: center;
     align-items: center;
     min-width: 550px;
-    width: 90%;
+    width: 100%;
     height: auto;
     padding: 10px;
     background-color: #fff;
@@ -87,12 +87,23 @@
     height: 40px;
 }
 .main-form .btn{
-    margin-left: auto;
     background-color: #44a0f7;
     font-family: "Poppins", Helvetica;
     border: none;
     color: #ffffff;
     border-radius: 5px;
+}
+.main-form .btn-cancel{
+    background-color: #dcd8d8;
+    font-family: "Poppins", Helvetica;
+    border: none;
+    color: #ffffff;
+    border-radius: 5px;
+}
+.btn-container{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 footer {
     width: 100%;
@@ -106,5 +117,4 @@ footer {
     color: #000; /* Màu chữ giống với ô bình thường */
     background-color: #fff; /* Màu nền giống với ô bình thường */
     opacity: 1; /* Loại bỏ hiệu ứng mờ */
-    cursor: not-allowed; /* Giữ lại hiệu ứng con trỏ */
 }

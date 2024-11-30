@@ -9,158 +9,65 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/globals.css" />
     <link rel="stylesheet" href="css/styleguide.css" />
-    <link rel="stylesheet" href="css/order_style.css">
+    <link rel="stylesheet" href="css/order1_style.css">
     <link rel="icon" type="image/x-icon" href="images/Logo.png">
 </head>
 <body>
-    <jsp:directive.include file="header.jsp" />
+<jsp:directive.include file="header.jsp" />
 
-    <div class="container my-4">
-        <c:choose>
-            <c:when test="${order == null}">
-                <div class="alert alert-danger text-center">
-                    <h2 class="pageheading">Sorry, You are not authorized to view this order.</h2>
+<div class="container">
+    <div class="card-title" onclick="window.history.back()">&lt;Order History</div>
+    <!-- Recipient Information -->
+    <div class="information-container">
+        <div class="information-card">
+            <div class="card-title">Recipient Information</div>
+            <div class="information-detail-card">
+                <div class="text-wrappers">
+                    <div class="text-wrapper">First Name:<input class="input-box" name="firstname" value="${loggedCustomer.firstname}" disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Last Name:<input class="input-box" name="lastname" value="${loggedCustomer.lastname}" disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Phone:<input class="input-box" name="phone" value="${loggedCustomer.phone}" disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Primary Address:<input class="input-box" name="address1" value="${loggedCustomer.addressLine1}" disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Secondary Address:<input class="input-box" name="address2" value="${loggedCustomer.addressLine2}" disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">City:<input class="input-box" name="city" value="${loggedCustomer.city}" disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">State:<input class="input-box" name="state" value="${loggedCustomer.state}" disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Zip Code:<input class="input-box" name="zipcode" value="${loggedCustomer.zipcode}" disabled id="custom-disabled"></div>
                 </div>
-            </c:when>
-            <c:otherwise>
-                <div class="text-center mb-4">
-                    <h2 class="pageheading">Your Order ID: ${order.orderId}</h2>
+                <div class="text-wrappers">
+                    <div class="text-wrapper">Country:<input class="input-box" name="country" value="${loggedCustomer.countryName}"disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Order Status:<input class="input-box" name="orderStatus" value="${order.status}"disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Order Date:<input class="input-box" name="orderDate" value="${order.orderDate}"disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Payment Method:<input class="input-box" name="paymentMethod" value="${order.paymentMethod}" disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Quantities:<input class="input-box" name="quantity" value="${order.productQuantities}"disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Tax:<input class="input-box" name="tax" value="${order.tax}"disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Shipping Fee:<input class="input-box" name="shippingFee" value="${order.shippingFee}"disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Total Amount:<input class="input-box" name="totalAmount" value="${order.total}"disabled id="custom-disabled"></div>
                 </div>
-
-                <!-- Order Overview Section -->
-                <div class="card mb-4">
-                    <div class="card-header text-center">
-                        <h3>Order Overview</h3>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th scope="row">Ordered By</th>
-                                    <td>${order.customer.fullname}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Order Status</th>
-                                    <td>${order.status}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Order Date</th>
-                                    <td>${order.orderDate}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Payment Method</th>
-                                    <td>${order.paymentMethod}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Quantities</th>
-                                    <td>${order.productQuantities}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Total Amount</th>
-                                    <td><fmt:formatNumber value="${order.total}" type="currency" /></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Recipient Information Section -->
-                <div class="card mb-4">
-                    <div class="card-header text-center">
-                        <h3>Recipient Information</h3>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th scope="row">First Name</th>
-                                    <td>${order.firstname}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Last Name</th>
-                                    <td>${order.lastname}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Phone</th>
-                                    <td>${order.phone}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Address Line 1</th>
-                                    <td>${order.addressLine1}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Address Line 2</th>
-                                    <td>${order.addressLine2}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">City</th>
-                                    <td>${order.city}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">State</th>
-                                    <td>${order.state}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Country</th>
-                                    <td>${order.countryName}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Zipcode</th>
-                                    <td>${order.zipcode}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Ordered Games Section -->
-                <div class="card mb-4">
-                    <div class="card-header text-center">
-                        <h3>Ordered Games</h3>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Product</th>
-                                    <th>Developer</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${order.orderDetails}" var="orderDetail" varStatus="status">
-                                    <tr>
-                                        <td>${status.index + 1}</td>
-                                        <td class="d-flex align-items-center">
-                                            <img src="data:image/jpg;base64,${orderDetail.product.base64Image}" width="48" height="64" alt="${orderDetail.product.title}" class="me-2 img-fluid" />
-                                            ${orderDetail.product.title}
-                                        </td>
-                                        <td>${orderDetail.product.developer}</td>
-                                        <td><fmt:formatNumber value="${orderDetail.product.price}" type="currency" /></td>
-                                        <td>${orderDetail.quantity}</td>
-                                        <td><fmt:formatNumber value="${orderDetail.subtotal}" type="currency" /></td>
-                                    </tr>
-                                </c:forEach>
-                                <tr>
-                                    <td colspan="6" class="text-end">
-                                        <p>Subtotal: <fmt:formatNumber value="${order.subtotal}" type="currency" /></p>
-                                        <p>Tax: <fmt:formatNumber value="${order.tax}" type="currency" /></p>
-                                        <p>Shipping Fee: <fmt:formatNumber value="${order.shippingFee}" type="currency" /></p>
-                                        <p>Total: <fmt:formatNumber value="${order.total}" type="currency" /></p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </c:otherwise>
-        </c:choose>
+            </div>
+        </div>
     </div>
-
-    <jsp:directive.include file="footer.jsp" />
+    <!--Product Detail-->
+    <section class="orders-table">
+        <header class="table-header">
+            <span class="table-cell">No</span>
+            <span class="table-cell">Product</span>
+            <span class="table-cell">Brand</span>
+            <span class="table-cell">Quantities</span>
+            <span class="table-cell">Price</span>
+            <span class="table-cell">Subtotal</span>
+        </header>
+        <c:forEach items="${order.orderDetails}" var="orderDetail" varStatus="status">
+            <article class="order-row">
+                <span class="table-cell">${status.index + 1}</span>
+                <span class="table-cell"><img class="product-image" src="${orderDetail.product.image}" loading="lazy">${orderDetail.product.productName}</span>
+                <span class="table-cell">${orderDetail.product.brand}</span>
+                <span class="table-cell">${orderDetail.quantity}</span>
+                <span class="table-cell"><fmt:formatNumber value="${orderDetail.product.sellingPrice}" type="currency"/></span>
+                <span class="table-cell"><fmt:formatNumber value="${orderDetail.subtotal}" type="currency"/></span>
+            </article>
+        </c:forEach>
+    </section>
+</div>
+<jsp:directive.include file="footer.jsp" />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

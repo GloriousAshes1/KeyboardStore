@@ -17,7 +17,7 @@
     <jsp:directive.include file="header.jsp" />
     <div class="profile">
         <div class="head">
-            <h3>Welcome, ${loggedCustomer.fullname}</h3>
+            Edit Your Profile
         </div>
         <div class="main-form">
             <form action="update_profile" method="post" id="customerForm">
@@ -48,7 +48,10 @@
                         <div class="text-wrapper">Confirm:
                             <input type="password" class="input-box" id="confirmPassword" name="confirmPassword">
                         </div>
-                        <button class="btn" type="submit">Update</button>
+                        <div class="btn-container">
+                            <button class="btn" type="submit">Update</button>
+                            <button class="btn-cancel" onclick="window.history.back()">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>
