@@ -5,20 +5,19 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Review Management</title>
 	<link rel = "stylesheet" href = "../css/style.css">
 	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
 	<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
-
-	<div align="center">
-		<hr width="60%"/>
-		<h2 class="page-heading">Review Management</h2>
-	</div>
-
+	<div class="content">
+		<h1 align="center">Review Management</h1>
 	<c:if test="${message != null}">
 		<div align="center">
 			<h4 class="message">${message}</h4>
@@ -26,9 +25,8 @@
 	</c:if>
 
 	<div align="center">
-		<table class="table custom-table caption-top table-success table-hover table-bordered" border="1" cellpadding="5">
-			<caption>List of reviews</caption>
-			<thread>
+		<table class="custom-table table-hover table-bordered">
+			<thead>
 			<tr>
 				<th>Index</th>
 				<th>ID</th>
@@ -39,7 +37,7 @@
 				<th>Review On</th>
 				<th>Actions</th>
 			</tr>
-			</thread>
+			</thead>
 			<c:forEach var="review" items="${listReviews}" varStatus="status">
 				<tr>
 					<td>${status.index + 1}</td>
@@ -59,7 +57,7 @@
 	</div>
 
 	<jsp:directive.include file="footer.jsp" />
-
+	</div>
 	<script>
 		$(document).ready(function() {
 			$(".deleteLink").each(function() {

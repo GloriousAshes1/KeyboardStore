@@ -4,38 +4,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Create New Category</title>
-<link rel="stylesheet" href="../css/style.css">
-<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
+	<meta charset="UTF-8">
+	<title>Create New Category</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
+	<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
-	<div align="center">
-		<hr width="60%" />
-		<h2 class="page-heading">
-			<c:if test="${category != null}">
-				Edit Category
-			</c:if>
-			<c:if test="${category == null}">
-				Create New Category
-			</c:if>
+	<c:if test="${message != null}">
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var messageType = '${messageType}';
+				var message = '${message}';
+
+				// Ensure that the message and messageType are properly escaped in JavaScript context
+				message = message.replace(/'/g, "\\'");
+				messageType = messageType.replace(/'/g, "\\'");
+				toastr.options = {
+					"closeButton": true,
+					"debug": false,
+					"newestOnTop": true,
+					"progressBar": true,
+					"positionClass": "toast-top-right",
+					"preventDuplicates": true,
+					"showDuration": "300",
+					"hideDuration": "1000",
+					"timeOut": "5000",
+					"extendedTimeOut": "1000",
+					"showEasing": "swing",
+					"hideEasing": "linear",
+					"showMethod": "fadeIn",
+					"hideMethod": "fadeOut"
+				};
+				if (messageType === 'success') {
+					toastr.success(message);
+				} else if (messageType === 'error') {
+					toastr.error(message);
+				} else if (messageType === 'warning') {
+					toastr.warning(message);
+				} else if (messageType === 'info') {
+					toastr.info(message);
+				}
+			});
+		</script>
+	</c:if>
+	<div class = "content">
+		<h2 class="page-heading" align="center">
+			${category != null ? 'Edit Category' : 'Create New Category'}
 		</h2>
-	</div>
-	<div align="center">
-		<c:if test="${category != null}">
-			<form class="mx-auto" id="categoryForm" action="update_category"
-				method="post">
-				<input type="hidden" name="categoryId"
-					value="${category.categoryId}" />
-		</c:if>
-		<c:if test="${category == null}">
-			<form class="mx-auto" id="categoryForm" action="create_category"
-				method="post">
-		</c:if>
-		<table>
+		<form id="categoryForm" action="${category != null ? 'update_category' : 'create_category'}" method="post">
+			<input type="hidden" name="categoryId"
+				   value="${category.categoryId}" />
+		<table align="center">
 			<tr>
 				<td><label>Name:</label></td>
 				<td><input type="text" name="name" id="name"
@@ -50,8 +75,8 @@
 			</tr>
 		</table>
 		</form>
-	</div>
 	<jsp:directive.include file="footer.jsp" />
+	</div>
 </body>
 <script type="text/javascript">
 	$(document).ready(function() {

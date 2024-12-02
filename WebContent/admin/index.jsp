@@ -15,6 +15,7 @@
 </head>
 <body>
 <jsp:directive.include file="header.jsp" />
+<div class="content">
 <div align="center">
 	<hr width="60%" />
 	<h2>Administrative Dashboard</h2>
@@ -99,6 +100,7 @@
 
 </div>
 <jsp:directive.include file="footer.jsp" />
+</div>
 <script>
 
 	// Cấu hình cho biểu đồ

@@ -56,7 +56,7 @@
 		${user != null ? 'Edit User' : 'Create New User'}
 	</h2>
 	<form id="userForm" action="${user != null ? 'update_user' : 'create_user'}" method="post">
-		<table>
+		<table align="center">
 			<!-- Hidden input for userId, only set when updating -->
 			<c:if test="${user != null}">
 				<input type="hidden" name="userId" value="${user.userId}">
@@ -81,7 +81,7 @@
 				<td><label for="role">Role:</label></td>
 				<td>
 					<input type="text" name="role" id="role"
-						   value="${fullname != null ? fullname : (user != null ? user.fullName : '')}"
+						   value="${role != null ? role : (user != null ? user.role : '')}"
 						   required>
 				</td>
 			</tr>
@@ -97,7 +97,7 @@
 			<tr>
 				<td colspan="2" style="text-align: center;">
 					<button class="btn btn-primary" type="submit">Save</button>
-					<button class="btn btn-secondary" type="button" onclick="window.location.href='list_users';">Cancel</button>
+					<button class="btn btn-secondary" type="button" onclick="history.go(-1);">Cancel</button>
 				</td>
 			</tr>
 		</table>

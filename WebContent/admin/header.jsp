@@ -4,23 +4,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"rel="stylesheet">
 	<link rel="stylesheet" href="../css/style.css">
 	<link rel="stylesheet" href="../css/toastr_noti.css">
 	<link rel="stylesheet" href="../css/menu.css">
 	<link rel="stylesheet" href="../css/management_content.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<meta charset="UTF-8">
-
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://kit.fontawesome.com/afcbf95f02.js" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="sidebar">
 <div class="logo">
 	<a class="d-flex align-items-center" href="${pageContext.request.contextPath}/admin/" ><img src="../images/Logo.png" height="40" width = "40" alt="Store Logo" />Keyboard Store</a>
 </div>
-	<div class="menu-title">Quick Access</div>
+	<p>Welcome, <c:out value="${sessionScope.useremail}" /></p>
 	<div class="quick-access">
 		<ul>
 			<li><a href="list_users" class="d-flex align-items-center"><img src="../images/user.png" alt="User Icon">User</a></li>
@@ -32,9 +33,9 @@
 			<li><a href="#import" class="d-flex align-items-center"><img src="../images/import.png" alt="Import Icon">Import</a></li>
 			<li><a href="#statistic" class="d-flex align-items-center"><img src="../images/review.png" alt="Statistic Icon">Statistic</a></li>
 		</ul>
-		<p>Welcome, <c:out value="${sessionScope.useremail}" /></p>
 	</div>
 	<div class="sidebar-footer">
+		<i class="fa-solid fa-power-off" style="color:#f9f9f9"></i>
 		<a href="logout">Log Out</a>
 	</div>
 </div>

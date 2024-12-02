@@ -93,7 +93,7 @@ public class UserServices {
 			request.setAttribute("fullname", fullName);
 			request.setAttribute("role", role);
 		} else {
-			Users user = new Users(email, fullName, password,role);
+			Users user = new Users(userId,email, fullName, password,role);
 			userDAO.update(user);
 
 			String message = "User is updated successfully";

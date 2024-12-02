@@ -61,7 +61,7 @@
 	</c:if>
 
 	<!-- User List Table -->
-	<table class="custom-table table-hover">
+	<table class="custom-table table-hover table-bordered">
 		<thead>
 		<tr>
 			<th>Index</th>
@@ -79,7 +79,7 @@
 				<td>${user.userId}</td>
 				<td>${user.email}</td>
 				<td>${user.fullName}</td>
-				<td>Staff</td>
+				<td>${user.role}</td>
 				<td>
 					<a href="edit_user?id=${user.userId}">Edit</a> &nbsp;
 					<a href="javascript:confirmDelete(${user.userId})">Delete</a>
