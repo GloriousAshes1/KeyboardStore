@@ -13,7 +13,7 @@
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
-	
+	<div class ="content">
 	<div align="center">
 	<hr width="60%"/>
 		<h2 class="page-heading">Edit Review</h2>
@@ -27,7 +27,7 @@
 		<table class="form">
 			<tr>
 				<td align="right">Product:</td>
-				<td align="left"><b>${review.product.title}</b></td>
+				<td align="left"><b>${review.product.productName}</b></td>
 			</tr>
 			<tr>
 				<td align="right">Rating:</td>
@@ -62,6 +62,7 @@
 	</div>
 
 	<jsp:directive.include file="footer.jsp" />
+	</div>
 </body>
 <script type="text/javascript">
 $(document).ready(function() {
