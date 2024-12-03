@@ -11,13 +11,13 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
 	rel="stylesheet">
 	<link rel="icon" type="image/x-icon" href="images/Logo.png">
-	<link rel="stylesheet" href="css/gobals.css">
+	<link rel="stylesheet" href="css/globals.css">
 	<link rel="stylesheet" href="css/home_style.css"/>
 	<link rel="stylesheet" href="css/styleguide.css" />
 	<link rel="stylesheet" href="css/product_style.css"/>
 </head>
 <body>
-	<jsp:directive.include file="header.jsp" />
+	<header><jsp:directive.include file="header.jsp" /></header>
 	<section class="product-showcase">
 		<h2 class="section-title">New Arrival</h2>
 		<div class="product-grid">
@@ -59,6 +59,6 @@
 </c:forEach>
 		</div>
 	</section>
-	<jsp:directive.include file="footer.jsp" />
+
 </body>
 </html>

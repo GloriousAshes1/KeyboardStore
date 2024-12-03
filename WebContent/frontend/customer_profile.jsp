@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="css/profile_style.css">
 </head>
 <body>
-    <header><jsp:directive.include file="header.jsp" /></header>
-    <div class="prfile">
+    <header><jsp:directive.include file="header.jsp"/></header>
+    <div class="profile">
         <div class="head">
             <h3>Welcome, ${loggedCustomer.fullname}</h3>
         </div>
