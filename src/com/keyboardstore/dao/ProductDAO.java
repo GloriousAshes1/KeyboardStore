@@ -80,4 +80,5 @@ public class ProductDAO extends JpaDAO<Product> implements GenericDAO<Product> {
 		}
 		return mostFavoredProducts;
 	}
+
 }

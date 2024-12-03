@@ -67,24 +67,40 @@ public class ProductServices {
 
 	public void createProduct() throws ServletException, IOException {
 		String productName = request.getParameter("productName");
-		
+
 		Product existProduct = productDAO.findByProductName(productName);
 		if (existProduct != null) {
-			String message = "Could not create new Product because the productName '" + productName + "' already exists.";
+			String message = "Could not create new Product because the product name '" + productName + "' already exists.";
 			String messageType = "error";
-			listProducts(message,messageType);
+
+			// Preserve the form data and show the error message
+			request.setAttribute("message", message);
+			request.setAttribute("messageType", messageType);
+
+			// Keep the filled form data
+			request.setAttribute("productName", productName);
+			request.setAttribute("brand", existProduct.getBrand());
+
+			// Retrieve categories for the form
+			List<Category> listCategory = categoryDAO.listAll();
+			request.setAttribute("listCategory", listCategory);
+
+			// Forward back to the form page
+			String formPage = "product_form.jsp";
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher(formPage);
+			requestDispatcher.forward(request, response);
 			return;
 		}
-		
+
 		Product newProduct = new Product();
 		readProductFields(newProduct);
-		
+
 		Product createdProduct = productDAO.create(newProduct);
-		
+
 		if (createdProduct.getProductId() > 0) {
 			String message = "A new Product has been created successfully";
 			String messageType = "success";
-			listProducts(message,messageType);
+			listProducts(message, messageType);
 		}
 	}
 
@@ -168,20 +184,38 @@ public class ProductServices {
 
 		Product existProduct = productDAO.get(productId);
 		Product productByName = productDAO.findByProductName(productName);
-		
+
+		// Check if the updated product name conflicts with another product
 		if (productByName != null && !existProduct.equals(productByName)) {
-			String message = "Couldn't update product because there's another product having same name.";
+			String message = "Couldn't update product because another product with the name '" + productName + "' already exists.";
 			String messageType = "error";
-			listProducts(message,messageType);
+
+			// Preserve form data and show error message
+			request.setAttribute("message", message);
+			request.setAttribute("messageType", messageType);
+
+			// Keep the updated form data
+			readProductFields(existProduct);  // Update the `existProduct` object with new data
+			request.setAttribute("product", existProduct);
+
+			// Retrieve categories for the form
+			List<Category> listCategory = categoryDAO.listAll();
+			request.setAttribute("listCategory", listCategory);
+
+			// Forward back to the form page
+			String formPage = "product_form.jsp";
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher(formPage);
+			requestDispatcher.forward(request, response);
 			return;
 		}
-		
+
+		// If no conflicts, update the product
 		readProductFields(existProduct);
 		productDAO.update(existProduct);
-		
-		String message = "The Product has been updated successfully";
+
+		String message = "The product has been updated successfully";
 		String messageType = "success";
-		listProducts(message,messageType);
+		listProducts(message, messageType);
 	}
 
 	public void deleteProduct() throws ServletException, IOException {
@@ -239,5 +273,31 @@ public class ProductServices {
 		String resultPage = "frontend/search_result.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(resultPage);
 		requestDispatcher.forward(request, response);
+	}
+
+	public void searchProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String query = request.getParameter("query");
+		List<Product> listProducts;
+
+		// If no query is provided, return all products
+		if (query == null || query.trim().isEmpty()) {
+			listProducts = productDAO.listAll();  // Fetch all products if no search term
+		} else {
+			// Search products using the DAO method
+			listProducts = productDAO.search(query);
+		}
+
+		// Set the product list as a request attribute
+		request.setAttribute("listProducts", listProducts);
+
+		// Optional: Pass a message for toastr notification
+		String message = "Found " + listProducts.size() + " product(s) matching '" + query + "'";
+		request.setAttribute("message", message);
+		request.setAttribute("messageType", "info");
+
+		// Forward the request to product_list.jsp
+		String listPage = "product_list.jsp";
+		RequestDispatcher dispatcher = request.getRequestDispatcher(listPage);
+		dispatcher.forward(request, response);
 	}
 }

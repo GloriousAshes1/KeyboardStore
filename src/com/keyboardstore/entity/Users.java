@@ -15,7 +15,8 @@ import javax.persistence.Table;
 	@NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u ORDER BY u.fullName"),
 	@NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
 	@NamedQuery(name = "Users.countAll", query = "SELECT Count(*) FROM Users u"),
-	@NamedQuery(name = "Users.checkLogin", query = "SELECT u FROM Users u WHERE u.email = :email AND password = :password")
+	@NamedQuery(name = "Users.checkLogin", query = "SELECT u FROM Users u WHERE u.email = :email AND password = :password"),
+		@NamedQuery(name = "Users.search", query = "SELECT u FROM Users u WHERE u.fullName LIKE :query OR u.email LIKE :query")
 
 })
 @Table(name = "users", catalog = "keyboardstoredb")

@@ -28,14 +28,14 @@
                 <div class="col">
                     <div class="card h-100">
                     	<a href="view_product?id=${product.productId}">
-                    		<img src="data:image/jpg;base64,${product.base64Image}" class="card-img-top" alt="${product.title}">
+                    		<img src="${product.image}" class="card-img-top" alt="${product.productName}">
                     	</a>
                         <div class="card-body">
                             <h5 class="card-title"><a href="view_game?id=${product.productId}"> <b>${product.productName}</b></a></h5>
                             <p class="card-text product-description" data-product-id="${product.productId}">
                                 ${product.description}
                             </p>
-                            <p class="card-text"><strong>$${product.price}</strong></p>
+                            <p class="card-text"><strong>$${product.sellingPrice}</strong></p>
                             <jsp:directive.include file="product_rating.jsp" />
                         </div>
                     </div>

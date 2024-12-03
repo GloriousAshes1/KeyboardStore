@@ -2,22 +2,56 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>Create New Product</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="..//css/richtext.min.css">
 	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-	
-	<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.richtext.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp"/>
+	<c:if test="${message != null}">
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var messageType = '${fn:escapeXml(messageType)}';  // Use JSTL escapeXml to handle special chars
+				var message = '${fn:escapeXml(message)}';  // Same here for the message
+
+				// Ensure that the message and messageType are properly escaped
+				toastr.options = {
+					"closeButton": true,
+					"debug": false,
+					"newestOnTop": true,
+					"progressBar": true,
+					"positionClass": "toast-top-right",
+					"preventDuplicates": true,
+					"showDuration": "300",
+					"hideDuration": "1000",
+					"timeOut": "5000",
+					"extendedTimeOut": "1000",
+					"showEasing": "swing",
+					"hideEasing": "linear",
+					"showMethod": "fadeIn",
+					"hideMethod": "fadeOut"
+				};
+
+				if (messageType === 'success') {
+					toastr.success(message);
+				} else if (messageType === 'error') {
+					toastr.error(message);
+				} else if (messageType === 'warning') {
+					toastr.warning(message);
+				} else if (messageType === 'info') {
+					toastr.info(message);
+				}
+			});
+		</script>
+
+	</c:if>
 	<div class="content">
 		<h2 class="page-heading" align="center">
 			<c:if test="${product != null}">
@@ -79,15 +113,15 @@
 						</c:if>
 						<c:if test="${product != null}">
 							<input type="hidden" name="existingImage" value="${product.image}"/>
-								<input type="file" name = "image"  id="image" size="20"/><br/>
-								<img id="thumbnail" alt="Image Preview" style="width:20%; margin-top:10px"
-									src="${product.image}"/>
+							<input type="file" name = "image"  id="image" size="20"/><br/>
+							<img id="thumbnail" alt="Image Preview" style="width:20%; margin-top:10px"
+								 src="${product.image}"/>
 						</c:if>
 						</td>
 					</tr>
 					<tr>
 						<td align="right">Price:</td>
-						<td align="left"><input type="text" name = "sellingPrice"  id="sellingPrice" value= "${product.sellingPrice}" required size="20"/></td>
+						<td align="left"><input type="number" name = "sellingPrice"  id="sellingPrice" step="0.01" value= "${product.sellingPrice}" required size="20"/></td>
 					</tr>
 					<tr>
 						<td align="right">Description:</td>

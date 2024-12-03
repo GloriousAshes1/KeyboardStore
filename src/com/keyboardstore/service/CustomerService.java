@@ -75,19 +75,38 @@ public class CustomerService {
 
 	public void createCustomer() throws ServletException, IOException {
 		String email = request.getParameter("email");
+
+		// Check if email already exists
 		Customer existCustomer = customerDAO.findByEmail(email);
 		if (existCustomer != null) {
-			String message = "Could not create customer. Email " + email + " is already registred by another customer";
+			String message = "Could not create customer. Email " + email + " is already registered by another customer";
 			request.setAttribute("message", message);
 			request.setAttribute("messageType", "error");
+
+			// Retain the form data
+			request.setAttribute("email", email);
+			request.setAttribute("firstName", request.getParameter("firstName"));
+			request.setAttribute("lastName", request.getParameter("lastName"));
+			request.setAttribute("password", request.getParameter("password"));
+			request.setAttribute("phone", request.getParameter("phone"));
+			request.setAttribute("address1", request.getParameter("address1"));
+			request.setAttribute("address2", request.getParameter("address2"));
+			request.setAttribute("city", request.getParameter("city"));
+			request.setAttribute("state", request.getParameter("state"));
+			request.setAttribute("zipCode", request.getParameter("zipCode"));
+			request.setAttribute("country", request.getParameter("country"));
+
+			// Forward back to form with message
+			RequestDispatcher dispatcher = request.getRequestDispatcher("customer_form.jsp");
+			dispatcher.forward(request, response);
 		} else {
+			// Create new customer
 			Customer newCustomer = new Customer();
 			updateCustomerFieldsFromForm(newCustomer);
 			customerDAO.create(newCustomer);
-			String message = "New Customer has been created succesefully";
-			listCustomers(message,"success");
+			String message = "New customer has been created successfully";
+			listCustomers(message, "success");
 		}
-
 	}
 
 	public void editCustomer() throws ServletException, IOException {
@@ -116,20 +135,38 @@ public class CustomerService {
 	}
 
 	public void updateCustomer() throws ServletException, IOException {
-		Integer customerID = Integer.parseInt(request.getParameter("customerId"));
+		Integer customerId = Integer.parseInt(request.getParameter("customerId"));
 		String email = request.getParameter("email");
 		Customer customerByEmail = customerDAO.findByEmail(email);
-		if (customerByEmail != null && customerByEmail.getCustomerId() != customerID) {
-			String message = "Could not update the customer id " + customerID
-					+ "because threre's an existing customer have the same email";
+		if (customerByEmail != null && customerByEmail.getCustomerId() != customerId) {
+			String message = "Could not update the customer id " + customerId
+					+ " because there's an existing customer with the same email";
 			request.setAttribute("message", message);
 			request.setAttribute("messageType", "error");
+
+			// Retain form data
+			Customer customer = customerDAO.get(customerId);
+			request.setAttribute("customer", customer);
+			request.setAttribute("email", email);
+			request.setAttribute("firstName", request.getParameter("firstName"));
+			request.setAttribute("lastName", request.getParameter("lastName"));
+			request.setAttribute("password", request.getParameter("password"));
+			request.setAttribute("phone", request.getParameter("phone"));
+			request.setAttribute("address1", request.getParameter("address1"));
+			request.setAttribute("address2", request.getParameter("address2"));
+			request.setAttribute("city", request.getParameter("city"));
+			request.setAttribute("state", request.getParameter("state"));
+			request.setAttribute("zipCode", request.getParameter("zipCode"));
+			request.setAttribute("country", request.getParameter("country"));
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("customer_form.jsp");
+			dispatcher.forward(request, response);
 		} else {
-			Customer customerById = customerDAO.get(customerID);
+			Customer customerById = customerDAO.get(customerId);
 			updateCustomerFieldsFromForm(customerById);
 			customerDAO.update(customerById);
-			String message = "The customer has been update successfully";
-			listCustomers(message,"success");
+			String message = "The customer has been updated successfully";
+			listCustomers(message, "success");
 		}
 	}
 

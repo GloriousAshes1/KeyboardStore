@@ -55,4 +55,8 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
 		
 		return false;
 	}
+
+	public List<Users> search(String query) {
+		return super.findWithNamedQuery("Users.search", "query", "%" + query + "%");
+	}
 }

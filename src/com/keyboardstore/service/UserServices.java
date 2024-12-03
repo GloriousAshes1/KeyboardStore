@@ -75,7 +75,7 @@ public class UserServices {
 	}
 
 	public void updateUser() throws ServletException, IOException {
-		int userId = Integer.parseInt(request.getParameter("userId"));
+		Integer userId = Integer.parseInt(request.getParameter("userId"));
 		String email = request.getParameter("email");
 		String fullName = request.getParameter("fullname");
 		String password = request.getParameter("password");
@@ -89,9 +89,13 @@ public class UserServices {
 			request.setAttribute("message", message);
 			request.setAttribute("messageType", "error");  // Error message type
 			// Set attributes to retain entered data
+			Users user = userDAO.get(userId);
+			request.setAttribute("user", user);
 			request.setAttribute("email", email);
 			request.setAttribute("fullname", fullName);
 			request.setAttribute("role", role);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("user_form.jsp");
+			dispatcher.forward(request, response);
 		} else {
 			Users user = new Users(userId,email, fullName, password,role);
 			userDAO.update(user);
@@ -131,4 +135,25 @@ public class UserServices {
 			dispatcher.forward(request, response);
 		}
 	}
+
+	public void searchUsers() throws ServletException, IOException {
+		String query = request.getParameter("query");
+		List<Users> listUsers;
+		if (query != null && !query.trim().isEmpty()) {
+			listUsers = userDAO.search(query); // Perform search
+		} else {
+			listUsers = userDAO.listAll(); // If no query, list all users
+		}
+		request.setAttribute("listUsers", listUsers);
+
+		// Set a message about the search results
+		String message = "Found " + listUsers.size() + " user(s) matching '" + query + "'";
+		request.setAttribute("message", message);
+		request.setAttribute("messageType", "info");
+
+		// Forward to the JSP
+		RequestDispatcher dispatcher = request.getRequestDispatcher("user_list.jsp");
+		dispatcher.forward(request, response);
+	}
+
 }

@@ -57,8 +57,9 @@
 	</h2>
 	<form id="userForm" action="${user != null ? 'update_user' : 'create_user'}" method="post">
 		<table align="center">
+			<input type="text" name="userId" value="${user.userId}">
 			<!-- Hidden input for userId, only set when updating -->
-			<c:if test="${user != null}">
+			<c:if test="${user.userId != null}">
 				<input type="hidden" name="userId" value="${user.userId}">
 			</c:if>
 			<tr>

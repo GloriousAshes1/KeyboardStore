@@ -64,7 +64,9 @@
 			<tr>
 				<td><label>Name:</label></td>
 				<td><input type="text" name="name" id="name"
-					value="${category.name}" required></td>
+					value="${name != null ? name : (category != null ? category.name : '')}"
+						   required>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">

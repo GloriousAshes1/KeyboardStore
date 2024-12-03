@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/admin/update_game")
+@WebServlet("/admin/update_product")
 @MultipartConfig(
 		fileSizeThreshold = 1024 * 10, // 10 KB
 		maxFileSize = 1024 *100,	   // 100 KB

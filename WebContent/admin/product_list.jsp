@@ -9,6 +9,9 @@
 	<title>Game List - Legendary Games Administration</title>
 	<link rel = "stylesheet" href = "../css/style.css">
 	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </head>
 <body>
 <jsp:directive.include file="header.jsp"/>
@@ -16,7 +19,7 @@
 	<h1 align="center">Product Management</h1>
 	<div class="d-flex justify-content-between align-items-center mb-3">
 		<!-- Search Form -->
-		<form method="GET" action="#search_product" style="margin-bottom: 20px;">
+		<form method="GET" action="search_product" style="margin-bottom: 20px;">
 			<input type="text" name="query" placeholder="Search..." style="padding: 10px; width: 300px;">
 			<button class="btn-search" type="submit">Search</button>
 		</form>
@@ -56,13 +59,6 @@
 			});
 		</script>
 	</c:if>
-<c:if test="${message != null}">
-	<div align="center">
-		<h4><i>${message}</i></h4>
-		<h4><i>${messageType}</i></h4>
-	</div>
-</c:if>
-
 	<table class="custom-table table-hover">
 		<thead>
 			<tr>

@@ -53,6 +53,8 @@ public class CategoryServices{
 			request.setAttribute("message", message);
 			request.setAttribute("messageType", "error");
 			request.setAttribute("name",categoryName);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("category_form.jsp");
+			dispatcher.forward(request, response);
 		}
 		else {
 			Category newCategory = new Category(categoryName);
@@ -71,7 +73,7 @@ public class CategoryServices{
 	}
 
 	public void updateCategory() throws ServletException, IOException {
-		int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+		Integer categoryId = Integer.parseInt(request.getParameter("categoryId"));
 		String categoryName = request.getParameter("name");
 
 		Category categoryById = categoryDAO.get(categoryId);
@@ -81,7 +83,12 @@ public class CategoryServices{
 			String message = "Could not update Category. Category with name " + categoryName + " is already exists.";
 			request.setAttribute("message", message);
 			request.setAttribute("messageType", "error");
+
+			Category category = categoryDAO.get(categoryId);
+			request.setAttribute("category", category);
 			request.setAttribute("name",categoryName);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("category_form.jsp");
+			dispatcher.forward(request, response);
 		}
 		else {
 			categoryById.setName(categoryName);
@@ -96,17 +103,20 @@ public class CategoryServices{
 	public void deleteCategory() throws ServletException, IOException {
 		int categoryId = Integer.parseInt(request.getParameter("id"));
 		String message;
+		String messageType;
 		ProductDAO gameDAO = new ProductDAO();
 		long numberOfGames = gameDAO.countByCategory(categoryId);
 
 		if (numberOfGames > 0) {
-			message = "Could not delete the category (ID:" + categoryId + ") because it curently contains some games.";
+			message = "Could not delete the category (ID:" + categoryId + ") because it currently contains some games.";
+			messageType = "error";
 		}
 		else {
 			categoryDAO.delete(categoryId);
 			message = "Category with ID "+ categoryId +" has been deleted successfully";
+			messageType = "success";
 		}
-		listCategory(message,"success");
+		listCategory(message,messageType);
 	}
 
 	public void showCategoryNewForm() throws ServletException, IOException {

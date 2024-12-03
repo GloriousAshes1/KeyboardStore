@@ -19,8 +19,8 @@
 	<h1 align="center">User Management</h1>
 	<div class="d-flex justify-content-between align-items-center mb-3">
 		<!-- Search Form -->
-		<form method="GET" action="#search_user" style="margin-bottom: 20px;">
-			<input type="text" name="query" placeholder="Search..." style="padding: 10px; width: 300px;">
+		<form method="GET" action="search_user">
+			<input type="text" name="query" placeholder="Search by name or email..." style="padding: 10px; width: 300px;">
 			<button class="btn-search" type="submit">Search</button>
 		</form>
 		<!-- Add User Button -->
@@ -63,6 +63,11 @@
 	<!-- User List Table -->
 	<table class="custom-table table-hover table-bordered">
 		<thead>
+		<c:if test="${empty listUsers}">
+			<tr>
+				<td colspan="6" class="text-center">No users found.</td>
+			</tr>
+		</c:if>
 		<tr>
 			<th>Index</th>
 			<th>ID</th>
