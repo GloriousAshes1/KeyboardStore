@@ -62,7 +62,7 @@
 					<th>No</th>
 					<th>Order ID</th>
 					<th>Ordered by</th>
-					<th>Quantity</th>
+<%--					<th>Quantity</th>--%>
 					<th>Total</th>
 					<th>Payment method</th>
 					<th>Status</th>
@@ -76,7 +76,7 @@
 						<td>${status.index +1}</td>
 						<td>${order.orderId}</td>
 						<td>${order.customer.fullname}</td>
-						<td>${order.gameQuantities}</td>
+<%--						<td>${order.gameQuantities}</td>--%>
 						<td><fmt:formatNumber value="${order.total}" type="currency" /></td>
 						<td>${order.paymentMethod}</td>
 						<td>${order.status}</td>

@@ -14,6 +14,7 @@
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
+	<div class="content">
 	<div align="center">
 		<h2 class="pageheading">Detail of Order Id: ${order.orderId}</h2>
 	</div>
@@ -36,7 +37,7 @@
 			</tr>
 			<tr>
 				<td><b>Quantity: </b></td>
-				<td>${order.gameQuantities}</td>
+				<td>${order.productQuantities}</td>
 			</tr>
 			<tr>
 				<td><b>Total Amount: </b></td>
@@ -95,8 +96,7 @@
 	<div>
 		<h2 align = "center">Order Item(s):</h2>
 		<table
-			class="table custom-table caption-top table-success table-hover table-bordered"
-			border="1">
+			class="table custom-table caption-top table-success table-hover table-bordered">
 			<tr>
 				<th>No</th>
 				<th colspan="2">Product</th>
@@ -111,12 +111,12 @@
 				<tr>
 					<td>${status.index + 1}</td>
 					<td><img class="product-small"
-						src="data:image/jpg;base64,${orderDetail.product.base64Image}" /></td>
-					<td>${orderDetail.product.title}</td>
-					<td>${orderDetail.product.developer}</td>
-					<td>${orderDetail.product.publisher}</td>
+						src="${orderDetail.product.image}" /></td>
+					<td>${orderDetail.product.productName}</td>
+					<td>${orderDetail.product.brand}</td>
+					<td>${orderDetail.product.code}</td>
 					<td>${orderDetail.quantity}</td>
-					<td><fmt:formatNumber value="${orderDetail.product.price}"
+					<td><fmt:formatNumber value="${orderDetail.product.sellingPrice}"
 							type="currency" /></td>
 
 					<td><fmt:formatNumber value="${orderDetail.subtotal}"
@@ -150,7 +150,7 @@
 			href="javascript:void(0);" class="deleteLink" id="${order.orderId}">Delete</a>
 	</div>
 	<jsp:directive.include file="footer.jsp" />
-
+	</div>
 	<script>
 		$(document)
 				.ready(

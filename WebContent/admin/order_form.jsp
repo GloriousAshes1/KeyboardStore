@@ -53,7 +53,7 @@
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
-
+	<div class="content">
 	<div align="center">
 		<h2 class="page-heading">Edit Order ID: ${order.orderId}</h2>
 	</div>
@@ -165,21 +165,21 @@
         <c:forEach items="${order.orderDetails}" var="orderDetail" varStatus="status">
             <tr>
                 <td>${status.index + 1}</td>
-                <td>${orderDetail.product.title}</td>
-                <td>${orderDetail.product.developer}</td>
+                <td>${orderDetail.product.productName}</td>
+                <td>${orderDetail.product.brand}</td>
                 <td>
-						<input type="hidden" name="price" value="${orderDetail.product.price}" />
-						<fmt:formatNumber value="${orderDetail.product.price}" type="currency" />
+						<input type="hidden" name="price" value="${orderDetail.product.sellingPrice}" />
+						<fmt:formatNumber value="${orderDetail.product.sellingPrice}" type="currency" />
 					</td>
                 <td>
-                    <input type="hidden" name="gameId" value="${orderDetail.product.gameId}" />
+                    <input type="hidden" name="gameId" value="${orderDetail.product.productId}" />
                     <input type="text" name="quantity${status.index + 1}" value="${orderDetail.quantity}" size="5" />
                 </td>
                 <td>
                     <fmt:formatNumber value="${orderDetail.subtotal}" type="currency" />
                 </td>
                 <td>
-                    <a href="remove_game_from_order?id=${orderDetail.product.gameId}">Remove</a>
+                    <a href="remove_game_from_order?id=${orderDetail.product.productId}">Remove</a>
                 </td>
             </tr>
         </c:forEach>
@@ -215,7 +215,7 @@
 	        <iframe src="add_game_form" width="100%" height="250px" frameborder="0"></iframe>
 	    </div>
 	</div>
-	
+	</div>
 	<script>
 	function showAddGamePopup() {
 		event.preventDefault();

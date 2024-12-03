@@ -89,16 +89,16 @@ public class ProductServices {
 	}
 
 	public void readProductFields(Product product) throws ServletException, IOException {
+		Integer categoryId = Integer.parseInt(request.getParameter("category"));
 		String productName = request.getParameter("productName");
 		String code = request.getParameter("code");
 		String brand = request.getParameter("brand");
 		String description = request.getParameter("description");
-		float price = Float.parseFloat(request.getParameter("sellingPrice"));
-
+		Float price = Float.parseFloat(request.getParameter("sellingPrice"));
+		String existingImage = request.getParameter("existingImage");
 		final String newFormat = "yyyy-MM-dd";
 		SimpleDateFormat sdf = new SimpleDateFormat(newFormat);
 		Date publishDate = null;
-
 		try {
 			String publishDateString = request.getParameter("publishDate");
 			if (publishDateString != null && !publishDateString.isEmpty()) {
@@ -118,18 +118,17 @@ public class ProductServices {
 		product.setDescription(description);
 		product.setSellingPrice(price);
 		product.setPublishDate(publishDate);
-
-		// Retrieve and set category
-		Integer categoryId = Integer.parseInt(request.getParameter("category"));
 		Category category = categoryDAO.get(categoryId);
 		product.setCategory(category);
-
 		// Set default stock
-		int stock = 1;
+		int stock = 0;
 		product.setStock(stock);
 
 		// Handle the image upload to S3
 		Part part = request.getPart("image");
+		if (part == null) {
+			product.setImage(existingImage);
+		}
 		if (part != null && part.getSize() > 0) {
 			String bucketName = "phuduyloc"; // Replace with your bucket name
 			String keyName = "images/" + productName + "_" + System.currentTimeMillis(); // Unique key for image
@@ -149,26 +148,25 @@ public class ProductServices {
 		}
 	}
 
-
 	public void editProduct() throws ServletException, IOException {
-		Integer ProductId = Integer.parseInt(request.getParameter("id"));
-		Product product = productDAO.get(ProductId);
-		
+		Integer productId = Integer.parseInt(request.getParameter("id"));
+		Product product = productDAO.get(productId);
+
 		List<Category> listCategory = categoryDAO.listAll();
-		
-		request.setAttribute("Product", product);
+
+		request.setAttribute("product", product);
 		request.setAttribute("listCategory", listCategory);
-		
+
 		String editPage = "product_form.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
 		requestDispatcher.forward(request, response);
 	}
 
 	public void updateProduct() throws ServletException, IOException {
-		Integer ProductId = Integer.parseInt(request.getParameter("ProductId"));
+		Integer productId = Integer.parseInt(request.getParameter("productId"));
 		String productName = request.getParameter("productName");
-		
-		Product existProduct = productDAO.get(ProductId);
+
+		Product existProduct = productDAO.get(productId);
 		Product productByName = productDAO.findByProductName(productName);
 		
 		if (productByName != null && !existProduct.equals(productByName)) {
@@ -179,7 +177,6 @@ public class ProductServices {
 		}
 		
 		readProductFields(existProduct);
-		
 		productDAO.update(existProduct);
 		
 		String message = "The Product has been updated successfully";

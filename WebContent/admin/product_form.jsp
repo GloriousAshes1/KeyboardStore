@@ -78,9 +78,10 @@
 									src="data:image/jpg;base64,${product.base64Image}"/>
 						</c:if>
 						<c:if test="${product != null}">
+							<input type="hidden" name="existingImage" value="${product.image}"/>
 								<input type="file" name = "image"  id="image" size="20"/><br/>
 								<img id="thumbnail" alt="Image Preview" style="width:20%; margin-top:10px"
-									src="data:image/jpg;base64,${product.base64Image}"/>
+									src="${product.image}"/>
 						</c:if>
 						</td>
 					</tr>
