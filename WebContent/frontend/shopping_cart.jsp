@@ -57,7 +57,7 @@
 							<div class="item-card">
 								<div class="item-detail-card">
 									<div class="rectangle">
-										<a href="view_product?id=${items.key.productId}" type="hidden"><img src="d${items.key.image}" width="80px" height="80px" border="1px" alt="${items.key.productName}"></a>
+										<a href="view_product?id=${items.key.productId}" type="hidden"><img src="${items.key.image}" width="80px" height="80px" border="1px" alt="${items.key.productName}"></a>
 									</div>
 									<div class="item-detail">
 										<div class="item-card-text">${items.key.productName}</div>
@@ -68,9 +68,9 @@
 
 										<input type="hidden" name="productId" value="${items.key.productId}">
 										<div class="inc-dec-value">
-											<button type="button" class="dec" onclick="updateQuantity('${items.key.productId}', 'decrease')">-</button>
+											<button type="button" class="dec" onclick="updateQuantity('${items.key.productId}', 'decrease', ${items.key.stock})">-</button>
 											<input type="text" name="quantity${status.index + 1}" class="quantity" value="${items.value}" id="${items.key.productId}" readonly required>
-											<button type="button" class="inc" onclick="updateQuantity('${items.key.productId}', 'increase')">+</button>
+											<button type="button" class="inc" onclick="updateQuantity('${items.key.productId}', 'increase',${items.key.stock})">+</button>
 										</div>
 									<div class="subtotal-text"><fmt:formatNumber
 											value="${items.value * items.key.sellingPrice}" type="currency" /></div>
@@ -90,7 +90,7 @@
 								<div class="text-wrapper">Subtotal: <div><fmt:formatNumber value="${cart.totalAmount}" type="currency"/></div></div>
 								<div class="text-wrapper">Tax: <div><fmt:formatNumber value="${cart.tax}" type="currency"/></div></div>
 								<div class="text-wrapper">Shipping Fee: <div><fmt:formatNumber value="${cart.shippingFee}" type="currency"/></div></div>
-								<div class="text-wra	pper">Total: <div><fmt:formatNumber value="${cart.totalPrice}" type="currency"/></div></div>
+								<div class="text-wrapper">Total: <div><fmt:formatNumber value="${cart.totalPrice}" type="currency"/></div></div>
 							</div>
 							<div class="checkout" onclick="window.location='checkout'">Checkout &gt;</div>
 						</div>
@@ -116,7 +116,7 @@
 		let itemval = document.getElementById(productId);
 		itemval.value = parseInt(itemval.value) + 1;
 	}
-	const updateQuantity = (productId, action) => {
+	const updateQuantity = (productId, action, stock) => {
 		console.log("Updating quantity for productId:", productId);
 
 		const quantityInput = document.getElementById(productId);
@@ -126,8 +126,14 @@
 		}
 
 		let currentQuantity = parseInt(quantityInput.value);
+
 		if (action === 'increase') {
-			currentQuantity += 1;
+			if (currentQuantity < stock) {
+				currentQuantity += 1;
+			} else {
+				alert("Cannot add more. Stock limit reached!");
+				return;
+			}
 		} else if (action === 'decrease' && currentQuantity > 0) {
 			currentQuantity -= 1;
 		}
@@ -138,9 +144,10 @@
 		if (form) {
 			form.submit();
 		} else {
-			console.error("Form not found for productId:", productId);  // Thông báo lỗi nếu form không tồn tại
+			console.error("Form not found for productId:", productId);
 		}
 	};
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
