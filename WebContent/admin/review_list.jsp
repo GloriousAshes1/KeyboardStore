@@ -42,7 +42,7 @@
 				<tr>
 					<td>${status.index + 1}</td>
 					<td>${review.reviewId}</td>
-					<td>${review.product.title}</td>
+					<td>${review.product.productName}</td>
 					<td>${review.rating}</td>
 					<td>${review.headline}</td>
 					<td>${review.customer.fullname}</td>

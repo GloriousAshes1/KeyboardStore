@@ -88,15 +88,15 @@
 					</tr>
 					<tr>
 						<td align="right">Product Name:</td>
-						<td align="left"><input type="text" name = "productName" id="productName" value= "${product.productName}" required size="20"/></td>
+						<td align="left"><input type="text" name = "productName" id="productName" value= "${product.productName}" required size="50"/></td>
 					</tr>
 					<tr>
 						<td align="right">Brand</td>
-						<td align="left"><input type="text" name = "brand" id="brand" value= "${product.brand}" required size="20"/></td>
+						<td align="left"><input type="text" name = "brand" id="brand" value= "${product.brand}" required size="50"/></td>
 					</tr>
 					<tr>
 						<td align="right">Code:</td>
-						<td align="left"><input type="text" name = "code"  id="code" value= "${product.code}" required size="20"/></td>
+						<td align="left"><input type="text" name = "code"  id="code" value= "${product.code}" required maxlength="13"/></td>
 					</tr>					
 					<tr>
 						<td align="right">Publish Date:</td>
@@ -106,17 +106,17 @@
 					<tr>
 						<td align="right">Image:</td>
 						<td align="left">
-						<c:if test="${product == null}">
-								<input type="file" name = "image"  id="image" size="20" required/><br/>
-								<img id="thumbnail" alt="Image Preview" style="width:20%; margin-top:10px"
-									src="data:image/jpg;base64,${product.base64Image}"/>
-						</c:if>
-						<c:if test="${product != null}">
-							<input type="hidden" name="existingImage" value="${product.image}"/>
-							<input type="file" name = "image"  id="image" size="20"/><br/>
-							<img id="thumbnail" alt="Image Preview" style="width:20%; margin-top:10px"
-								 src="${product.image}"/>
-						</c:if>
+							<c:if test="${product == null}">
+								<input type="file" name="image" id="image" size="20" required/><br/>
+								<!-- Default empty image preview for new product -->
+								<img id="thumbnail" alt="Image Preview" style="width:20%; margin-top:10px" src=""/>
+							</c:if>
+							<c:if test="${product != null}">
+								<input type="hidden" name="existingImage" value="${product.image}"/>
+								<input type="file" name="image" id="image" size="20"/><br/>
+								<!-- Existing image preview for edited product -->
+								<img id="thumbnail" alt="Image Preview" style="width:20%; margin-top:10px" src="${product.image}"/>
+							</c:if>
 						</td>
 					</tr>
 					<tr>
@@ -145,24 +145,28 @@
 </body>
 <script type="text/javascript">
 	$(document).ready(function() {
-		
-		$('#description').richText();
-		
+		// When an image is selected
 		$('#image').change(function() {
-			showImageThumbnail(this);
+			showImageThumbnail(this);  // Trigger the image preview function
 		});
 	});
-	
+
 	function showImageThumbnail(fileInput) {
-		var file = fileInput.files[0];
-		
-		var reader = new FileReader();
-		
-		reader.onload = function(e) {
-			$('#thumbnail').attr('src', e.target.result);
-		};
-		
-		reader.readAsDataURL(file);
+		var file = fileInput.files[0];  // Get the selected file
+
+		// Check if a file is selected
+		if (file) {
+			var reader = new FileReader();  // Create a new FileReader object
+
+			reader.onload = function(e) {
+				// Update the src attribute of the thumbnail image with the file data
+				$('#thumbnail').attr('src', e.target.result);
+			};
+
+			// Read the selected file as a Data URL (base64 encoded string)
+			reader.readAsDataURL(file);
+		}
 	}
+
 </script>
 </html>
