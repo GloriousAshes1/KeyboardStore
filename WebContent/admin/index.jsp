@@ -5,27 +5,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
 	<title>Legendary Games Administration</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-	<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	<jsp:include page="head.jsp"/>
 </head>
 <body>
 <jsp:directive.include file="header.jsp" />
 <div class="content">
 <div align="center">
 	<hr width="60%" />
-	<h2>Administrative Dashboard</h2>
-</div>
-<div align="center">
-	<h2 class="page-heading">Quick Action:</h2>
-	<b> <a href="user_form.jsp">New User</a>&nbsp; <a href="new_game">New
-		Product</a>&nbsp; <a href="category_form.jsp">New Category</a>&nbsp; <a
-			href="new_customer">New Customer</a>&nbsp;
-	</b>
+	<h1><b>Administrative Dashboard</b></h1>
 </div>
 <div align="center">
 
@@ -43,48 +31,53 @@
 		<hr width="60%" />
 		<h2 class="page-heading">Recent Sales:</h2>
 		<table
-				class="table custom-table caption-top table-success table-hover table-bordered"
-				border="1" cellpadding="5">
-			<thread>
+				class="table table-success table-hover table-bordered caption-top">
+			<caption>Danh sách đơn hàng gần đây</caption>
+			<thead class="table-primary">
+			<tr>
+				<th scope="col">Order ID</th>
+				<th scope="col">Ordered By</th>
+				<th scope="col">Quantity</th>
+				<th scope="col">Total</th>
+				<th scope="col">Payment Method</th>
+				<th scope="col">Status</th>
+				<th scope="col">Order Date</th>
+			</tr>
+			</thead>
+			<tbody>
+			<c:forEach var="order" items="${listMostRecentSales}" varStatus="status">
 				<tr>
-					<th>Order ID</th>
-					<th>Ordered By</th>
-					<th>Quantity</th>
-					<th>Total</th>
-					<th>Payment Method</th>
-					<th>Status</th>
-					<th>Order Date</th>
-				</tr>
-			</thread>
-			<c:forEach var="order" items="${listMostRecentSales}"
-					   varStatus="status">
-				<tr>
-					<td><a href="view_order?id=${order.orderId}">${order.orderId}</a></td>
+					<td>
+						<a href="view_order?id=${order.orderId}" class="text-decoration-none">
+								${order.orderId}
+						</a>
+					</td>
 					<td>${order.customer.fullname}</td>
 					<td>${order.productQuantities}</td>
-					<td><fmt:formatNumber value="${order.total}" type="currency" /></td>
+					<td>
+						<fmt:formatNumber value="${order.total}" type="currency" />
+					</td>
 					<td>${order.paymentMethod}</td>
 					<td>${order.status}</td>
 					<td>${order.orderDate}</td>
 				</tr>
 			</c:forEach>
+			</tbody>
 		</table>
 	</div>
 	<div align="center">
 		<hr width="60%" />
 		<h2 class="page-heading">Recent Reviews:</h2>
-		<table
-				class="table custom-table caption-top table-success table-hover table-bordered"
-				border="1" cellpadding="5">
-			<thread>
+		<table class="table table-success table-hover table-bordered caption-top">
+			<thead class="table-primary">
 				<tr>
-					<th>Product</th>
-					<th>Rating</th>
-					<th>Headline</th>
-					<th>Customer</th>
-					<th>Review On</th>
+					<th scope="col">Product</th>
+					<th scope="col">Rating</th>
+					<th scope="col">Headline</th>
+					<th scope="col">Customer</th>
+					<th scope="col">Review On</th>
 				</tr>
-			</thread>
+			</thead>
 			<c:forEach var="review" items="${listMostRecentReview}"
 					   varStatus="status">
 				<tr>

@@ -5,79 +5,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>User List - Legendary Games Administration</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<jsp:include page="head.jsp"/>
 </head>
 <body>
 <jsp:directive.include file="header.jsp"/>
 
 <div class="content">
 	<h1 align="center">User Management</h1>
+	<!-- Add Notificaiton -->
+	<jsp:directive.include file="notificaiton.jsp"/>
+
 	<div class="d-flex justify-content-between align-items-center mb-3">
-		<!-- Search Form -->
-		<form method="GET" action="search_user">
-			<input type="text" name="query" placeholder="Search by name or email..." style="padding: 10px; width: 300px;">
-			<button class="btn-search" type="submit">Search</button>
-		</form>
-		<!-- Add User Button -->
+		<!-- Add Search -->
+		<input class="form-control" id="myInput" type="text" placeholder="Search..">
+
+		<!-- Add Category Button -->
 		<form method="GET" action="new_user">
 			<button type="submit" class="btn-add">+ Add User</button>
 		</form>
 	</div>
-	<!-- Toastr Notifications -->
-	<c:if test="${message != null}">
-		<script>
-			$(document).ready(function() {
-				toastr.options = {
-					closeButton: true,
-					debug: false,
-					newestOnTop: true,
-					progressBar: true,
-					positionClass: "toast-top-right",
-					preventDuplicates: true,
-					showDuration: "300",
-					hideDuration: "1000",
-					timeOut: "5000",
-					extendedTimeOut: "1000",
-					showEasing: "swing",
-					hideEasing: "linear",
-					showMethod: "fadeIn",
-					hideMethod: "fadeOut"
-				};
 
-				const messageType = "${messageType}";
-				const message = "${message}";
+	<!-- Set Page -->
+	<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
+	<c:set var="itemsPerPage" value="10" />
+	<c:set var="totalItems" value="${listCategory != null ? listCategory.size() : 0}" />
+	<c:set var="totalPages" value="${(totalItems / itemsPerPage) + (totalItems % itemsPerPage > 0 ? 1 : 0)}" />
+	<c:set var="startIndex" value="${(currentPage - 1) * itemsPerPage}" />
+	<c:set var="endIndex" value="${startIndex + itemsPerPage > totalItems ? totalItems : startIndex + itemsPerPage}" />
 
-				if (messageType === "success") toastr.success(message);
-				else if (messageType === "error") toastr.error(message);
-				else if (messageType === "warning") toastr.warning(message);
-				else if (messageType === "info") toastr.info(message);
-			});
-		</script>
-	</c:if>
-
-	<!-- User List Table -->
-	<table class="custom-table table-hover table-bordered">
-		<thead>
+	<!-- Table -->
+	<table class="table table-hover table-striped caption-top">
+		<thead class="table-primary">
 		<c:if test="${empty listUsers}">
 			<tr>
 				<td colspan="6" class="text-center">No users found.</td>
 			</tr>
 		</c:if>
 		<tr>
-			<th>Index</th>
-			<th>ID</th>
-			<th>Email</th>
-			<th>Full Name</th>
-			<th>Role</th>
-			<th>Actions</th>
+			<th scope="col">Index</th>
+			<th scope="col">ID</th>
+			<th scope="col">Email</th>
+			<th scope="col">Full Name</th>
+			<th scope="col">Role</th>
+			<th scope="col">Actions</th>
 		</tr>
 		</thead>
-		<tbody>
+		<tbody id="myTable">
 		<c:forEach var="user" items="${listUsers}" varStatus="status">
 			<tr>
 				<td>${status.index + 1}</td>
@@ -86,13 +60,16 @@
 				<td>${user.fullName}</td>
 				<td>${user.role}</td>
 				<td>
-					<a href="edit_user?id=${user.userId}">Edit</a> &nbsp;
-					<a href="javascript:confirmDelete(${user.userId})">Delete</a>
+					<a href="edit_user?id=${user.userId}"><i class="fa-solid fa-pen-to-square"></i></a> &nbsp;
+					<a href="javascript:confirmDelete(${user.userId})"><i class="fa-solid fa-trash"></i></a>
 				</td>
 			</tr>
 		</c:forEach>
 		</tbody>
 	</table>
+
+	<!-- Page navigation -->
+	<jsp:directive.include file="page_navigation.jsp" />
 	<jsp:directive.include file="footer.jsp"/>
 </div>
 
@@ -103,6 +80,15 @@
 			window.location = 'delete_user?id=' + userId;
 		}
 	}
+
+	$(document).ready(function(){
+		$("#myInput").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+			$("#myTable tr").filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+		});
+	});
 </script>
 </body>
 </html>

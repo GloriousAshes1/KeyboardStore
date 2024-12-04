@@ -20,7 +20,7 @@
 
     <div class="container">
         <h2 class="pageheading">Order History</h2>
-        
+
         <c:if test="${fn:length(listOrders) == 0}">
             <div class="empty-cart-message">
                 <p>You have not placed any order.<br>Time to shopping!</p>
