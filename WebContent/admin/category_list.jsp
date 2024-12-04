@@ -14,7 +14,7 @@
 	<div align="center">
 		<h1>Category Management</h1>
 		<!-- Add Notificaiton -->
-		<jsp:directive.include file="notificaiton.jsp"/>
+		<jsp:directive.include file="notification.jsp"/>
 
 		<div class="d-flex justify-content-between align-items-center mb-3">
 		<!-- Add Search -->
@@ -52,8 +52,8 @@
 							<td>${cat.categoryId}</td>
 							<td>${cat.name}</td>
 							<td>
-								<a href="edit_category?id=${cat.categoryId}"><i class="fa-solid fa-pen-to-square"></i></a> &nbsp;
-								<a href="javascript:confirmDelete(${cat.categoryId})"><i class="fa-solid fa-trash"></i></a>
+								<a href="edit_category?id=${cat.categoryId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
+								<a href="javascript:confirmDelete(${cat.categoryId})"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
 							</td>
 						</tr>
 					</c:if>

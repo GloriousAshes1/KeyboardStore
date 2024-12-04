@@ -13,7 +13,7 @@
 	<div class="content">
 		<h1 align="center">Customer Management</h1>
 		<!-- Add Notificaiton -->
-		<jsp:directive.include file="notificaiton.jsp"/>
+		<jsp:directive.include file="notification.jsp"/>
 
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<!-- Add Search -->
@@ -58,8 +58,8 @@
 					<td>${customer.state}</td>
 					<td>${customer.countryName}</td>
 					<td>${customer.registerDate}</td>
-					<td><a href="edit_customer?id=${customer.customerId}"><i class="fa-solid fa-pen-to-square"></i></a>
-						&nbsp; <a href="javascript:confirmDelete(${customer.customerId})"><i class="fa-solid fa-trash"></i></a>
+					<td><a href="edit_customer?id=${customer.customerId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a>
+						&nbsp; <a href="javascript:confirmDelete(${customer.customerId})"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
 					</td>
 				</tr>
 			</tbody>

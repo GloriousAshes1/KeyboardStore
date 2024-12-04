@@ -13,7 +13,7 @@
 	<jsp:directive.include file="header.jsp"/>
 	<div class="content">
 		<h1 align="center">Product Management</h1>
-		<jsp:directive.include file="/admin/notificaiton.jsp"/>
+		<jsp:directive.include file="/admin/notification.jsp"/>
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<!-- Search Form -->
 			<input class="form-control" id="myInput" type="text" placeholder="Search..">

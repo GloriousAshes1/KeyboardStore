@@ -12,7 +12,7 @@
 	<jsp:directive.include file="header.jsp"/>
 	<div class="content">
 		<h1 align="center">Product Management</h1>
-		<jsp:directive.include file="notificaiton.jsp"/>
+		<jsp:directive.include file="notification.jsp"/>
 		<div class="d-flex justify-content-between align-items-center mb-3">
 		<!-- Search Form -->
 			<input class="form-control" id="myInput" type="text" placeholder="Search..">
@@ -59,8 +59,8 @@
 							<td>$${product.sellingPrice}</td>
 							<td><fmt:formatDate pattern="dd/MM/yyyy" value='${product.publishDate}'/></td>
 							<td>
-								<a href="edit_product?id=${product.productId}"><i class="fa-solid fa-pen-to-square"></i></a> &nbsp;
-								<a href="javascript:confirmDelete(${product.productId})" id="${product.productId}"><i class="fa-solid fa-trash"></i></a>
+								<a href="edit_product?id=${product.productId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
+								<a href="javascript:confirmDelete(${product.productId})" id="${product.productId}"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
 							</td>
 						</tr>
 					</c:if>

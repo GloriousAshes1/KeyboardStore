@@ -13,8 +13,8 @@
 
 <div class="content">
 	<h1 align="center">User Management</h1>
-	<!-- Add Notificaiton -->
-	<jsp:directive.include file="notificaiton.jsp"/>
+	<!-- Add Notification -->
+	<jsp:directive.include file="notification.jsp"/>
 
 	<div class="d-flex justify-content-between align-items-center mb-3">
 		<!-- Add Search -->
@@ -25,14 +25,6 @@
 			<button type="submit" class="btn-add">+ Add User</button>
 		</form>
 	</div>
-
-	<!-- Set Page -->
-	<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
-	<c:set var="itemsPerPage" value="10" />
-	<c:set var="totalItems" value="${listCategory != null ? listCategory.size() : 0}" />
-	<c:set var="totalPages" value="${(totalItems / itemsPerPage) + (totalItems % itemsPerPage > 0 ? 1 : 0)}" />
-	<c:set var="startIndex" value="${(currentPage - 1) * itemsPerPage}" />
-	<c:set var="endIndex" value="${startIndex + itemsPerPage > totalItems ? totalItems : startIndex + itemsPerPage}" />
 
 	<!-- Table -->
 	<table class="table table-hover table-striped caption-top">
@@ -60,16 +52,32 @@
 				<td>${user.fullName}</td>
 				<td>${user.role}</td>
 				<td>
-					<a href="edit_user?id=${user.userId}"><i class="fa-solid fa-pen-to-square"></i></a> &nbsp;
-					<a href="javascript:confirmDelete(${user.userId})"><i class="fa-solid fa-trash"></i></a>
+					<!-- Always allow editing -->
+					<a href="edit_user?id=${user.userId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
+
+					<!-- Set current user for comparison -->
+					<c:set var="currentUser" value="${sessionScope.currentUser}" />
+
+					<!-- Conditionally show or disable delete link -->
+					<c:choose>
+						<c:when test="${user.role == 'Manager' || user.userId == currentUser.userId}">
+							<a href="javascript:void(0)" class="disabled-link" title="Cannot delete">
+								<i class="fa-solid fa-trash" style="color: dimgray;"></i>
+							</a>
+						</c:when>
+						<c:otherwise>
+							<a href="javascript:confirmDelete(${user.userId})">
+								<i class="fa-solid fa-trash" style="color: mediumslateblue;"></i>
+							</a>
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 		</c:forEach>
 		</tbody>
 	</table>
 
-	<!-- Page navigation -->
-	<jsp:directive.include file="page_navigation.jsp" />
+	<jsp:directive.include file="page_navigation.jsp"/>
 	<jsp:directive.include file="footer.jsp"/>
 </div>
 
@@ -81,10 +89,10 @@
 		}
 	}
 
-	$(document).ready(function(){
-		$("#myInput").on("keyup", function() {
+	$(document).ready(function () {
+		$("#myInput").on("keyup", function () {
 			var value = $(this).val().toLowerCase();
-			$("#myTable tr").filter(function() {
+			$("#myTable tr").filter(function () {
 				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 			});
 		});
