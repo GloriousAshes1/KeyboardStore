@@ -41,7 +41,7 @@ public class SaleStaffHomeServlet extends HttpServlet {
         List<ProductOrder> listMostRecentSales = orderDAO.listMostRecentSales();
         List<Review> listMostRecentReview = reviewDAO.listMostRecent();
 
-        request.setAttribute("totalGames", totalProducts);
+        request.setAttribute("totalProducts", totalProducts);
         request.setAttribute("totalCustomers", totalCustomers);
         request.setAttribute("listMostRecentSales", listMostRecentSales);
         request.setAttribute("listMostRecentReview", listMostRecentReview);

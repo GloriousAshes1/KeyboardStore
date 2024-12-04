@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
 	<title>Customer List - Legendary Product Store Administration</title>
 	<jsp:include page="head.jsp"/>
 </head>

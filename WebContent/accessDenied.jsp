@@ -12,5 +12,6 @@
 </head>
 <body>
     <p>You are not authorized to log in this page</p>
+    <a href="javascript:history.go(-1);">Go back</a>
 </body>
 </html>

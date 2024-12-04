@@ -14,9 +14,13 @@
 <div align="center">
 	<hr width="60%" />
 	<h1><b>Administrative Dashboard</b></h1>
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<h3>Total Product: ${totalProducts}</h3>
+		<h3>Total Customer: ${totalCustomers}</h3>
+		<h3>Total Order: ${totalOrders}</h3>
+	</div>
 </div>
 <div align="center">
-
 	<div class="row mb-5 ">
 		<div class="col-md-7 text-center"></div>
 		<div class="col-md-15 text-left">
@@ -30,9 +34,7 @@
 	<div align="center">
 		<hr width="60%" />
 		<h2 class="page-heading">Recent Sales:</h2>
-		<table
-				class="table table-success table-hover table-bordered caption-top">
-			<caption>Danh sách đơn hàng gần đây</caption>
+		<table class="table table-hover table-striped caption-top">
 			<thead class="table-primary">
 			<tr>
 				<th scope="col">Order ID</th>
@@ -44,7 +46,7 @@
 				<th scope="col">Order Date</th>
 			</tr>
 			</thead>
-			<tbody>
+			<tbody id="myTable">
 			<c:forEach var="order" items="${listMostRecentSales}" varStatus="status">
 				<tr>
 					<td>
@@ -68,7 +70,7 @@
 	<div align="center">
 		<hr width="60%" />
 		<h2 class="page-heading">Recent Reviews:</h2>
-		<table class="table table-success table-hover table-bordered caption-top">
+		<table class="table table-hover table-striped caption-top">
 			<thead class="table-primary">
 				<tr>
 					<th scope="col">Product</th>
@@ -78,8 +80,8 @@
 					<th scope="col">Review On</th>
 				</tr>
 			</thead>
-			<c:forEach var="review" items="${listMostRecentReview}"
-					   varStatus="status">
+			<c:forEach var="review" items="${listMostRecentReview}" varStatus="status">
+				<tbody id="myTable">
 				<tr>
 					<td>${review.product.productName}</td>
 					<td>${review.rating}</td>
@@ -87,6 +89,7 @@
 					<td>${review.customer.fullname}</td>
 					<td>${review.reviewTime}</td>
 				</tr>
+				</tbody>
 			</c:forEach>
 		</table>
 	</div>
@@ -116,7 +119,6 @@
 			}
 		}]
 	};
-
 	// Vẽ biểu đồ
 	var chart = new ApexCharts(document.querySelector("#chart"), options);
 	chart.render();

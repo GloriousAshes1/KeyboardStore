@@ -33,11 +33,11 @@ public class AdminHomeServlet extends HttpServlet {
 		UserDAO userDAO = new UserDAO();	
 		OrderDAO orderDAO = new OrderDAO();
 		ReviewDAO reviewDAO = new ReviewDAO();
-		ProductDAO gameDAO = new ProductDAO();
+		ProductDAO productDAO = new ProductDAO();
 		CustomerDAO customerDAO = new CustomerDAO();
 		
 		long totalUsers = userDAO.count();
-		long totalGames = gameDAO.count();
+		long totalProducts = productDAO.count();
 		long totalCustomers = customerDAO.count();
 		long totalOrders = orderDAO.count();
 		long totalReviews = reviewDAO.count();
@@ -51,7 +51,7 @@ public class AdminHomeServlet extends HttpServlet {
 		List<Review> listMostRecentReview = reviewDAO.listMostRecent();
 		
 		request.setAttribute("totalUsers", totalUsers);
-		request.setAttribute("totalGames", totalGames);
+		request.setAttribute("totalProducts", totalProducts);
 		request.setAttribute("totalCustomers", totalCustomers);
 		request.setAttribute("listMostRecentSales", listMostRecentSales);
 		request.setAttribute("listMostRecentReview", listMostRecentReview);

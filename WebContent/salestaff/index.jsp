@@ -5,13 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
 	<title>Legendary Games Administration</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-	<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	<jsp:include page="/admin/head.jsp"/>
 </head>
 <body>
 <jsp:directive.include file="header.jsp" />
@@ -19,26 +14,27 @@
 <div align="center">
 	<hr width="60%" />
 	<h2>SaleStaff Dashboard</h2>
+	<h3>Total Product: ${totalProducts}</h3>
+	<h3>Total Customer: ${totalCustomers}</h3>
+	<h3>Total Order: ${totalOrders}</h3>
 </div>
 	<div align="center">
 		<hr width="60%" />
 		<h2 class="page-heading">Recent Sales:</h2>
-		<table
-				class="table custom-table caption-top table-success table-hover table-bordered"
-				border="1" cellpadding="5">
-			<thread>
+		<table class="table table-hover table-striped caption-top">
+			<thead class="table-primary">
 				<tr>
-					<th>Order ID</th>
-					<th>Ordered By</th>
-					<th>Quantity</th>
-					<th>Total</th>
-					<th>Payment Method</th>
-					<th>Status</th>
-					<th>Order Date</th>
+					<th scope="col">Order ID</th>
+					<th scope="col">Ordered By</th>
+					<th scope="col">Quantity</th>
+					<th scope="col">Total</th>
+					<th scope="col">Payment Method</th>
+					<th scope="col">Status</th>
+					<th scope="col">Order Date</th>
 				</tr>
-			</thread>
-			<c:forEach var="order" items="${listMostRecentSales}"
-					   varStatus="status">
+			</thead>
+			<c:forEach var="order" items="${listMostRecentSales}" varStatus="status">
+			<tbody id="myTable">
 				<tr>
 					<td><a href="view_order?id=${order.orderId}">${order.orderId}</a></td>
 					<td>${order.customer.fullname}</td>
@@ -48,26 +44,25 @@
 					<td>${order.status}</td>
 					<td>${order.orderDate}</td>
 				</tr>
+			</tbody>
 			</c:forEach>
 		</table>
 	</div>
 	<div align="center">
 		<hr width="60%" />
 		<h2 class="page-heading">Recent Reviews:</h2>
-		<table
-				class="table custom-table caption-top table-success table-hover table-bordered"
-				border="1" cellpadding="5">
-			<thread>
+		<table class="table table-hover table-striped caption-top">
+			<thead class="table-primary">
 				<tr>
-					<th>Product</th>
-					<th>Rating</th>
-					<th>Headline</th>
-					<th>Customer</th>
-					<th>Review On</th>
+					<th scope="col">Product</th>
+					<th scope="col">Rating</th>
+					<th scope="col">Headline</th>
+					<th scope="col">Customer</th>
+					<th scope="col">Review On</th>
 				</tr>
-			</thread>
-			<c:forEach var="review" items="${listMostRecentReview}"
-					   varStatus="status">
+			</thead>
+			<c:forEach var="review" items="${listMostRecentReview}" varStatus="status">
+			<tbody id="myTable">
 				<tr>
 					<td>${review.product.productName}</td>
 					<td>${review.rating}</td>
@@ -75,12 +70,12 @@
 					<td>${review.customer.fullname}</td>
 					<td>${review.reviewTime}</td>
 				</tr>
+			</tbody>
 			</c:forEach>
 		</table>
 	</div>
-
+	<jsp:directive.include file="footer.jsp" />
 </div>
-<jsp:directive.include file="footer.jsp" />
 </div>
 </body>
 </html>
