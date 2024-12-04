@@ -5,89 +5,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<jsp:include page="/admin/head.jsp"/>
 	<title>Manage Order - Legendary Games Administration</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
 	<div class="content">
 		<h1 align="center">Orders Management</h1>
+		<jsp:directive.include file="/admin/notificaiton.jsp"/>
 
-		<c:if test="${message != null}">
-			<div align="center">
-				<h4 class="message">${message}</h4>
-			</div>
-		</c:if>
-
-		<c:if test="${message != null}">
-			<script>
-				$(document).ready(function() {
-					toastr.options = {
-						closeButton: true,
-						debug: false,
-						newestOnTop: true,
-						progressBar: true,
-						positionClass: "toast-top-right",
-						preventDuplicates: true,
-						showDuration: "300",
-						hideDuration: "1000",
-						timeOut: "5000",
-						extendedTimeOut: "1000",
-						showEasing: "swing",
-						hideEasing: "linear",
-						showMethod: "fadeIn",
-						hideMethod: "fadeOut"
-					};
-
-					const messageType = "${messageType}";
-					const message = "${message}";
-
-					if (messageType === "success") toastr.success(message);
-					else if (messageType === "error") toastr.error(message);
-					else if (messageType === "warning") toastr.warning(message);
-					else if (messageType === "info") toastr.info(message);
-				});
-			</script>
-		</c:if>
-
-			<table class="custom-table table-hover table-bordered">
-				<thead>
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<!-- Add Search -->
+			<input class="form-control" id="myInput" type="text" placeholder="Search..">
+		</div>
+		<!-- Set Page -->
+		<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
+		<c:set var="itemsPerPage" value="10" />
+		<c:set var="totalItems" value="${listOrder != null ? listOrder.size() : 0}" />
+		<c:set var="totalPages" value="${(totalItems / itemsPerPage) + (totalItems % itemsPerPage > 0 ? 1 : 0)}" />
+		<c:set var="startIndex" value="${(currentPage - 1) * itemsPerPage}" />
+		<c:set var="endIndex" value="${startIndex + itemsPerPage > totalItems ? totalItems : startIndex + itemsPerPage}" />
+		<!-- Table -->
+		<table id="orderTable" class="table table-hover table-striped caption-top">
+			<thead class="table-primary">
+			<tr>
+				<th scope="col">No</th>
+				<th scope="col">Order ID</th>
+				<th scope="col">Ordered by</th>
+				<th scope="col">Total</th>
+				<th scope="col">Payment method</th>
+				<th scope="col">Status</th>
+				<th scope="col">Order Date</th>
+				<th scope="col">Actions</th>
+			</tr>
+			</thead>
+			<tbody id="myTable">
+			<c:forEach var="order" items="${listOrder}" varStatus="status">
 				<tr>
-					<th>No</th>
-					<th>Order ID</th>
-					<th>Ordered by</th>
-<%--					<th>Quantity</th>--%>
-					<th>Total</th>
-					<th>Payment method</th>
-					<th>Status</th>
-					<th>Order Date</th>
-					<th>Actions</th>
+					<td>${status.index + 1}</td>
+					<td>${order.orderId}</td>
+					<td>${order.customer.fullname}</td>
+					<td><fmt:formatNumber value="${order.total}" type="currency" /></td>
+					<td>${order.paymentMethod}</td>
+					<td>${order.status}</td>
+					<td>${order.orderDate}</td>
+					<td>
+						<a href="view_order?id=${order.orderId}"><i class="fa-solid fa-circle-info"></i></a>&nbsp;
+						<a href="edit_order?id=${order.orderId}"><i class="fa-solid fa-pen-to-square"></i></a>&nbsp;
+						<a href="javascript:void(0);" class="deleteLink" id="${order.orderId}"><i class="fa-solid fa-trash"></i></a>
+					</td>
 				</tr>
-				</thead>
-				<tbody>
-				<c:forEach var="order" items="${listOrder}" varStatus="status">
-					<tr>
-						<td>${status.index +1}</td>
-						<td>${order.orderId}</td>
-						<td>${order.customer.fullname}</td>
-<%--						<td>${order.gameQuantities}</td>--%>
-						<td><fmt:formatNumber value="${order.total}" type="currency" /></td>
-						<td>${order.paymentMethod}</td>
-						<td>${order.status}</td>
-						<td>${order.orderDate}</td>
-						<td><a href="view_order?id=${order.orderId}">Details</a>&nbsp;
-							<a href="edit_order?id=${order.orderId}">Edit</a> &nbsp;
-					</tr>
-				</c:forEach>
-				</tbody>
-			</table>
+			</c:forEach>
+			</tbody>
+		</table>
+		<!-- Page navigation -->
+		<jsp:directive.include file="/admin/page_navigation.jsp" />
 		<jsp:directive.include file="footer.jsp" />
 	</div>
+	<script>
+		$(document).ready(function () {
+			$('#orderTable').DataTable({
+				"pageLength": 10, // Số dòng hiển thị mỗi trang
+				"lengthMenu": [5, 10, 25, 50], // Các tùy chọn hiển thị
+				"order": [[0, "asc"]] // Sắp xếp theo cột đầu tiên
+			});
+
+		$(document).ready(function(){
+			$("#myInput").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				$("#myTable tr").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+		});
+	</script>
 </body>
 </html>

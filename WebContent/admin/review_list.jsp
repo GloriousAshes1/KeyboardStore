@@ -50,9 +50,9 @@
 					<td>${review.customer.fullname}</td>
 					<td>${review.reviewTime}</td>
 					<td>
-					<a href="edit_review?id=${review.reviewId}"><i class="fa-solid fa-pen-to-square"></i></a> &nbsp;
-					<a href="javascript:void(0);" class="deleteLink" id="${review.reviewId}"><i class="fa-solid fa-trash"></i></a>
-				</td>
+						<a href="edit_review?id=${review.reviewId}"><i class="fa-solid fa-pen-to-square"></i></a> &nbsp;
+						<a href="javascript:confirmDelete(${review.reviewId})" id="${review.reviewId}"><i class="fa-solid fa-trash"></i></a>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -63,16 +63,11 @@
 		</div>
 
 	<script>
-		$(document).ready(function() {
-			$(".deleteLink").each(function() {
-				$(this).on("click", function() {
-					reviewId = $(this).attr("id");
-					if (confirm('Are you sure you want to delete the review with ID ' +  reviewId + '?')) {
-						window.location = 'delete_review?id=' + reviewId;
-					}					
-				});
-			});
-		});
+		function confirmDelete(reviewId){
+			if(confirm('Are you sure about deleting review with ID '+ reviewId + '?')){
+				window.location = 'delete_product?id=' + reviewId;
+			}
+		}
 
 		$(document).ready(function(){
 			$("#myInput").on("keyup", function() {

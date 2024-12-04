@@ -4,38 +4,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Review Management</title>
-	<link rel = "stylesheet" href = "../css/style.css">
-	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-	<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<jsp:include page="/admin/head.jsp"/>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
 	<div class="content">
 		<h1 align="center">Review Management</h1>
-	<c:if test="${message != null}">
-		<div align="center">
-			<h4 class="message">${message}</h4>
-		</div>
-	</c:if>
+		<!-- Add Notificaiton -->
+		<jsp:directive.include file="/admin/notificaiton.jsp"/>
 
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<!-- Add Search -->
+			<input class="form-control" id="myInput" type="text" placeholder="Search..">
+		</div>
+		<!-- Set Page -->
+		<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
+		<c:set var="itemsPerPage" value="10" />
+		<c:set var="totalItems" value="${listReviews != null ? listReviews.size() : 0}" />
+		<c:set var="totalPages" value="${(totalItems / itemsPerPage) + (totalItems % itemsPerPage > 0 ? 1 : 0)}" />
+		<c:set var="startIndex" value="${(currentPage - 1) * itemsPerPage}" />
+		<c:set var="endIndex" value="${startIndex + itemsPerPage > totalItems ? totalItems : startIndex + itemsPerPage}" />
 	<div align="center">
-		<table class="custom-table table-hover table-bordered">
-			<thead>
+		<table class="table table-hover table-striped caption-top">
+			<thead class="table-primary">
 			<tr>
-				<th>Index</th>
-				<th>ID</th>
-				<th>Product</th>
-				<th>Rating</th>
-				<th>Headline</th>
-				<th>Customer</th>
-				<th>Review On</th>
-				<th>Actions</th>
+				<th scope="col">Index</th>
+				<th scope="col">ID</th>
+				<th scope="col">Product</th>
+				<th scope="col">Rating</th>
+				<th scope="col">Headline</th>
+				<th scope="col">Customer</th>
+				<th scope="col">Review On</th>
+				<th scope="col">Actions</th>
 			</tr>
 			</thead>
 			<c:forEach var="review" items="${listReviews}" varStatus="status">
@@ -48,29 +49,32 @@
 					<td>${review.customer.fullname}</td>
 					<td>${review.reviewTime}</td>
 					<td>
-					<a href="edit_review?id=${review.reviewId}">Edit</a> &nbsp;
-					<a href="javascript:void(0);" class="deleteLink" id="${review.reviewId}">Delete</a>
+						<a href="edit_review?id=${review.reviewId}"><i class="fa-solid fa-pen-to-square"></i></a> &nbsp;
+						<a href="javascript:confirmDelete(${review.reviewId})" id="${review.reviewId}"><i class="fa-solid fa-trash"></i></a>
 				</td>
 				</tr>
 			</c:forEach>
 		</table>
 	</div>
-
-	<jsp:directive.include file="footer.jsp" />
+		<!-- Page navigation -->
+		<jsp:directive.include file="/admin/page_navigation.jsp" />
+		<jsp:directive.include file="footer.jsp" />
 	</div>
 	<script>
-		$(document).ready(function() {
-			$(".deleteLink").each(function() {
-				$(this).on("click", function() {
-					reviewId = $(this).attr("id");
-					if (confirm('Are you sure you want to delete the review with ID ' +  reviewId + '?')) {
-						window.location = 'delete_review?id=' + reviewId;
-					}					
+		function confirmDelete(reviewId){
+			if(confirm('Are you sure about deleting review with ID '+ reviewId + '?')){
+				window.location = 'delete_product?id=' + reviewId;
+			}
+		}
+
+		$(document).ready(function(){
+			$("#myInput").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				$("#myTable tr").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 				});
 			});
-		});	
+		});
 	</script>
-
-
 </body>
 </html>
