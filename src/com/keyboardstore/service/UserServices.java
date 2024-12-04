@@ -7,6 +7,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -122,19 +123,52 @@ public class UserServices {
 	public void login() throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+
+		// Check if login is successful by verifying credentials
 		boolean loginResult = userDAO.checkLogin(email, password);
+
 		if (loginResult) {
-			request.getSession().setAttribute("useremail", email);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/");
-			dispatcher.forward(request, response);
-		} 
-		else {
-			String message = "Login failed!";
+			// Fetch the user's role from the database
+			String role = userDAO.getUserRole(email); // Fetch the role based on email
+
+			// Create a new session for the user if they are logged in
+			HttpSession session = request.getSession();
+			session.setAttribute("useremail", email);  // Store user email in the session
+
+			// Optionally, store the user's role in the session to make role-based decisions easier
+			session.setAttribute("userrole", role);
+
+			// Check if a specific redirect URL is set, and redirect accordingly
+			Object objRedirectURL = session.getAttribute("redirectURL");
+			if (objRedirectURL != null) {
+				String redirectURL = (String) objRedirectURL;
+				session.removeAttribute("redirectURL"); // Clean up the session
+				response.sendRedirect(redirectURL); // Redirect to the original requested URL
+			} else {
+				// Redirect the user based on their role
+				if ("Manager".equalsIgnoreCase(role)) {
+					// Redirect to the manager's page
+					response.sendRedirect(request.getContextPath() + "/admin/");
+				} else if ("Sale Staff".equalsIgnoreCase(role)) {
+					// Redirect to the sales staff page
+					response.sendRedirect(request.getContextPath() + "/salestaff/");
+				} else {
+					// If the role is not recognized, show an error message
+					String message = "Invalid user role!";
+					request.setAttribute("message", message);
+					RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+					dispatcher.forward(request, response);
+				}
+			}
+		} else {
+			// Login failed, display an error message and redirect to login page
+			String message = "Login failed! Please check your email or password.";
 			request.setAttribute("message", message);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 			dispatcher.forward(request, response);
 		}
 	}
+
 
 	public void searchUsers() throws ServletException, IOException {
 		String query = request.getParameter("query");

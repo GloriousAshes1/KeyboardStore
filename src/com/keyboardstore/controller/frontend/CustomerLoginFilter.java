@@ -44,6 +44,10 @@ public class CustomerLoginFilter extends HttpFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
+		if (path.startsWith("/salestaff")) {
+			chain.doFilter(request, response);
+			return;
+		}
 		boolean isLoggedIn = session != null && session.getAttribute("loggedCustomer") != null;
 		String requestURL = httpRequest.getRequestURL().toString();
 		String requestURI = httpRequest.getRequestURI();

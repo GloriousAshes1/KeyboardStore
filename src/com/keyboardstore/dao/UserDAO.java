@@ -59,4 +59,12 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
 	public List<Users> search(String query) {
 		return super.findWithNamedQuery("Users.search", "query", "%" + query + "%");
 	}
+
+	public String getUserRole(String email) {
+		Users user = findByEmail(email);  // Reuse existing findByEmail method
+		if (user != null) {
+			return user.getRole(); // Assuming there's a getRole() method in Users entity
+		}
+		return null;  // If user is not found, return null
+	}
 }
