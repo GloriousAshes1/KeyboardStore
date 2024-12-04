@@ -26,6 +26,14 @@
 		</form>
 	</div>
 
+	<!-- Set Page -->
+	<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
+	<c:set var="itemsPerPage" value="10" />
+	<c:set var="totalItems" value="${listUsers != null ? listUsers.size() : 0}" />
+	<c:set var="totalPages" value="${(totalItems / itemsPerPage) + (totalItems % itemsPerPage > 0 ? 1 : 0)}" />
+	<c:set var="startIndex" value="${(currentPage - 1) * itemsPerPage}" />
+	<c:set var="endIndex" value="${startIndex + itemsPerPage > totalItems ? totalItems : startIndex + itemsPerPage}" />
+
 	<!-- Table -->
 	<table class="table table-hover table-striped caption-top">
 		<thead class="table-primary">

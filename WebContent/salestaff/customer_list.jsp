@@ -40,8 +40,8 @@
 				<th scope="col">Actions</th>
 			</tr>
 			</thead>
-			<c:forEach var="customer" items="${listCustomer}" varStatus="status">
 			<tbody id="myTable">
+			<c:forEach var="customer" items="${listCustomer}" varStatus="status">
 				<tr>
 					<td>${status.index + 1}</td>
 					<td>${customer.customerId}</td>
@@ -56,8 +56,8 @@
 						&nbsp; <a href="javascript:confirmDelete(${customer.customerId})"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
 					</td>
 				</tr>
-			</tbody>
 			</c:forEach>
+			</tbody>
 		</table>
 		<!-- Page Navigation -->
 		<jsp:directive.include file="/admin/page_navigation.jsp"/>

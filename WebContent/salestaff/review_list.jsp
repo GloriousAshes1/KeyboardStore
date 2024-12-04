@@ -39,6 +39,7 @@
 				<th scope="col">Actions</th>
 			</tr>
 			</thead>
+			<tbody id="myTable">
 			<c:forEach var="review" items="${listReviews}" varStatus="status">
 				<tr>
 					<td>${status.index + 1}</td>
@@ -54,6 +55,7 @@
 				</td>
 				</tr>
 			</c:forEach>
+			</tbody>
 		</table>
 	</div>
 		<!-- Page navigation -->
