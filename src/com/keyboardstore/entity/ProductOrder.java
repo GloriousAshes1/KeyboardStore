@@ -35,6 +35,9 @@ import javax.persistence.Transient;
 	@NamedQuery(name = "ProductOrder.sumTax", query = "SELECT SUM(po.tax) FROM ProductOrder po "),
 	@NamedQuery(name = "ProductOrder.sumShippingFee", query = "SELECT SUM(po.shippingFee) FROM ProductOrder po "),
 	@NamedQuery(name = "ProductOrder.sumSubToTal", query = "SELECT SUM(po.subtotal) FROM ProductOrder po "),
+		@NamedQuery(name = "ProductOrder.sumSubtotalByDay", query = "SELECT DATE(po.orderDate), SUM(po.subtotal) FROM ProductOrder po WHERE po.orderDate BETWEEN :startDate AND :endDate GROUP BY DATE(po.orderDate)"),
+		@NamedQuery(name = "ProductOrder.sumSubtotalByMonth", query = "SELECT FUNCTION('DATE_FORMAT', po.orderDate, '%Y-%m'), SUM(po.subtotal) FROM ProductOrder po WHERE po.orderDate BETWEEN :startDate AND :endDate GROUP BY FUNCTION('DATE_FORMAT', po.orderDate, '%Y-%m')"),
+		@NamedQuery(name = "ProductOrder.sumSubtotalByYear", query = "SELECT YEAR(po.orderDate), SUM(po.subtotal) FROM ProductOrder po WHERE po.orderDate BETWEEN :startDate AND :endDate GROUP BY YEAR(po.orderDate)")
 })
 public class ProductOrder implements java.io.Serializable {
 
