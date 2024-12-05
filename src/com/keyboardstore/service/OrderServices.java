@@ -94,8 +94,6 @@ public class OrderServices {
 		}else {
 			placeOrderCOD(order);
 		}
-		
-		
 	}
 
 	public void listOrderByCustomer() throws ServletException, IOException {

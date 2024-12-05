@@ -1,51 +1,129 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Create Import - Legendary Games Administration</title>
-  <jsp:include page="head.jsp"/>
+  <meta charset="UTF-8">
+  <title>Create New Import</title>
+  <script>
+    function calculateSumPrice() {
+      var totalSumPrice = 0;
+      var rows = document.getElementById("productTable").rows;
+
+      for (var i = 0; i < rows.length - 3; i++) { // Exclude 'Add More' and 'Submit' rows
+        var quantity = parseInt(document.getElementById("quantityInput" + i).value) || 0;
+        var importPrice = parseFloat(document.getElementById("importPrice" + i).value) || 0;
+
+        totalSumPrice += quantity * importPrice;
+      }
+
+      // Update the sumPrice field
+      var sumPriceField = document.getElementById("sumPrice");
+      sumPriceField.value = totalSumPrice.toFixed(2);  // Ensure 2 decimal places
+
+      // Check if sumPrice is valid before form submission
+      if (isNaN(totalSumPrice) || totalSumPrice <= 0) {
+        sumPriceField.setCustomValidity("Invalid sum price. Please check the values.");
+      } else {
+        sumPriceField.setCustomValidity(""); // Reset any custom validity message
+      }
+    }
+
+    function updateQuantity(index) {
+      var productSelect = document.getElementById("productSelect" + index);
+      var selectedOption = productSelect.options[productSelect.selectedIndex];
+      var stock = selectedOption.getAttribute("data-stock");
+
+      var quantityInput = document.getElementById("quantityInput" + index);
+      quantityInput.value = 1; // Reset quantity to 1 or any default value
+      document.getElementById("stockInfo" + index).innerText = "Max Quantity: " + stock;
+
+      // Recalculate sumPrice whenever quantity is updated
+      calculateSumPrice();
+    }
+
+    function addProductRow() {
+      var table = document.getElementById("productTable");
+      var rowCount = table.rows.length;
+      var newRow = table.insertRow(rowCount - 1);  // Insert before the submit row
+
+      var index = rowCount - 1;
+
+      newRow.innerHTML = `
+      <tr>
+        <td>Product:</td>
+        <td>
+          <select name="productId" id="productSelect${index}" onchange="updateQuantity(${index})">
+            <c:forEach items="${listProduct}" var="product" varStatus="status">
+              <option value="${product.productId}" data-stock="${product.stock}">
+                  ${product.productName} - ${product.brand} (In Stock: ${product.stock})
+              </option>
+            </c:forEach>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Quantity:</td>
+        <td><input type="number" name="quantity" id="quantityInput${index}" required onchange="calculateSumPrice()"></td>
+      </tr>
+      <tr>
+        <td>Import Price:</td>
+        <td><input type="text" name="importPrice" id="importPrice${index}" required onchange="calculateSumPrice()"></td>
+      </tr>
+    `;
+    }
+  </script>
 </head>
 <body>
-<jsp:directive.include file="header.jsp"/>
+<h2>Create New Import</h2>
 
-<div class="content">
-  <h1 align="center">Create New Import</h1>
-  <!-- Add Notification -->
-  <jsp:directive.include file="notification.jsp"/>
+<form action="create_import" method="post">
+  <p><c:out value="${sessionScope}" /></p>
+  <table id="productTable">
+    <tr>
+      <td>Product:</td>
+      <td>
+        <select name="productId" id="productSelect0" onchange="updateQuantity(0)">
+          <c:forEach items="${listProduct}" var="product" varStatus="status">
+            <option value="${product.productId}" data-stock="${product.stock}">
+                ${product.productName} - ${product.brand} (In Stock: ${product.stock})
+            </option>
+          </c:forEach>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Quantity:</td>
+      <td><input type="number" name="quantity" id="quantityInput0" required onchange="calculateSumPrice()"></td>
+    </tr>
+    <tr>
+      <td>Import Price:</td>
+      <td><input type="text" name="importPrice" id="importPrice0" required onchange="calculateSumPrice()"></td>
+    </tr>
 
-  <c:set var="currentUser" value="${sessionScope.currentUser}" />
+    <!-- Placeholder for more product rows -->
+    <tr id="addProductRow">
+      <td colspan="2">
+        <button type="button" onclick="addProductRow()">Add More Products</button>
+      </td>
+    </tr>
+    <tr>
+      <td>Sum Price:</td>
+      <td><input type="number" id="sumPrice" name="sumPrice"/></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><input type="submit" value="Create Import"></td>
+    </tr>
+  </table>
+</form>
 
-  <form action="create_import" method="POST">
-    <div class="form-group">
-      <label for="user">User</label>
-      <!-- Pre-fill user field with the current user's ID -->
-      <input type="text" class="form-control" id="user" name="userId" value="${currentUser.userId}" readonly>
-    </div>
+<a href="${pageContext.request.contextPath}/admin/list_import">Back to Import List</a>
 
-    <div class="form-group">
-      <label for="importDate">Import Date</label>
-      <input type="date" class="form-control" id="importDate" name="importDate" value="${fn:substring(currentDate, 0, 10)}" required>
-    </div>
-
-    <div class="form-group">
-      <label for="totalPrice">Total Price</label>
-      <input type="number" class="form-control" id="totalPrice" name="totalPrice" step="0.01" min="0" required>
-    </div>
-
-    <div class="form-group">
-      <label for="products">Products</label>
-      <textarea class="form-control" id="products" name="products" rows="5" placeholder="Enter product details (e.g., Product ID, quantity, price)"></textarea>
-    </div>
-
-    <div class="form-group text-center">
-      <button type="submit" class="btn-submit">Save Import</button>
-      <a href="list_import" class="btn-cancel">Cancel</a>
-    </div>
-  </form>
-</div>
-
-<jsp:directive.include file="footer.jsp"/>
+<script>
+  window.onload = function() {
+    updateQuantity(0);
+    calculateSumPrice();
+  };
+</script>
 </body>
 </html>

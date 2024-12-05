@@ -14,7 +14,7 @@ import com.keyboardstore.dao.ProductDAO;
 import com.keyboardstore.entity.Product;
 
 
-@WebServlet("/admin/add_game_form")
+@WebServlet("/admin/add_product_form")
 public class ShowAddGameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,8 +26,8 @@ public class ShowAddGameServlet extends HttpServlet {
 			throws ServletException, IOException {
 		ProductDAO gameDAO = new ProductDAO();
 	    List<Product> listProduct = gameDAO.listAll();
-	    request.setAttribute("listGame", listProduct);
-	    String addFormPage = "add_game_form.jsp";
+	    request.setAttribute("listProduct", listProduct);
+	    String addFormPage = "add_product_form.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(addFormPage);
 		dispatcher.forward(request, response);
 	}

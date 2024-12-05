@@ -42,6 +42,10 @@ public class ProductDAO extends JpaDAO<Product> implements GenericDAO<Product> {
 		}
 		return null;
 	}
+
+	public List<Product> listAllSortedByStock() {
+		return super.findWithNamedQuery("Product.findAllSortedByStock");
+	}
 	
 	public List<Product> listByCategory(int categoryId) {
 		return super.findWithNamedQuery("Product.findByCategory", "catId", categoryId);

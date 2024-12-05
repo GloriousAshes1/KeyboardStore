@@ -37,8 +37,8 @@
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
-            <th>Import ID</th>
-            <th>User</th>
+            <th>User ID</th>
+            <th>User Name</th>
             <th>Import Date</th>
             <th>Total Price</th>
             <th>Actions</th>
@@ -47,7 +47,7 @@
         <tbody>
         <c:forEach var="imp" items="${listImports}">
             <tr>
-                <td>${imp.importId}</td>
+                <td>${imp.user.userId}</td>
                 <td>${imp.user.fullName}</td> <!-- Assuming `user.username` is available -->
                 <td>${imp.importDate}</td>
                 <td>${imp.sumPrice}</td>

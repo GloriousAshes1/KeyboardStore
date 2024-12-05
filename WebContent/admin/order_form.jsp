@@ -212,7 +212,7 @@
 	<div id="addGameModal" class="modal">
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
-	        <iframe src="add_game_form" width="100%" height="250px" frameborder="0"></iframe>
+	        <iframe src="add_product_form" width="100%" height="250px" frameborder="0"></iframe>
 	    </div>
 	</div>
 	</div>

@@ -1,7 +1,7 @@
 package com.keyboardstore.controller.admin.imports;
 
-import com.keyboardstore.service.CategoryServices;
 import com.keyboardstore.service.ImportService;
+import com.keyboardstore.service.ProductServices;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/admin/create_import")
-public class CreateImportServlet extends HttpServlet {
+@WebServlet("/admin/show_stock")
+public class ShowStockServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    public CreateImportServlet() {super();}
+    public ShowStockServlet() {super();}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ImportService importService = new ImportService(request, response);
-        importService.addImport();
+        importService.showStock();
     }
 }

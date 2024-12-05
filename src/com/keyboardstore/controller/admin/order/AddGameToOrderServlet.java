@@ -15,7 +15,7 @@ import com.keyboardstore.entity.Product;
 import com.keyboardstore.entity.ProductOrder;
 import com.keyboardstore.entity.OrderDetail;
 
-@WebServlet("/admin/add_game_to_order")
+@WebServlet("/admin/add_product_to_order")
 public class AddGameToOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -25,11 +25,11 @@ public class AddGameToOrderServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		Integer gameId = Integer.parseInt(request.getParameter("gameId"));
+		Integer productId = Integer.parseInt(request.getParameter("productId"));
 		Integer quantity = Integer.parseInt(request.getParameter("quantity"));
 
 		ProductDAO gameDAO = new ProductDAO();
-		Product product = gameDAO.get(gameId);
+		Product product = gameDAO.get(productId);
 
 		HttpSession session = request.getSession();
 		ProductOrder order = (ProductOrder) session.getAttribute("order");
@@ -44,10 +44,10 @@ public class AddGameToOrderServlet extends HttpServlet {
 		float newTotal = order.getTotal() + subTotal;
 		order.setTotal(newTotal);
 		order.getOrderDetails().add(orderDetail);
-		request.setAttribute("game", product);
+		request.setAttribute("product", product);
 		session.setAttribute("NewGamePendingToAddToOrder", true);
 
-		String resultPage = "add_game_result.jsp";
+		String resultPage = "add_product_result.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(resultPage);
 		requestDispatcher.forward(request, response);
 	}

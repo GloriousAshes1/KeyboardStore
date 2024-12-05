@@ -128,15 +128,16 @@ public class UserServices {
 		boolean loginResult = userDAO.checkLogin(email, password);
 
 		if (loginResult) {
-			// Fetch the user's role from the database
-			String role = userDAO.getUserRole(email); // Fetch the role based on email
+			// Fetch the user's details from the database using the email
+			Users user = userDAO.findByEmail(email); // Fetch the user based on email
+			Integer userId = user.getUserId();       // Retrieve the userId from the Users entity
+			String role = user.getRole();            // Get the user's role from the entity
 
 			// Create a new session for the user if they are logged in
 			HttpSession session = request.getSession();
 			session.setAttribute("useremail", email);  // Store user email in the session
-
-			// Optionally, store the user's role in the session to make role-based decisions easier
-			session.setAttribute("userrole", role);
+			session.setAttribute("userrole", role);    // Store user role in the session
+			session.setAttribute("userId", userId);    // Store userId in the session
 
 			// Check if a specific redirect URL is set, and redirect accordingly
 			Object objRedirectURL = session.getAttribute("redirectURL");
@@ -168,7 +169,6 @@ public class UserServices {
 			dispatcher.forward(request, response);
 		}
 	}
-
 
 	public void searchUsers() throws ServletException, IOException {
 		String query = request.getParameter("query");

@@ -30,7 +30,8 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "product", catalog = "keyboardstoredb", uniqueConstraints = @UniqueConstraint(columnNames = "product_name"))
 @NamedQueries({
 	@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
-	@NamedQuery(name = "Product.findByProductName", query = "SELECT p FROM Product p WHERE p.productName = :productName"),
+		@NamedQuery(name = "Product.findAllSortedByStock", query = "SELECT p FROM Product p ORDER BY p.stock ASC"),
+		@NamedQuery(name = "Product.findByProductName", query = "SELECT p FROM Product p WHERE p.productName = :productName"),
 	@NamedQuery(name = "Product.countAll", query = "SELECT COUNT(*) FROM Product p"),
 	@NamedQuery(name = "Product.countByCategory", query = "SELECT COUNT(p) FROM Product p WHERE p.category.categoryId = :catId"),
 	@NamedQuery(name = "Product.findByCategory", query = "SELECT p FROM Product p JOIN Category c ON p.category.categoryId = c.categoryId AND c.categoryId = :catId"),
