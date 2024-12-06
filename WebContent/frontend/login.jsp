@@ -82,7 +82,7 @@
 <body>
     <div class="container">
         <img src="images/Logo.png" height="200" width="200" alt="Store Logo" />
-        <h1>Legendary Games</h1>
+        <h1>KeyBoard Store</h1>
         <h2>Sign In</h2>
 
         <c:if test="${message != null}">

@@ -61,21 +61,21 @@
 									</div>
 									<div class="item-detail">
 										<div class="item-card-text">${items.key.productName}</div>
-										<div>
-											<div class="item-status-text">Status:<div class="item-status">Available</div></div>
-										</div>
 									</div>
 
 										<input type="hidden" name="productId" value="${items.key.productId}">
 										<div class="inc-dec-value">
-											<button type="button" class="dec" onclick="updateQuantity('${items.key.productId}', 'decrease', ${items.key.stock})">-</button>
+											<button type="button" class="dec" onclick="updateQuantity(${items.key.productId}, 'decrease', ${items.key.stock})">-</button>
 											<input type="text" name="quantity${status.index + 1}" class="quantity" value="${items.value}" id="${items.key.productId}" readonly required>
-											<button type="button" class="inc" onclick="updateQuantity('${items.key.productId}', 'increase',${items.key.stock})">+</button>
+											<button type="button" class="inc" onclick="updateQuantity(${items.key.productId}, 'increase',${items.key.stock})">+</button>
 										</div>
 									<div class="subtotal-text"><fmt:formatNumber
 											value="${items.value * items.key.sellingPrice}" type="currency" /></div>
-									<div class="trash-bin"><a href="remove_from_cart?product_id=${items.key.productId}"
-									><img class="trash-bin" src="css/images/trash-bin.png"></a></div>
+									<div class="trash-bin">
+										<a href="javascript:void(0);" onclick="confirmDelete(${items.key.productId})">
+											<img class="trash-bin" src="css/images/trash-bin.png" alt="Delete">
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -103,19 +103,17 @@
 </div>
 <footer><jsp:directive.include file="footer.jsp" /></footer>
 <script type="text/javascript">
-	const decreaseNumber = (productId) => {
-		let itemval = document.getElementById(productId);
-		if(itemval.value <= 0){
-			itemval.value = 0;
+	const confirmDelete = (productId) => {
+		let id = productId
+		let str = `remove_from_cart?product_id=`
+		let url = str + id
+		console.log(url)
+		const confirmDelete = confirm("Do you want to remove this product from the cart?");
+		if (confirmDelete) {
+			window.location.href = url;
 		}
-		else{
-			itemval.value = parseInt(itemval.value) - 1;
-		}
-	}
-	const increaseNumber = (productId) => {
-		let itemval = document.getElementById(productId);
-		itemval.value = parseInt(itemval.value) + 1;
-	}
+	};
+
 	const updateQuantity = (productId, action, stock) => {
 		console.log("Updating quantity for productId:", productId);
 
@@ -134,7 +132,20 @@
 				alert("Cannot add more. Stock limit reached!");
 				return;
 			}
-		} else if (action === 'decrease' && currentQuantity > 0) {
+		} else if (action === 'decrease') {
+			if (currentQuantity === 1) {
+				const confirmDelete = confirm("Do you want to remove this product from the cart?");
+				let id = productId
+				let str = `remove_from_cart?product_id=`
+				let url = str + id
+				console.log(url)
+				if (confirmDelete) {
+					window.location.href = url;
+					return;
+				} else {
+					return;
+				}
+			}
 			currentQuantity -= 1;
 		}
 
@@ -147,7 +158,6 @@
 			console.error("Form not found for productId:", productId);
 		}
 	};
-
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

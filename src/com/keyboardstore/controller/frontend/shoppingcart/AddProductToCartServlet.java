@@ -22,7 +22,7 @@ public class AddProductToCartServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Integer gameId = Integer.parseInt(request.getParameter("product_id"));
+		Integer productId = Integer.parseInt(request.getParameter("product_id"));
 		
 		Object cartObject = request.getSession().getAttribute("cart");
 		
@@ -35,7 +35,7 @@ public class AddProductToCartServlet extends HttpServlet {
 		}
 		
 		productDAO = new ProductDAO();
-		Product product = productDAO.get(gameId);
+		Product product = productDAO.get(productId);
 		
 		shoppingCart.addItem(product);
 		

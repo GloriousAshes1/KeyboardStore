@@ -117,7 +117,7 @@ public class ImportService {
         Product product = productDAO.get(productId);
 
         // Create the import detail
-        ImportDetail importDetail = new ImportDetail(imp, product, importPrice, quantity);
+        ImportDetail importDetail = new ImportDetail();
         imp.getImportDetails().add(importDetail); // Add the detail to the import
 
         // Set the sum price for the import
@@ -181,7 +181,7 @@ public class ImportService {
                 float importPrice = Float.parseFloat(importPrices[i]);
 
                 // Create the ImportDetail object and add it to the Import object
-                ImportDetail importDetail = new ImportDetail(imp, product, importPrice, quantity);
+                ImportDetail importDetail = new ImportDetail();
                 imp.getImportDetails().add(importDetail);  // Assuming Import has a List<ImportDetail> getImportDetails()
 
             } catch (NumberFormatException e) {

@@ -17,8 +17,10 @@
 
 <div class="container">
     <div class="card-title" onclick="window.history.back()">&lt;Order History</div>
+    <form action="change_order_status" method="post">
     <!-- Recipient Information -->
     <div class="information-container">
+        <input type="hidden" name="orderId" value="${order.orderId}" />
         <div class="information-card">
             <div class="card-title">Recipient Information</div>
             <div class="information-detail-card">
@@ -34,7 +36,16 @@
                 </div>
                 <div class="text-wrappers">
                     <div class="text-wrapper">Country:<input class="input-box" name="country" value="${loggedCustomer.countryName}"disabled id="custom-disabled"></div>
-                    <div class="text-wrapper">Order Status:<input class="input-box" name="orderStatus" value="${order.status}"disabled id="custom-disabled"></div>
+                    <div class="text-wrapper">Order Status:<select name="status" id="custom-disabled" style="margin-right: 125px" ${order.status != 'Processing' ? 'disabled' : ''}>
+                        <!-- Các giá trị cố định -->
+                        <option value="Processing" ${order.status == 'Processing' ? 'selected' : ''}>Processing</option>
+                        <option value="Canceled" ${order.status == 'Canceled' ? 'selected' : ''}>Canceled</option>
+
+                        <!-- Hiển thị trạng thái hiện tại nếu không thuộc các giá trị cố định -->
+                        <c:if test="${order.status != 'Processing' && order.status != 'Cancelled'}">
+                            <option value="${order.status}" selected>${order.status}</option>
+                        </c:if>
+                    </select></div>
                     <div class="text-wrapper">Order Date:<input class="input-box" name="orderDate" value="${order.orderDate}"disabled id="custom-disabled"></div>
                     <div class="text-wrapper">Payment Method:<input class="input-box" name="paymentMethod" value="${order.paymentMethod}" disabled id="custom-disabled"></div>
                     <div class="text-wrapper">Quantities:<input class="input-box" name="quantity" value="${order.productQuantities}"disabled id="custom-disabled"></div>
@@ -43,8 +54,12 @@
                     <div class="text-wrapper">Total Amount:<input class="input-box" name="totalAmount" value="${order.total}"disabled id="custom-disabled"></div>
                 </div>
             </div>
+            <c:if test="${order.status == 'Processing'}">
+                <button type="submit" class="btn btn-danger" style="margin-left: auto">Cancel Order</button>
+            </c:if>
         </div>
     </div>
+    </form>
     <!--Product Detail-->
     <section class="orders-table">
         <header class="table-header">
@@ -60,15 +75,22 @@
                 <span class="table-cell">${status.index + 1}</span>
                 <span class="table-cell"><img class="product-image" src="${orderDetail.product.image}" loading="lazy">${orderDetail.product.productName}</span>
                 <span class="table-cell">${orderDetail.product.brand}</span>
-                <span class="table-cell">${orderDetail.quantity}</span>
-                <span class="table-cell"><fmt:formatNumber value="${orderDetail.product.sellingPrice}" type="currency"/></span>
+                <span class="table-cell">
+                        <input type="hidden" name="quantity${status.index + 1}" value="${orderDetail.quantity}"/>
+                        ${orderDetail.quantity}</span>
+                <span class="table-cell">
+                    <input type="hidden" name="price" value="${orderDetail.product.sellingPrice}" />
+                    <fmt:formatNumber value="${orderDetail.product.sellingPrice}" type="currency"/>
+                </span>
                 <span class="table-cell"><fmt:formatNumber value="${orderDetail.subtotal}" type="currency"/></span>
             </article>
         </c:forEach>
     </section>
+        <c:if test="${order.status == 'Processing'}">
+            <button type="submit">Cancel Order</button>
+        </c:if>
+
 </div>
 <jsp:directive.include file="footer.jsp" />
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

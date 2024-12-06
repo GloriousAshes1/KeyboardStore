@@ -210,4 +210,32 @@ footer {
     z-index: 10;
     background-color: #f8f9fa;
 }
+.row1 .item-status-text {
+    font-family: "Poppins", Helvetica;
+    font-weight: 500;
+    color: #1e1e1e;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    display: inline-flex;
+    align-items: center;
+}
 
+.row1 .item-status {
+    display: flex;
+    font-family: "Poppins", Helvetica;
+    font-weight: 500;
+    color: #02ff05;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-left: 5px;
+}
+.out-of-stock {
+    opacity: 0.5;
+    filter: grayscale(100%) opacity(0.5);
+}
+.out-of-stock-message {
+    color: red;
+    font-weight: bold;
+}

@@ -9,28 +9,28 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class ImportDetailId implements Serializable {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "import_id", nullable = false)
     private Import importEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     public ImportDetailId() {
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "import_id", nullable = false)
     public Import getImportEntity() {
         return importEntity;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    public Product getProduct() {
+        return product;
     }
 
     public void setImportEntity(Import importEntity) {
         this.importEntity = importEntity;
     }
 
-    public Product getProduct() {
-        return product;
-    }
 
     public void setProduct(Product product) {
         this.product = product;

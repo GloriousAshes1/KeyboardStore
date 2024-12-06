@@ -28,7 +28,7 @@
 				<tr>
 					<td>
 						<span id="product-title">${product.productName}</span><br/>
-						<img class="product-large" src="data:image/jpg;base64,${product.base64Image}" />
+						<img class="product-large" src="${product.image}" />
 					</td>
 					<td>
 						<div id="rateYo"></div>

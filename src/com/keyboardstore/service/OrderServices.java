@@ -1,6 +1,7 @@
 package com.keyboardstore.service;
 
 import com.keyboardstore.controller.frontend.shoppingcart.ShoppingCart;
+import com.keyboardstore.dao.JpaDAO;
 import com.keyboardstore.dao.OrderDAO;
 import com.keyboardstore.entity.Customer;
 import com.keyboardstore.entity.OrderDetail;
@@ -141,14 +142,8 @@ public class OrderServices {
 		Integer orderId = Integer.parseInt(request.getParameter("id"));
 		CommonUtility.generateCountryList(request);
 		HttpSession session = request.getSession();
-		Object isPendingGame = session.getAttribute("NewGamePendingToAddToOrder");
-
-		if (isPendingGame == null) {
-			ProductOrder order = orderDAO.get(orderId);
-			session.setAttribute("order", order);
-		} else {
-			session.removeAttribute("NewGamePendingToAddToOrder");
-		}
+		ProductOrder order = orderDAO.get(orderId);
+		session.setAttribute("order", order);
 		String editPage = "order_form.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
 		requestDispatcher.forward(request, response);
@@ -242,7 +237,7 @@ public class OrderServices {
 		MailServices mailServices = new MailServices();
 		mailServices.SendMail(email, title, body);
 
-		String message = "Your order have been recieved. Thanks for shopping with GameStore.";
+		String message = "Your order have been recieved. Thanks for shopping with us.";
 		request.setAttribute("message", message);
 
 		String messagePage = "frontend/message.jsp";
@@ -360,5 +355,20 @@ public class OrderServices {
 		String message = "The order " + order.getOrderId() + " has been updated sucessfully.";
 
 		listAllOrder(message);
+	}
+	public void changeOrderStatus(String status, String path, String message) throws ServletException, IOException {
+		Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+		ProductOrder order = orderDAO.get(orderId);
+
+		order.setStatus(status);
+		orderDAO.update(order);
+
+		for(OrderDetail orderDetail : order.getOrderDetails()) {
+			new JpaDAO<>().updateSize(orderDetail.getProduct().getProductId(), orderDetail.getQuantity());
+		}
+
+		request.setAttribute("message", message);
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
+		requestDispatcher.forward(request, response);
 	}
 }

@@ -37,7 +37,19 @@
                     </div>
                     <div class="row1">
                         <div class="font">Price: <fmt:formatNumber value="${product.sellingPrice}" type="currency"/></div>
-                        <button class="btn-add-to-cart" onclick="window.location = 'add_to_cart?product_id=' + ${product.productId}">Add to Cart</button>
+                        <div>
+
+                            <c:if test="${product.stock == 0}">
+                                <div class="item-status-text">Status:<div class="out-of-stock-message">Out of Stock</div></div>
+                            </c:if>
+                            <c:if test="${product.stock > 0}">
+                                <div class="item-status-text">Status:<div class="item-status">${product.stock} in stock</div></div>
+                            </c:if>
+                        </div>
+                        <button class="btn-add-to-cart" <c:if test="${product.stock == 0}">disabled</c:if>
+                                <c:if test="${product.stock > 0}">
+                                    onclick="window.location = 'add_to_cart?product_id=' + ${product.productId}"
+                                </c:if>>Add to Cart</button>
                     </div>
                 </div>
             </div>
