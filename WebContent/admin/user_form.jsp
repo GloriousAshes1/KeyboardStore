@@ -1,55 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="read_message.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
 	<title>Create New User</title>
-	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<jsp:directive.include file="head.jsp"/>
 </head>
 <body>
 <jsp:directive.include file="header.jsp"/>
-<c:if test="${message != null}">
-	<script type="text/javascript">
-		$(document).ready(function() {
-			var messageType = '${messageType}';
-			var message = '${message}';
 
-			// Ensure that the message and messageType are properly escaped in JavaScript context
-			message = message.replace(/'/g, "\\'");
-			messageType = messageType.replace(/'/g, "\\'");
-			toastr.options = {
-				"closeButton": true,
-				"debug": false,
-				"newestOnTop": true,
-				"progressBar": true,
-				"positionClass": "toast-top-right",
-				"preventDuplicates": true,
-				"showDuration": "300",
-				"hideDuration": "1000",
-				"timeOut": "5000",
-				"extendedTimeOut": "1000",
-				"showEasing": "swing",
-				"hideEasing": "linear",
-				"showMethod": "fadeIn",
-				"hideMethod": "fadeOut"
-			};
-			if (messageType === 'success') {
-				toastr.success(message);
-			} else if (messageType === 'error') {
-				toastr.error(message);
-			} else if (messageType === 'warning') {
-				toastr.warning(message);
-			} else if (messageType === 'info') {
-				toastr.info(message);
-			}
-		});
-	</script>
-</c:if>
 <div class ="content">
 	<!-- Dynamic Form Title -->
 	<h2 class="page-heading" align="center">
@@ -65,32 +26,27 @@
 				<td><label for="email">Email:</label></td>
 				<td>
 					<input type="email" name="email" id="email"
-						   value="${email != null ? email : (user != null ? user.email : '')}"
-						   required>
+						   value="${email != null ? email : (user != null ? user.email : '')}">
 				</td>
 			</tr>
 			<tr>
 				<td><label for="fullname">Full Name:</label></td>
 				<td>
 					<input type="text" name="fullname" id="fullname"
-						   value="${fullname != null ? fullname : (user != null ? user.fullName : '')}"
-						   required>
+						   value="${fullname != null ? fullname : (user != null ? user.fullName : '')}">
 				</td>
 			</tr>
 			<tr>
 				<td><label for="role">Role:</label></td>
 				<td>
 					<input type="text" name="role" id="role"
-						   value="${role != null ? role : (user != null ? user.role : '')}"
-						   required>
+						   value="${role != null ? role : (user != null ? user.role : '')}">
 				</td>
 			</tr>
 			<tr>
 				<td><label for="password">Password:</label></td>
 				<td>
-					<input type="password" name="password" id="password"
-						   value=""
-						   required minlength="3">
+					<input type="password" name="password" id="password" value="">
 					<!-- Note: Do not pre-fill the password for security reasons -->
 				</td>
 			</tr>
@@ -105,4 +61,63 @@
 	<jsp:directive.include file="footer.jsp"/>
 </div>
 </body>
+<script>
+	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
+
+	$(document).ready(function() {
+		$("#userForm").on("submit", function(event) {
+			event.preventDefault();
+			if (!validateFormInput()) {
+				return false;  // If validation fails, do not submit the form
+			}
+			// Optionally, you can submit the form here if needed after validation passes
+			// this.submit();
+		});
+	});
+
+	function validateFormInput() {
+		// List of field IDs you want to validate
+		var fields = [
+			{ id: 'email', label: 'E-mail' },
+			{ id: 'fullname', label: 'Full Name' },
+			{ id: 'role', label: 'Role' },
+			{ id: 'password', label: 'Password' }
+		];
+
+		for (var i = 0; i < fields.length; i++) {
+			var field = fields[i];
+			var fieldName = document.getElementById(field.id);
+			var inputValue = fieldName.value.trim();
+
+			// Check for empty value
+			if (inputValue.length === 0) {
+				showError(field.label, "NULL_INPUT");
+				fieldName.focus();
+				return false;
+			}
+
+			// Check for value exceeding max length
+			if ((field.id === 'password' && inputValue.length > 16) || inputValue.length > 50) {
+				showError(field.label, "OVER_LENGTH_ERROR");
+				fieldName.focus();
+				return false;
+			}
+
+			if (field.id === 'password' && inputValue.length < 3) {
+				showError(field.label, "SHORT_LENGTH_ERROR");
+				fieldName.focus()
+				return false;
+			}
+		}
+
+		return true;  // Return true if all validations passed
+	}
+
+	function showError(name, code) {
+		var message = errorMessages[code];
+		if (message) {
+			toastr.error(name + " " + message);
+		}
+	}
+</script>
 </html>

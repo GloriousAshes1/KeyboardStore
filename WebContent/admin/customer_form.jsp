@@ -2,58 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ include file="read_message.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
 	<title>Lengendary Games Administration</title>
-	<link rel="stylesheet" href="../css/style.css">
-	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-	<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<jsp:directive.include file="head.jsp" />
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
-	<c:if test="${message != null}">
-		<script type="text/javascript">
-			$(document).ready(function() {
-				var messageType = '${messageType}';
-				var message = '${message}';
-
-				// Ensure that the message and messageType are properly escaped in JavaScript context
-				message = message.replace(/'/g, "\\'");
-				messageType = messageType.replace(/'/g, "\\'");
-				toastr.options = {
-					"closeButton": true,
-					"debug": false,
-					"newestOnTop": true,
-					"progressBar": true,
-					"positionClass": "toast-top-right",
-					"preventDuplicates": true,
-					"showDuration": "300",
-					"hideDuration": "1000",
-					"timeOut": "5000",
-					"extendedTimeOut": "1000",
-					"showEasing": "swing",
-					"hideEasing": "linear",
-					"showMethod": "fadeIn",
-					"hideMethod": "fadeOut"
-				};
-				if (messageType === 'success') {
-					toastr.success(message);
-				} else if (messageType === 'error') {
-					toastr.error(message);
-				} else if (messageType === 'warning') {
-					toastr.warning(message);
-				} else if (messageType === 'info') {
-					toastr.info(message);
-				}
-			});
-		</script>
-	</c:if>
 	<div class="content">
 		<h1 align="center">
 			<c:if test="${customer != null}">
@@ -62,7 +19,7 @@
 			<c:if test="${customer == null}">
 				Create New Customer
 			</c:if>
-		</h2>
+		</h1>
 
 	<div align="center">
 		<c:if test="${customer != null}">
@@ -81,5 +38,38 @@
 	<jsp:directive.include file="footer.jsp" />
 	</div>
 </body>
-<script type="text/javascript" src = "../js/customer-form.js"></script>
+<script type="text/javascript" src = "../js/customer-form.js">
+	// Passing error messages to JavaScript
+	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
+
+	$(document).ready(function() {
+		$("#categoryForm").on("submit", function(event) {
+			event.preventDefault();
+			validateFormInput();
+		});
+	});
+
+	function validateFormInput() {
+		var fieldName = document.getElementById("email");
+		var inputValue = fieldName.value.trim();
+		var label = fieldName.closest("tr").querySelector("label").textContent.trim();  // Lấy giá trị của label
+		if (inputValue.length === 0) {
+			showError(label,"NULL_INPUT");
+			return false;
+		}
+		if (inputValue.trim().length > 30) {
+			showError(label,"OVER_LENGTH_ERROR")
+			return false;
+		}
+		return true;
+	}
+
+	function showError(name, code) {
+		var message = errorMessages[code];
+		if (message) {
+			toastr.error(name + " " + message);
+			fieldName.focus();
+		}
+	}
+</script>
 </html>

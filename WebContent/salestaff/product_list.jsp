@@ -45,7 +45,7 @@
 							<td>${status.index+1}</td>
 							<td>${product.productId}</td>
 							<td>
-								<img src="${product.image}" width="281.35" height="133.92" alt="ProductImage">
+								<img src="${product.image}" style="width: 150px; height: 100px; object-fit: cover;" alt="ProductImage">
 							</td>
 							<td>${product.productName}</td>
 							<td>${product.brand}</td>

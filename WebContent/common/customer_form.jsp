@@ -97,3 +97,64 @@
 		</td>
 	</tr>
 </table>
+
+<script>
+	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
+
+	$(document).ready(function() {
+		$("#customerForm").on("submit", function(event) {
+			event.preventDefault();
+			if (!validateFormInput()) {
+				return false;
+			}
+		});
+	});
+
+	function validateFormInput() {
+		// List of field IDs you want to validate
+		var fields = [
+			{ id: 'email', label: 'E-mail' },
+			{ id: 'firstName', label: 'First Name' },
+			{ id: 'lastName', label: 'Last Name' },
+			{ id: 'password', label: 'Password' },
+			{ id: 'confirmPassword', label: 'Confirm Password' },
+			{ id: 'phone', label: 'Phone Number' },
+			{ id: 'address1', label: 'Address Line 1' },
+			{ id: 'address2', label: 'Address Line 2' },
+			{ id: 'city', label: 'City' },
+			{ id: 'state', label: 'State' },
+			{ id: 'zipCode', label: 'Zip Code' },
+			{ id: 'country', label: 'Country' }
+		];
+
+		for (var i = 0; i < fields.length; i++) {
+			var field = fields[i];
+			var fieldName = document.getElementById(field.id);
+			var inputValue = fieldName.value.trim();
+
+			// Check for empty value
+			if (inputValue.length === 0) {
+				showError(field.label, "NULL_INPUT");
+				fieldName.focus();
+				return false;
+			}
+
+			// Check for value exceeding max length
+			if (inputValue.length > 30) {
+				showError(field.label, "OVER_LENGTH_ERROR");
+				fieldName.focus();
+				return false;
+			}
+		}
+
+		return true;  // Return true if all validations passed
+	}
+
+	function showError(name, code) {
+		var message = errorMessages[code];
+		if (message) {
+			toastr.error(name + " " + message);
+		}
+	}
+</script>
+
