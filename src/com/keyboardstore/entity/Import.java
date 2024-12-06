@@ -20,23 +20,10 @@ import javax.persistence.*;
 })
 public class Import implements java.io.Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "import_id", unique = true, nullable = false)
     private Integer importId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
     private Users user;  // Assuming you have a User entity
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "import_date", nullable = false)
     private Date importDate;
-
-    @Column(name = "sum_price", nullable = false)
     private float sumPrice;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "importEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ImportDetail> importDetails = new HashSet<>();
 
     public Import() {
@@ -48,6 +35,9 @@ public class Import implements java.io.Serializable {
         this.sumPrice = sumPrice;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "import_id", unique = true, nullable = false)
     public Integer getImportId() {
         return importId;
     }
@@ -56,6 +46,8 @@ public class Import implements java.io.Serializable {
         this.importId = importId;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     public Users getUser() {
         return user;
     }
@@ -64,6 +56,8 @@ public class Import implements java.io.Serializable {
         this.user = user;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "import_date", nullable = false)
     public Date getImportDate() {
         return importDate;
     }
@@ -72,6 +66,8 @@ public class Import implements java.io.Serializable {
         this.importDate = importDate;
     }
 
+
+    @Column(name = "sum_price", nullable = false)
     public float getSumPrice() {
         return sumPrice;
     }
@@ -80,11 +76,40 @@ public class Import implements java.io.Serializable {
         this.sumPrice = sumPrice;
     }
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "importEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<ImportDetail> getImportDetails() {
         return importDetails;
     }
 
     public void setImportDetails(Set<ImportDetail> importDetails) {
         this.importDetails = importDetails;
+    }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((importId == null) ? 0 : importId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Import other = (Import) obj;
+        if (importId == null) {
+            if (other.importId != null)
+                return false;
+        } else if (!importId.equals(other.importId))
+            return false;
+        return true;
+    }
+    public void addImportDetail(ImportDetail detail) {
+        this.importDetails.add(detail);
+        detail.setImportEntity(this);
     }
 }

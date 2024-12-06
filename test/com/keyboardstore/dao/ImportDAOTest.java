@@ -36,22 +36,19 @@ public class ImportDAOTest {
     void testCreate() {
         Import imp = new Import();
         Users user = new Users();
-
         user.setUserId(1);
         imp.setUser(user);
 
-        Set<ImportDetail> importDetails = new HashSet<>();
         ImportDetail importDetail = new ImportDetail();
-
         Product product = new Product(52);
         importDetail.setProduct(product);
         importDetail.setImportPrice(9);
         importDetail.setQuantity(10);
-        importDetails.add(importDetail);
-        imp.setImportDetails(importDetails);
+
+        imp.addImportDetail(importDetail); // Sử dụng phương thức addImportDetail
 
         importDAO.create(imp);
 
-        assertTrue(imp.getImportId() != null && imp.getImportDetails().size() > 0);
+        assertTrue(imp.getImportId() != null && !imp.getImportDetails().isEmpty());
     }
 }
