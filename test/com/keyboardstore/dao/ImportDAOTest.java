@@ -40,7 +40,7 @@ public class ImportDAOTest {
         imp.setUser(user);
 
         ImportDetail importDetail = new ImportDetail();
-        Product product = new Product(52);
+        Product product = new Product(51);
         importDetail.setProduct(product);
         importDetail.setImportPrice(9);
         importDetail.setQuantity(10);

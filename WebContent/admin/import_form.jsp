@@ -5,14 +5,17 @@
   <meta charset="UTF-8">
   <title>Create New Import</title>
   <script>
+    // Function to calculate the sum price
     function calculateSumPrice() {
       var totalSumPrice = 0;
       var rows = document.getElementById("productTable").rows;
 
+      // Loop through each row to calculate sum
       for (var i = 0; i < rows.length - 3; i++) { // Exclude 'Add More' and 'Submit' rows
         var quantity = parseInt(document.getElementById("quantityInput" + i).value) || 0;
         var importPrice = parseFloat(document.getElementById("importPrice" + i).value) || 0;
 
+        // Add subtotal for this row to the total sum price
         totalSumPrice += quantity * importPrice;
       }
 
@@ -28,6 +31,7 @@
       }
     }
 
+    // Function to update the quantity and stock info
     function updateQuantity(index) {
       var productSelect = document.getElementById("productSelect" + index);
       var selectedOption = productSelect.options[productSelect.selectedIndex];
@@ -41,6 +45,7 @@
       calculateSumPrice();
     }
 
+    // Function to add a new product row dynamically
     function addProductRow() {
       var table = document.getElementById("productTable");
       var rowCount = table.rows.length;
@@ -71,6 +76,7 @@
       </tr>
     `;
     }
+
   </script>
 </head>
 <body>
@@ -108,7 +114,7 @@
     </tr>
     <tr>
       <td>Sum Price:</td>
-      <td><input type="number" id="sumPrice" name="sumPrice"/></td>
+      <td><input type="number" id="sumPrice" name="sumPrice" readonly /></td>
     </tr>
     <tr>
       <td></td>
@@ -120,6 +126,7 @@
 <a href="${pageContext.request.contextPath}/admin/list_import">Back to Import List</a>
 
 <script>
+  // Initialize the calculation when the page loads
   window.onload = function() {
     updateQuantity(0);
     calculateSumPrice();

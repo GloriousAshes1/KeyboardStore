@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ImportService {
 
@@ -82,53 +84,75 @@ public class ImportService {
         dispatcher.forward(request, response);
     }
 
-    // Add a new import
     public void addImport() throws ServletException, IOException {
+        // Read import info like sumPrice, tax, shippingFee
         Import imp = readImportInfo();
 
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
 
+        // Set the user (seller)
         Users user = userDAO.get(userId);
-        System.out.println("User from session: " + user);
         imp.setUser(user);
 
-        // Get product details from the form
-        Integer productId = Integer.parseInt(request.getParameter("productId"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        float importPrice = Float.parseFloat(request.getParameter("importPrice"));
+        // Get product details from the form (handle multiple products)
+        String[] productIds = request.getParameterValues("productId");
+        String[] quantities = request.getParameterValues("quantity");
+        String[] importPrices = request.getParameterValues("importPrice");
 
-        // Get the sum price from the form
-        float sumPrice = 0;
-        try {
-            sumPrice = Float.parseFloat(request.getParameter("sumPrice"));
-            if (sumPrice < 0) {
-                throw new NumberFormatException("Sum price cannot be negative.");
+        Set<ImportDetail> importDetails = new HashSet<>();
+        float totalSumPrice = 0;
+
+        // Validate product data
+        if (productIds == null || quantities == null || importPrices == null ||
+                productIds.length != quantities.length || quantities.length != importPrices.length) {
+            throw new ServletException("Invalid product details.");
+        }
+
+        // Process each product row
+        for (int i = 0; i < productIds.length; i++) {
+            try {
+                Integer productId = Integer.parseInt(productIds[i]);
+                int quantity = Integer.parseInt(quantities[i]);
+                float importPrice = Float.parseFloat(importPrices[i]);
+
+                if (quantity <= 0 || importPrice <= 0) {
+                    throw new NumberFormatException("Quantity and import price must be positive.");
+                }
+
+                // Retrieve product and calculate subtotal (price * quantity)
+                Product product = productDAO.get(productId);
+                float subtotal = quantity * importPrice;
+
+                // Create ImportDetail and add it to the import
+                ImportDetail importDetail = new ImportDetail();
+                importDetail.setProduct(product);
+                importDetail.setQuantity(quantity);
+                importDetail.setImportPrice(importPrice);
+                importDetail.setImportEntity(imp); // Set the import for this detail
+
+                importDetails.add(importDetail);
+
+                // Accumulate sum for total import price
+                totalSumPrice += subtotal;
+
+            } catch (NumberFormatException e) {
+                throw new ServletException("Invalid data in the import details (quantity or importPrice).", e);
             }
-        } catch (NumberFormatException e) {
-            throw new ServletException("Invalid sum price format. Please check the sum price input.");
         }
 
-        // If sumPrice is still invalid, handle it
-        if (sumPrice <= 0) {
-            throw new ServletException("Invalid sum price. It cannot be zero or negative.");
-        }
-
-        Product product = productDAO.get(productId);
-
-        // Create the import detail
-        ImportDetail importDetail = new ImportDetail();
-        imp.getImportDetails().add(importDetail); // Add the detail to the import
-
-        // Set the sum price for the import
-        imp.setSumPrice(sumPrice);
+        // Set import details and sum price for the import
+        imp.setImportDetails(importDetails);
+        imp.setSumPrice(totalSumPrice);
 
         // Save the import in the database
         importDAO.create(imp);
 
+        // Return success message and redirect
         String message = "New import has been added successfully!";
         listAllImports(message);
     }
+
     // Delete an import
     public void deleteImport() throws ServletException, IOException {
         Integer importId = Integer.parseInt(request.getParameter("id"));
@@ -140,17 +164,8 @@ public class ImportService {
 
     // Helper method to read import information from request
     private Import readImportInfo() throws ServletException {
-        // Retrieve and validate sumPrice
-        float sumPrice = 0;
-        try {
-            sumPrice = Float.parseFloat(request.getParameter("sumPrice"));
-        } catch (NumberFormatException e) {
-            throw new ServletException("Invalid sum price format.");
-        }
-
         // Create the Import object and set the basic details
         Import imp = new Import();
-        imp.setSumPrice(sumPrice);
         imp.setImportDate(new java.util.Date());  // Use the current date as import date
 
         // Optionally, set the current user for the import
@@ -182,18 +197,22 @@ public class ImportService {
 
                 // Create the ImportDetail object and add it to the Import object
                 ImportDetail importDetail = new ImportDetail();
+                importDetail.setProduct(product);
+                importDetail.setQuantity(quantity);
+                importDetail.setImportPrice(importPrice);
+                importDetail.setImportEntity(imp); // Associate with the Import
+
                 imp.getImportDetails().add(importDetail);  // Assuming Import has a List<ImportDetail> getImportDetails()
 
             } catch (NumberFormatException e) {
-                throw new ServletException("Invalid format for product details (e.g., quantity or importPrice).");
+                throw new ServletException("Invalid format for product details (e.g., quantity or importPrice).", e);
             } catch (Exception e) {
-                throw new ServletException("Error processing product with ID: " + productIds[i]);
+                throw new ServletException("Error processing product with ID: " + productIds[i], e);
             }
         }
 
         return imp;
     }
-
 
     // Calculate total imports sum
     public void totalImports() throws ServletException, IOException {

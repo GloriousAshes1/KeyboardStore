@@ -46,7 +46,7 @@ public class Import implements java.io.Serializable {
         this.importId = importId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     public Users getUser() {
         return user;
