@@ -63,17 +63,46 @@ public class ImportService {
         dispatcher.forward(request, response);
     }
 
-    // View details of a specific import
+    // View details of a specific import, including the user who created it and the list of products
     public void viewImportDetail() throws ServletException, IOException {
         Integer importId = Integer.parseInt(request.getParameter("id"));
 
         Import imp = importDAO.get(importId);
-        request.setAttribute("import", imp);
 
+        if (imp == null) {
+            String errorMessage = "Could not find the import with ID: " + importId;
+            request.setAttribute("message", errorMessage);
+            listAllImports();
+            return;
+        }
+
+        // Get the user and import details
+        Users user = imp.getUser();
+        Set<ImportDetail> importDetails = imp.getImportDetails();
+
+        // Initialize total quantity and total price
+        int totalQuantity = 0;
+        float totalSumPrice = 0;
+
+        // Iterate through import details to calculate total quantity and total price
+        for (ImportDetail detail : importDetails) {
+            totalQuantity += detail.getQuantity();
+            totalSumPrice += detail.getQuantity() * detail.getImportPrice();
+        }
+
+        // Set attributes to be accessed in the JSP
+        request.setAttribute("userId", user.getUserId());
+        request.setAttribute("fullName", user.getFullName());
+        request.setAttribute("importDetails", importDetails);
+        request.setAttribute("totalQuantity", totalQuantity);  // Total quantity
+        request.setAttribute("totalSumPrice", totalSumPrice);  // Total price
+
+        // Forward to the detail page
         String detailPage = "import_detail.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(detailPage);
         dispatcher.forward(request, response);
     }
+
 
     // Show form to add new import
     public void showAddImportForm() throws ServletException, IOException {
@@ -124,6 +153,13 @@ public class ImportService {
                 Product product = productDAO.get(productId);
                 float subtotal = quantity * importPrice;
 
+                // Update product stock based on imported quantity
+                int updatedStock = product.getStock() + quantity;
+                product.setStock(updatedStock);
+
+                // Persist the product with the updated stock
+                productDAO.update(product);
+
                 // Create ImportDetail and add it to the import
                 ImportDetail importDetail = new ImportDetail();
                 importDetail.setProduct(product);
@@ -156,10 +192,19 @@ public class ImportService {
     // Delete an import
     public void deleteImport() throws ServletException, IOException {
         Integer importId = Integer.parseInt(request.getParameter("id"));
-        importDAO.delete(importId);
+        Import imp = importDAO.get(importId);
 
-        String message = "Import ID " + importId + " has been deleted.";
-        listAllImports(message);
+        if(imp!=null) {
+            importDAO.delete(importId);
+
+            String message = "Import ID " + importId + " has been deleted.";
+            listAllImports(message);
+        }
+        else {
+            String message = "Could not find order with ID " + importId
+                    + ", or it might have been deleted by another admin.";
+            listAllImports(message);
+        }
     }
 
     // Helper method to read import information from request

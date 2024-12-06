@@ -1,9 +1,14 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Create New Import</title>
+  <link rel="icon" type="image/x-icon" href="../images/Logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <script>
     // Function to calculate the sum price
     function calculateSumPrice() {
@@ -49,44 +54,42 @@
     function addProductRow() {
       var table = document.getElementById("productTable");
       var rowCount = table.rows.length;
-      var newRow = table.insertRow(rowCount - 1);  // Insert before the submit row
+      var index = rowCount - 3; // Adjust for Add More and Submit rows
 
-      var index = rowCount - 1;
-
+      // Create a new row for the product details
+      var newRow = table.insertRow(rowCount - 2); // Insert before the "Add More Products" row
       newRow.innerHTML = `
-      <tr>
-        <td>Product:</td>
-        <td>
-          <select name="productId" id="productSelect${index}" onchange="updateQuantity(${index})">
-            <c:forEach items="${listProduct}" var="product" varStatus="status">
-              <option value="${product.productId}" data-stock="${product.stock}">
-                  ${product.productName} - ${product.brand} (In Stock: ${product.stock})
-              </option>
-            </c:forEach>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td>Quantity:</td>
-        <td><input type="number" name="quantity" id="quantityInput${index}" required onchange="calculateSumPrice()"></td>
-      </tr>
-      <tr>
-        <td>Import Price:</td>
-        <td><input type="text" name="importPrice" id="importPrice${index}" required onchange="calculateSumPrice()"></td>
-      </tr>
-    `;
+    <td>
+      <select name="productId" id="productSelect${index}" onchange="updateQuantity(${index})">
+        <c:forEach items="${listProduct}" var="product" varStatus="status">
+          <option value="${product.productId}" data-stock="${product.stock}">
+              ${product.productName} - ${product.brand} (In Stock: ${product.stock})
+          </option>
+        </c:forEach>
+      </select>
+    </td>
+    <td><input type="number" name="quantity" id="quantityInput${index}" required onchange="calculateSumPrice()" value="1"></td>
+    <td><input type="text" name="importPrice" id="importPrice${index}" required onchange="calculateSumPrice()"></td>
+  `;
+      // After adding the new row, recalculate the sum price
+      calculateSumPrice();
     }
-
   </script>
 </head>
 <body>
-<h2>Create New Import</h2>
+<jsp:directive.include file="header.jsp"/>
+<div class="content">
+<h2 align="center">Create New Import</h2>
 
 <form action="create_import" method="post">
-  <p><c:out value="${sessionScope}" /></p>
-  <table id="productTable">
+<%--  <p><c:out value="${sessionScope}" /></p>--%>
+  <table id="productTable" align="center" border="1" style="border-collapse: collapse; width: 80%;">
     <tr>
-      <td>Product:</td>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Import Price</th>
+    </tr>
+    <tr>
       <td>
         <select name="productId" id="productSelect0" onchange="updateQuantity(0)">
           <c:forEach items="${listProduct}" var="product" varStatus="status">
@@ -96,35 +99,25 @@
           </c:forEach>
         </select>
       </td>
-    </tr>
-    <tr>
-      <td>Quantity:</td>
-      <td><input type="number" name="quantity" id="quantityInput0" required onchange="calculateSumPrice()"></td>
-    </tr>
-    <tr>
-      <td>Import Price:</td>
+      <td><input type="number" name="quantity" id="quantityInput0" required onchange="calculateSumPrice()" value="1"></td>
       <td><input type="text" name="importPrice" id="importPrice0" required onchange="calculateSumPrice()"></td>
     </tr>
-
     <!-- Placeholder for more product rows -->
     <tr id="addProductRow">
-      <td colspan="2">
-        <button type="button" onclick="addProductRow()">Add More Products</button>
+      <td colspan="3" style="text-align: center;">
+        <button class="btn btn-primary" type="button" onclick="addProductRow()">Add More Products</button>
       </td>
     </tr>
     <tr>
-      <td>Sum Price:</td>
-      <td><input type="number" id="sumPrice" name="sumPrice" readonly /></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Create Import"></td>
+      <td colspan="3" style="text-align: center;">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" type="button" onclick="history.go(-1);">Cancel</button>
+      </td>
     </tr>
   </table>
 </form>
 
-<a href="${pageContext.request.contextPath}/admin/list_import">Back to Import List</a>
-
+</div>
 <script>
   // Initialize the calculation when the page loads
   window.onload = function() {

@@ -50,7 +50,7 @@ public class ImportDetail implements java.io.Serializable {
         this.id.setImportEntity(importEntity);
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", insertable = false, updatable = false, nullable = false)
     public Product getProduct() {
         return product;

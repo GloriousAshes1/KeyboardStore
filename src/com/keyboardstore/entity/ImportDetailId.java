@@ -21,7 +21,7 @@ public class ImportDetailId implements Serializable {
         return importEntity;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", nullable = false)
     public Product getProduct() {
         return product;

@@ -51,7 +51,7 @@
 					<td>${review.customer.fullname}</td>
 					<td>${review.reviewTime}</td>
 					<td>
-						<a href="edit_review?id=${review.reviewId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
+						<a href="edit_review?id=${review.reviewId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;&nbsp;
 						<a href="javascript:confirmDelete(${review.reviewId})" id="${review.reviewId}"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
 					</td>
 				</tr>

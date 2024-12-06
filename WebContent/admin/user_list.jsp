@@ -60,11 +60,19 @@
 				<td>${user.fullName}</td>
 				<td>${user.role}</td>
 				<td>
-					<!-- Always allow editing -->
-					<a href="edit_user?id=${user.userId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
-
 					<!-- Set current user for comparison -->
 					<c:set var="currentUser" value="${sessionScope.currentUser}" />
+					<!-- Conditionally show or disable allow editing -->
+					<c:choose>
+						<c:when test="${user.role == 'Manager' || user.userId == currentUser.userId}">
+							<a href="javascript:void(0)" class="disabled-link" title="Cannot delete">
+								<i class="fa-solid fa-pen-to-square" style="color: dimgray;"></i></a> &nbsp;
+						</c:when>
+						<c:otherwise>
+							<a href="edit_user?id=${user.userId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
+						</c:otherwise>
+					</c:choose>
+
 
 					<!-- Conditionally show or disable delete link -->
 					<c:choose>

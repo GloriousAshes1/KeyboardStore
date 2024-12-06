@@ -52,8 +52,8 @@
                 <td>${imp.importDate}</td>
                 <td>${imp.sumPrice}</td>
                 <td>
-                    <a href="import?action=view&id=${imp.importId}" class="btn btn-info btn-sm">View</a>
-                </td>
+                    <a href="view_import?id=${imp.importId}"><i class="fa-solid fa-circle-info" style="color: mediumslateblue;"></i></a>&nbsp;
+                    <a href="javascript:confirmDelete(${imp.importId})"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>&nbsp;
             </tr>
         </c:forEach>
         </tbody>

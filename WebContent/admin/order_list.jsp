@@ -54,8 +54,8 @@
 					<td>${order.status}</td>
 					<td>${order.orderDate}</td>
 					<td>
-						<a href="view_order?id=${order.orderId}"><i class="fa-solid fa-circle-info" style="color: mediumslateblue;"></i></a>&nbsp;
-						<a href="edit_order?id=${order.orderId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a>&nbsp;
+						<a href="view_order?id=${order.orderId}"><i class="fa-solid fa-circle-info" style="color: mediumslateblue;"></i></a>&nbsp;&nbsp;
+						<a href="edit_order?id=${order.orderId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a>&nbsp;&nbsp;
 						<a href="javascript:void(0);" class="deleteLink" id="${order.orderId}"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
 					</td>
 				</tr>
@@ -86,13 +86,6 @@
 				"order": [[0, "asc"]] // Sắp xếp theo cột đầu tiên
 			});
 
-			// Xử lý sự kiện xóa
-			$(".deleteLink").on("click", function () {
-				const orderId = $(this).attr("id");
-				if (confirm('Are you sure you want to delete the order with ID ' + orderId + '?')) {
-					window.location = 'delete_order?id=' + orderId;
-				}
-			});
 		});
 
 		$(document).ready(function(){

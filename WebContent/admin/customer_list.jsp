@@ -58,7 +58,7 @@
 					<td>${customer.state}</td>
 					<td>${customer.countryName}</td>
 					<td>${customer.registerDate}</td>
-					<td><a href="edit_customer?id=${customer.customerId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a>
+					<td><a href="edit_customer?id=${customer.customerId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
 						&nbsp; <a href="javascript:confirmDelete(${customer.customerId})"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
 					</td>
 				</tr>
