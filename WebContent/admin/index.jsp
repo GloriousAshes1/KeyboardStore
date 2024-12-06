@@ -31,6 +31,7 @@
 		</div>
 	</div>
 
+<%--	Recent Order--%>
 	<div align="center">
 		<hr width="60%" />
 		<h2 class="page-heading">Recent Sales:</h2>
@@ -67,6 +68,34 @@
 			</tbody>
 		</table>
 	</div>
+
+<%--	Recent Import--%>
+	<div align="center">
+		<hr width="60%"/>
+		<h2 class="page-heading">Recent Import:</h2>
+		<table class="table table-hover table-striped caption-top">
+			<thead class="table-primary">
+			<tr>
+				<th>User ID</th>
+				<th>User Name</th>
+				<th>Import Date</th>
+				<th>Total Price</th>
+			</tr>
+			</thead>
+			<c:forEach var="imp" items="${listMostRecentImport}" varStatus="status">
+			<tbody id="myTable">
+				<tr>
+					<td>${imp.user.userId}</td>
+					<td>${imp.user.fullName}</td>
+					<td>${imp.importDate}</td>
+					<td>${imp.sumPrice}</td>
+				</tr>
+			</c:forEach>
+			</tbody>
+		</table>
+	</div>
+
+<%--	Recent Review--%>
 	<div align="center">
 		<hr width="60%" />
 		<h2 class="page-heading">Recent Reviews:</h2>

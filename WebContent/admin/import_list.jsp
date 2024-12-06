@@ -34,8 +34,8 @@
     <c:set var="endIndex" value="${startIndex + itemsPerPage > totalItems ? totalItems : startIndex + itemsPerPage}" />
 
     <!-- Table to display the import details -->
-    <table class="table table-bordered table-striped">
-        <thead>
+    <table class="table table-hover table-striped caption-top">
+        <thead class="table-primary">
         <tr>
             <th>User ID</th>
             <th>User Name</th>
@@ -44,8 +44,8 @@
             <th>Actions</th>
         </tr>
         </thead>
-        <tbody>
-        <c:forEach var="imp" items="${listImports}">
+        <tbody id="myTable">
+        <c:forEach var="imp" items="${listImports}" varStatus="status">
             <tr>
                 <td>${imp.user.userId}</td>
                 <td>${imp.user.fullName}</td> <!-- Assuming `user.username` is available -->

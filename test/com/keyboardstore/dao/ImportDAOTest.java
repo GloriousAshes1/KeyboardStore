@@ -51,4 +51,9 @@ public class ImportDAOTest {
 
         assertTrue(imp.getImportId() != null && !imp.getImportDetails().isEmpty());
     }
+    @Test
+    void testListMostRecentImport() {
+        List<Import> list = importDAO.listMostRecentImports();
+        assertTrue(list.size() > 0);
+    }
 }
