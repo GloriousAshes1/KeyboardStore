@@ -1,14 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><!DOCTYPE html>
+<%@ include file="read_message.jsp" %>
 <html>
 <head>
-  <meta charset="UTF-8">
   <title>Create New Import</title>
-  <link rel="icon" type="image/x-icon" href="../images/Logo.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <jsp:directive.include file="head.jsp"/>
   <script>
     // Function to calculate the sum price
     function calculateSumPrice() {

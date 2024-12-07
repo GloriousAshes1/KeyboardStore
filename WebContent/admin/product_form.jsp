@@ -3,55 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ include file="read_message.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
 	<title>Create New Product</title>
-	<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<jsp:directive.include file="head.jsp"/>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp"/>
-	<c:if test="${message != null}">
-		<script type="text/javascript">
-			$(document).ready(function() {
-				var messageType = '${fn:escapeXml(messageType)}';  // Use JSTL escapeXml to handle special chars
-				var message = '${fn:escapeXml(message)}';  // Same here for the message
+	<jsp:directive.include file="notification.jsp"/>
 
-				// Ensure that the message and messageType are properly escaped
-				toastr.options = {
-					"closeButton": true,
-					"debug": false,
-					"newestOnTop": true,
-					"progressBar": true,
-					"positionClass": "toast-top-right",
-					"preventDuplicates": true,
-					"showDuration": "300",
-					"hideDuration": "1000",
-					"timeOut": "5000",
-					"extendedTimeOut": "1000",
-					"showEasing": "swing",
-					"hideEasing": "linear",
-					"showMethod": "fadeIn",
-					"hideMethod": "fadeOut"
-				};
-
-				if (messageType === 'success') {
-					toastr.success(message);
-				} else if (messageType === 'error') {
-					toastr.error(message);
-				} else if (messageType === 'warning') {
-					toastr.warning(message);
-				} else if (messageType === 'info') {
-					toastr.info(message);
-				}
-			});
-		</script>
-
-	</c:if>
 	<div class="content">
 		<h2 class="page-heading" align="center">
 			<c:if test="${product != null}">
@@ -88,26 +50,26 @@
 					</tr>
 					<tr>
 						<td align="right">Product Name:</td>
-						<td align="left"><input type="text" name = "productName" id="productName" value= "${product.productName}" required size="50"/></td>
+						<td align="left"><input type="text" name = "productName" id="productName" value= "${product.productName}"/></td>
 					</tr>
 					<tr>
 						<td align="right">Brand</td>
-						<td align="left"><input type="text" name = "brand" id="brand" value= "${product.brand}" required size="50"/></td>
+						<td align="left"><input type="text" name = "brand" id="brand" value= "${product.brand}"/></td>
 					</tr>
 					<tr>
 						<td align="right">Code:</td>
-						<td align="left"><input type="text" name = "code"  id="code" value= "${product.code}" required maxlength="13"/></td>
+						<td align="left"><input type="text" name = "code"  id="code" value= "${product.code}"/></td>
 					</tr>					
 					<tr>
 						<td align="right">Publish Date:</td>
 						<td align="left"><input type="date" name = "publishDate"  id="publishDate" 
-							value="<fmt:formatDate pattern="yyyy-MM-dd" value='${product.publishDate}'/>" required size="20"/></td>
+							value="<fmt:formatDate pattern="yyyy-MM-dd" value='${product.publishDate}'/>"/></td>
 					</tr>
 					<tr>
 						<td align="right">Image:</td>
 						<td align="left">
 							<c:if test="${product == null}">
-								<input type="file" name="image" id="image" size="20" required/><br/>
+								<input type="file" name="image" id="image" size="20"/><br/>
 								<!-- Default empty image preview for new product -->
 								<img id="thumbnail" alt="Image Preview" style="width:20%; margin-top:10px" src=""/>
 							</c:if>
@@ -121,12 +83,12 @@
 					</tr>
 					<tr>
 						<td align="right">Price:</td>
-						<td align="left"><input type="number" name = "sellingPrice"  id="sellingPrice" step="0.01" value= "${product.sellingPrice}" required size="20"/></td>
+						<td align="left"><input type="number" name = "sellingPrice"  id="sellingPrice" step="0.01" value= "${product.sellingPrice}"/></td>
 					</tr>
 					<tr>
 						<td align="right">Description:</td>
 						<td align="left">
-							<textarea rows="5" cols="50" name="description" id="description" required>${product.description}</textarea>
+							<textarea rows="5" cols="50" name="description" id="description">${product.description}</textarea>
 						</td>
 					</tr>
 
@@ -141,32 +103,121 @@
 			</form>
 		<jsp:directive.include file="footer.jsp"/>
 	</div>
-
 </body>
-<script type="text/javascript">
-	$(document).ready(function() {
-		// When an image is selected
-		$('#image').change(function() {
-			showImageThumbnail(this);  // Trigger the image preview function
+
+
+<script>
+	$(document).ready(function () {
+		// Hiển thị preview ảnh và kiểm tra định dạng
+		$("#image").on("change", function () {
+			const file = this.files[0];
+			const thumbnail = $("#thumbnail");
+
+			if (file) {
+				const validExtensions = ["png", "jpg", "jpeg"];
+				const fileExtension = file.name.split(".").pop().toLowerCase();
+
+				if (!validExtensions.includes(fileExtension)) {
+					showError("Image", "INVALID_INPUT");
+					this.value = ""; // Xóa file đã chọn
+					thumbnail.attr("src", ""); // Xóa preview
+					return;
+				}
+
+				// Kiểm tra kích thước file (giới hạn 2MB)
+				const maxSize = 2 * 1024 * 1024; // 2MB
+				if (file.size > maxSize) {
+					showError("Image", "FILE_TOO_LARGE");
+					this.value = ""; // Xóa file đã chọn
+					thumbnail.attr("src", ""); // Xóa preview
+					return;
+				}
+
+				// Hiển thị preview nếu hợp lệ
+				const reader = new FileReader();
+				reader.onload = function (e) {
+					thumbnail.attr("src", e.target.result);
+				};
+				reader.readAsDataURL(file);
+			} else {
+				thumbnail.attr("src", ""); // Xóa preview nếu không chọn file
+				showError("Image","INVALID_INPUT")
+			}
 		});
 	});
 
-	function showImageThumbnail(fileInput) {
-		var file = fileInput.files[0];  // Get the selected file
+	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
+	// Xử lý khi form được submit
+		$(document).ready(function() {
+			$("#productForm").on("submit", function(event) {
+				if (!validateFormInput()) {
+					event.preventDefault(); // Chặn gửi form nếu có lỗi
+				}
+			});
+		});
 
-		// Check if a file is selected
-		if (file) {
-			var reader = new FileReader();  // Create a new FileReader object
+	// Hàm validate form
+	function validateFormInput() {
+		var fields = [
+			{ id: "productName", label: "Product Name" },
+			{ id: "brand", label: "Brand" },
+			{ id: "code", label: "Code" },
+			{ id: "publishDate", label: "Publish Date" },
+			{ id: "sellingPrice", label: "Price" },
+		];
 
-			reader.onload = function(e) {
-				// Update the src attribute of the thumbnail image with the file data
-				$('#thumbnail').attr('src', e.target.result);
-			};
+		for (var i = 0; i < fields.length; i++) {
+			var field = fields[i];
+			var fieldName = $("#" + field.id);
+			var inputValue = fieldName.val().trim();
 
-			// Read the selected file as a Data URL (base64 encoded string)
-			reader.readAsDataURL(file);
+			if (inputValue.length === 0) {
+				showError(field.label, "NULL_INPUT");
+				fieldName.focus();
+				return false;
+			}
+
+			if (field.id === "productName" || field.id === "brand") {
+				if (inputValue.length > 50) {
+					showError(field.label, "OVER_LENGTH_ERROR");
+					fieldName.focus();
+					return false;
+				}
+			}
+
+			if (field.id === "code" && inputValue.length > 13) {
+				showError(field.label, "OVER_LENGTH_ERROR");
+				fieldName.focus();
+				return false;
+			}
+
+			if (field.id === "sellingPrice") {
+				var price = parseFloat(inputValue);
+				if (isNaN(price) || price <= 0) {
+					showError(field.label, "INVALID_INPUT");
+					fieldName.focus();
+					return false;
+				}
+			}
 		}
+
+		// Kiểm tra file ảnh
+		var imageField = $("#image");
+		if (imageField.attr("required") && imageField[0].files.length === 0) {
+			showError("Image", "NULL_INPUT");
+			imageField.focus();
+			return false;
+		}
+
+		return true; // Tất cả các kiểm tra đều hợp lệ
 	}
 
+	// Hàm hiển thị lỗi
+	function showError(name, code) {
+		var message = errorMessages[code];
+		if (message) {
+			toastr.error(name + " " + message);
+		}
+	}
 </script>
 </html>

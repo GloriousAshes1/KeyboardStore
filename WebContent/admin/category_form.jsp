@@ -40,8 +40,9 @@
 
 	$(document).ready(function() {
 		$("#categoryForm").on("submit", function(event) {
-			event.preventDefault();
-			validateFormInput();
+			if (!validateFormInput()) {
+				event.preventDefault();
+			}
 		});
 	});
 

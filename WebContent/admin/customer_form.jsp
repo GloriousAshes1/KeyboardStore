@@ -10,6 +10,7 @@
 	<jsp:directive.include file="head.jsp" />
 </head>
 <body>
+	<jsp:directive.include file="notification.jsp"/>
 	<jsp:directive.include file="header.jsp" />
 	<div class="content">
 		<h1 align="center">
@@ -38,38 +39,4 @@
 	<jsp:directive.include file="footer.jsp" />
 	</div>
 </body>
-<script type="text/javascript" src = "../js/customer-form.js">
-	// Passing error messages to JavaScript
-	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
-
-	$(document).ready(function() {
-		$("#categoryForm").on("submit", function(event) {
-			event.preventDefault();
-			validateFormInput();
-		});
-	});
-
-	function validateFormInput() {
-		var fieldName = document.getElementById("email");
-		var inputValue = fieldName.value.trim();
-		var label = fieldName.closest("tr").querySelector("label").textContent.trim();  // Lấy giá trị của label
-		if (inputValue.length === 0) {
-			showError(label,"NULL_INPUT");
-			return false;
-		}
-		if (inputValue.trim().length > 30) {
-			showError(label,"OVER_LENGTH_ERROR")
-			return false;
-		}
-		return true;
-	}
-
-	function showError(name, code) {
-		var message = errorMessages[code];
-		if (message) {
-			toastr.error(name + " " + message);
-			fieldName.focus();
-		}
-	}
-</script>
 </html>

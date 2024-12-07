@@ -9,6 +9,7 @@
 	<jsp:directive.include file="head.jsp"/>
 </head>
 <body>
+<jsp:directive.include file="notification.jsp"/>
 <jsp:directive.include file="header.jsp"/>
 
 <div class ="content">
@@ -63,27 +64,33 @@
 </body>
 <script>
 	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
+	var isEditMode = false;
+
+	// Kiểm tra chế độ Edit/Create từ JSP
+	<%
+        Object userObj = request.getAttribute("user");
+        if (userObj != null) {
+    %>
+	isEditMode = true;
+	<%
+        }
+    %>
 
 	$(document).ready(function() {
 		$("#userForm").on("submit", function(event) {
-			event.preventDefault();
 			if (!validateFormInput()) {
-				return false;  // If validation fails, do not submit the form
+				event.preventDefault(); // Chặn gửi form nếu có lỗi
 			}
-			// Optionally, you can submit the form here if needed after validation passes
-			// this.submit();
 		});
 	});
 
 	function validateFormInput() {
-		// List of field IDs you want to validate
+		// List of field IDs to validate
 		var fields = [
 			{ id: 'email', label: 'E-mail' },
 			{ id: 'fullname', label: 'Full Name' },
 			{ id: 'role', label: 'Role' },
-			{ id: 'password', label: 'Password' }
 		];
-
 		for (var i = 0; i < fields.length; i++) {
 			var field = fields[i];
 			var fieldName = document.getElementById(field.id);
@@ -96,21 +103,34 @@
 				return false;
 			}
 
-			// Check for value exceeding max length
-			if ((field.id === 'password' && inputValue.length > 16) || inputValue.length > 50) {
+			if (field.id !== 'password' && inputValue.length > 50) {
 				showError(field.label, "OVER_LENGTH_ERROR");
 				fieldName.focus();
 				return false;
 			}
 
-			if (field.id === 'password' && inputValue.length < 3) {
-				showError(field.label, "SHORT_LENGTH_ERROR");
-				fieldName.focus()
+			if (field.id === 'fullname' && !/^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/.test(inputValue)) {
+				showError(field.label, "INVALID_INPUT");
+				fieldName.focus();
 				return false;
 			}
 		}
-
-		return true;  // Return true if all validations passed
+		var password = document.getElementById('password').value;
+		if (password.length === 0 && !isEditMode) {
+			showError("Password", "NULL_INPUT");
+			password.focus();
+			return false;
+		}
+		if (password.length < 6 && password.length > 0) {
+			showError("Password", "SHORT_LENGTH_ERROR");
+			fieldName.focus;
+			return false;
+		} else if (password.length > 16) {
+			showError("Password", "OVER_LENGTH_ERROR");
+			fieldName.focus;
+			return false;
+		}
+		return true;
 	}
 
 	function showError(name, code) {

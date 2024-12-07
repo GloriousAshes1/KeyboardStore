@@ -2,7 +2,7 @@
 	<tr>
 		<td align="right">E-mail:</td>
 		<td align="left">
-			<input type="text" id="email" name="email" size="45"
+			<input type="email" id="email" name="email" size="45"
 				   value="${email != null ? email : (customer != null ? customer.email : '')}" />
 		</td>
 	</tr>
@@ -37,7 +37,7 @@
 	<tr>
 		<td align="right">Phone Number:</td>
 		<td align="left">
-			<input type="text" class="phone" name="phone" size="45"
+			<input type="text" id="phone" name="phone" size="45"
 				   value="${phone != null ? phone : (customer != null ? customer.phone : '')}" />
 		</td>
 	</tr>
@@ -92,7 +92,8 @@
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
-			<button type="submit" class="btn btn-primary">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button type="submit" class="btn btn-primary">Save</button>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<button type="button" class="btn btn-secondary" onclick="history.go(-1);">Cancel</button>
 		</td>
 	</tr>
@@ -103,15 +104,14 @@
 
 	$(document).ready(function() {
 		$("#customerForm").on("submit", function(event) {
-			event.preventDefault();
 			if (!validateFormInput()) {
-				return false;
+				event.preventDefault(); // Chặn gửi form nếu có lỗi
 			}
 		});
 	});
 
 	function validateFormInput() {
-		// List of field IDs you want to validate
+		// List of field IDs to validate
 		var fields = [
 			{ id: 'email', label: 'E-mail' },
 			{ id: 'firstName', label: 'First Name' },
@@ -124,7 +124,6 @@
 			{ id: 'city', label: 'City' },
 			{ id: 'state', label: 'State' },
 			{ id: 'zipCode', label: 'Zip Code' },
-			{ id: 'country', label: 'Country' }
 		];
 
 		for (var i = 0; i < fields.length; i++) {
@@ -132,23 +131,52 @@
 			var fieldName = document.getElementById(field.id);
 			var inputValue = fieldName.value.trim();
 
-			// Check for empty value
+			var password = document.getElementById('password').value;
+			var confirmPassword = document.getElementById('confirmPassword').value;
+
 			if (inputValue.length === 0) {
 				showError(field.label, "NULL_INPUT");
 				fieldName.focus();
 				return false;
 			}
 
-			// Check for value exceeding max length
-			if (inputValue.length > 30) {
+			if (field.id !== 'password' && field.id !== 'confirmPassword' && inputValue.length > 30) {
 				showError(field.label, "OVER_LENGTH_ERROR");
 				fieldName.focus();
 				return false;
 			}
-		}
 
-		return true;  // Return true if all validations passed
+			if (field.id === 'password' && field.id.length < 6) {
+				showError("Password", "SHORT_LENGTH_ERROR");
+				document.getElementById('password').focus();
+				return false;
+			}
+
+			if (field.id === 'password' && field.id.length > 16) {
+				showError("Password", "OVER_LENGTH_ERROR");
+				document.getElementById('password').focus();
+			}
+			if ((field.id === 'firstname' || field.id === 'lastname') && (!/^[a-zA-Z]+$/.test(inputValue))) {
+				showError(field.label, "INVALID_INPUT");
+				fieldName.focus();
+				return false;
+			}
+
+			if ((field.id === 'phone' && (!/^\d{10,11}$/.test(inputValue))) || (field.id = 'zipcode' && (!/^\d{5}$/.test(inputValue)))) {
+				showError(field.label, "INVALID_INPUT");
+				fieldName.focus();
+				return false;
+			}
+		}
+		if (password !== confirmPassword) {
+			showError("Confirm Password", "PASSWORD_MISMATCH");
+			document.getElementById('confirmPassword').focus();
+			return false;
+		}
+		return true;
 	}
+
+
 
 	function showError(name, code) {
 		var message = errorMessages[code];
