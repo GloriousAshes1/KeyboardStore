@@ -2,6 +2,7 @@ package com.keyboardstore.service;
 
 import com.keyboardstore.dao.CustomerDAO;
 import com.keyboardstore.entity.Customer;
+import com.keyboardstore.passwordHash.PasswordUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -214,22 +215,55 @@ public class CustomerService {
 	public void doLogin() throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		Customer customer = customerDAO.checkLogin(email, password);
-		if (customer == null) {
+
+		// Fetch customer details using the email
+		Customer customer = customerDAO.findByEmail(email);
+
+		if (customer != null) {
+			String storedPassword = customer.getPassword();
+			boolean loginResult = false;
+
+			// Check if the stored password is hashed (BCrypt hash is typically 60 characters long)
+			if (storedPassword.length() == 60) {
+				// Password is hashed, use BCrypt to verify
+				loginResult = PasswordUtil.checkPassword(password, storedPassword);
+			} else {
+				// Password is not hashed, treat it as plain text
+				if (password.equals(storedPassword)) {
+					// Login successful, hash the plain text password and update the database
+					String hashedPassword = PasswordUtil.hashPassword(password);
+					customer.setPassword(hashedPassword);
+					customerDAO.update(customer); // Update the customer's password in the database
+
+					loginResult = true;
+				}
+			}
+
+			if (loginResult) {
+				// Login successful, proceed with session creation
+				HttpSession session = request.getSession();
+				session.setAttribute("loggedCustomer", customer);
+
+				// Check if a specific redirect URL is set, and redirect accordingly
+				Object objRedirectURL = session.getAttribute("redirectURL");
+				if (objRedirectURL != null) {
+					String redirectURL = (String) objRedirectURL;
+					session.removeAttribute("redirectURL");
+					response.sendRedirect(redirectURL);
+				} else {
+					response.sendRedirect(request.getContextPath());
+				}
+			} else {
+				// Incorrect password
+				String message = "Login failed. Please check your email or password";
+				request.setAttribute("message", message);
+				showLogin();
+			}
+		} else {
+			// Customer not found
 			String message = "Login failed. Please check your email or password";
 			request.setAttribute("message", message);
 			showLogin();
-		} else {
-			HttpSession session = request.getSession();
-			session.setAttribute("loggedCustomer", customer);
-			Object objRedirectURL = session.getAttribute("redirectURL");
-			if (objRedirectURL != null) {
-				String redirectURL = (String) objRedirectURL;
-				session.removeAttribute("redirectURL");
-				response.sendRedirect(redirectURL);
-			} else {
-				response.sendRedirect(request.getContextPath());
-			}
 		}
 	}
 

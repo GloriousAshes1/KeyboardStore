@@ -2,6 +2,7 @@ package com.keyboardstore.service;
 
 import com.keyboardstore.dao.UserDAO;
 import com.keyboardstore.entity.Users;
+import com.keyboardstore.passwordHash.PasswordUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -124,46 +125,68 @@ public class UserServices {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
-		// Check if login is successful by verifying credentials
-		boolean loginResult = userDAO.checkLogin(email, password);
+		// Fetch the user's details from the database using the email
+		Users user = userDAO.findByEmail(email);
 
-		if (loginResult) {
-			// Fetch the user's details from the database using the email
-			Users user = userDAO.findByEmail(email); // Fetch the user based on email
-			Integer userId = user.getUserId();       // Retrieve the userId from the Users entity
-			String role = user.getRole();            // Get the user's role from the entity
+		if (user != null) {
+			String storedPassword = user.getPassword();
+			boolean loginResult = false;
 
-			// Create a new session for the user if they are logged in
-			HttpSession session = request.getSession();
-			session.setAttribute("useremail", email);  // Store user email in the session
-			session.setAttribute("userrole", role);    // Store user role in the session
-			session.setAttribute("userId", userId);    // Store userId in the session
-
-			// Check if a specific redirect URL is set, and redirect accordingly
-			Object objRedirectURL = session.getAttribute("redirectURL");
-			if (objRedirectURL != null) {
-				String redirectURL = (String) objRedirectURL;
-				session.removeAttribute("redirectURL"); // Clean up the session
-				response.sendRedirect(redirectURL); // Redirect to the original requested URL
+			// Check if the stored password is hashed (BCrypt hash is typically 60 characters long)
+			if (storedPassword.length() == 60) {
+				// Password is hashed, use BCrypt to verify
+				loginResult = PasswordUtil.checkPassword(password, storedPassword);
 			} else {
-				// Redirect the user based on their role
-				if ("Manager".equalsIgnoreCase(role)) {
-					// Redirect to the manager's page
-					response.sendRedirect(request.getContextPath() + "/admin/");
-				} else if ("Sale Staff".equalsIgnoreCase(role)) {
-					// Redirect to the sales staff page
-					response.sendRedirect(request.getContextPath() + "/salestaff/");
-				} else {
-					// If the role is not recognized, show an error message
-					String message = "Invalid user role!";
-					request.setAttribute("message", message);
-					RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-					dispatcher.forward(request, response);
+				// Password is not hashed, treat it as plain text
+				if (password.equals(storedPassword)) {
+					// Login successful, hash the plain text password and update the database
+					String hashedPassword = PasswordUtil.hashPassword(password);
+					user.setPassword(hashedPassword);
+					userDAO.update(user); // Update the user's password in the database
+
+					loginResult = true;
 				}
 			}
+
+			if (loginResult) {
+				// Login successful, proceed with session creation
+				Integer userId = user.getUserId();   // Retrieve the userId
+				String role = user.getRole();        // Get the user's role
+
+				// Create a new session for the user
+				HttpSession session = request.getSession();
+				session.setAttribute("useremail", email); // Store user email in the session
+				session.setAttribute("userrole", role);   // Store user role in the session
+				session.setAttribute("userId", userId);   // Store userId in the session
+
+				// Redirect the user based on their role
+				Object objRedirectURL = session.getAttribute("redirectURL");
+				if (objRedirectURL != null) {
+					String redirectURL = (String) objRedirectURL;
+					session.removeAttribute("redirectURL");
+					response.sendRedirect(redirectURL);
+				} else {
+					if ("Manager".equalsIgnoreCase(role)) {
+						response.sendRedirect(request.getContextPath() + "/admin/");
+					} else if ("Sale Staff".equalsIgnoreCase(role)) {
+						response.sendRedirect(request.getContextPath() + "/salestaff/");
+					} else {
+						String message = "Invalid user role!";
+						request.setAttribute("message", message);
+						RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+						dispatcher.forward(request, response);
+					}
+				}
+			} else {
+				// Incorrect password
+				String message = "Login failed! Incorrect password.";
+				request.setAttribute("message", message);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+				dispatcher.forward(request, response);
+			}
 		} else {
-			// Login failed, display an error message and redirect to login page
-			String message = "Login failed! Please check your email or password.";
+			// User not found
+			String message = "Login failed! No user with email "+email+" found.";
 			request.setAttribute("message", message);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 			dispatcher.forward(request, response);
