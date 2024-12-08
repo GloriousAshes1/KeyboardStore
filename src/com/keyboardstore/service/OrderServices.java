@@ -10,9 +10,15 @@ import com.keyboardstore.entity.ProductOrder;
 import com.paypal.api.payments.ItemList;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.ShippingAddress;
+import com.google.gson.Gson;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +30,12 @@ public class OrderServices {
 	private OrderDAO orderDAO;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
+
+	public OrderServices(HttpServletRequest request, HttpServletResponse response) {
+		this.request = request;
+		this.response = response;
+		this.orderDAO = new OrderDAO();
+	}
 
 	public void listAllOrder() throws ServletException, IOException {
 		listAllOrder(null);
@@ -41,12 +53,6 @@ public class OrderServices {
 		String listPage = "order_list.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(listPage);
 		dispatcher.forward(request, response);
-	}
-
-	public OrderServices(HttpServletRequest request, HttpServletResponse response) {
-		this.request = request;
-		this.response = response;
-		this.orderDAO = new OrderDAO();
 	}
 
 	public void viewOrderDetailForAdmin() throws ServletException, IOException {
@@ -356,6 +362,7 @@ public class OrderServices {
 
 		listAllOrder(message);
 	}
+
 	public void changeOrderStatus(String status, String path, String message) throws ServletException, IOException {
 		Integer orderId = Integer.parseInt(request.getParameter("orderId"));
 		ProductOrder order = orderDAO.get(orderId);
@@ -370,5 +377,85 @@ public class OrderServices {
 		request.setAttribute("message", message);
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
 		requestDispatcher.forward(request, response);
+	}
+
+	public void showSalesReportForSpecificProduct() throws ServletException, IOException {
+		Integer productId = Integer.parseInt(request.getParameter("productId"));
+		Date startDate = null;
+		Date endDate = null;
+
+		// Parse the start and end dates if provided
+		try {
+			String startDateStr = request.getParameter("startDate");
+			String endDateStr = request.getParameter("endDate");
+
+			if (startDateStr != null && !startDateStr.isEmpty()) {
+				startDate = java.sql.Date.valueOf(startDateStr);
+			}
+			if (endDateStr != null && !endDateStr.isEmpty()) {
+				endDate = java.sql.Date.valueOf(endDateStr);
+			}
+		} catch (Exception e) {
+			// Handle parsing exceptions
+			e.printStackTrace();
+		}
+
+		List<Object[]> salesData = orderDAO.getSalesForSpecificProduct(productId, startDate, endDate);
+		request.setAttribute("salesData", salesData);
+		request.setAttribute("productId", productId);  // Pass productId
+		request.setAttribute("startDate", startDate);  // Pass startDate
+		request.setAttribute("endDate", endDate);      // Pass endDate
+
+		String reportPage = "admin/statistics.jsp";
+		RequestDispatcher dispatcher = request.getRequestDispatcher(reportPage);
+		dispatcher.forward(request, response);
+	}
+
+	public void showSalesReportForAllProduct() throws ServletException, IOException {
+		Integer productId = null;  // Null for all products
+		Date startDate = null;
+		Date endDate = null;
+
+		// Parse the start and end dates if provided
+		try {
+			String startDateStr = request.getParameter("startDate");
+			String endDateStr = request.getParameter("endDate");
+
+			if (startDateStr != null && !startDateStr.isEmpty()) {
+				startDate = java.sql.Date.valueOf(startDateStr);
+			}
+			if (endDateStr != null && !endDateStr.isEmpty()) {
+				endDate = java.sql.Date.valueOf(endDateStr);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		List<Object[]> salesData = orderDAO.getSalesForAllProducts(startDate, endDate);
+		request.setAttribute("salesData", salesData);
+		request.setAttribute("productId", productId);  // Pass null for all products
+		request.setAttribute("startDate", startDate);  // Pass startDate
+		request.setAttribute("endDate", endDate);      // Pass endDate
+
+		String reportPage = "admin/statistics.jsp";
+		RequestDispatcher dispatcher = request.getRequestDispatcher(reportPage);
+		dispatcher.forward(request, response);
+	}
+
+
+	public Double getTotalSales(Date startDate, Date endDate) {
+		return orderDAO.totalSales(startDate, endDate);
+	}
+
+	public Double getTotalTax(Date startDate, Date endDate) {
+		return orderDAO.totalTax(startDate, endDate);
+	}
+
+	public Double getTotalShippingFee(Date startDate, Date endDate) {
+		return orderDAO.totalShippingFee(startDate, endDate);
+	}
+
+	public Double getTotalSubTotal(Date startDate, Date endDate) {
+		return orderDAO.totalSubToTal(startDate, endDate);
 	}
 }

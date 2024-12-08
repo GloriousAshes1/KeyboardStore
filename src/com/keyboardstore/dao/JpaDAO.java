@@ -5,10 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 
 public class JpaDAO<E> {
 	private static EntityManagerFactory entityManagerFactory;
@@ -136,6 +133,25 @@ public class JpaDAO<E> {
 		return result;
 	}
 
+	public List<Object[]> findWithNamedQueryObjects(String queryName, Map<String, Object> parameters) {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+		Query query = entityManager.createNamedQuery(queryName);
+
+		// Set the parameters
+		Set<Entry<String, Object>> setParameters = parameters.entrySet();
+		for (Entry<String, Object> entry : setParameters) {
+			query.setParameter(entry.getKey(), entry.getValue());
+		}
+
+		List<Object[]> result = query.getResultList();
+
+		entityManager.close();
+
+		return result;
+	}
+
+
 	public long countWithNamedQuery(String queryName) {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		Query query = entityManager.createNamedQuery(queryName);
@@ -164,6 +180,48 @@ public class JpaDAO<E> {
 
 		return sum;
 	}
+
+	public double sumWithNamedQuery(String queryName, Map<String, Object> parameters) {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		Query query = entityManager.createNamedQuery(queryName);
+
+		// Set parameters for the query if provided
+		if (parameters != null) {
+			for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+
+		double sum = 0.0;
+
+		try {
+			// Execute the query and retrieve the result
+			Object result = query.getSingleResult();
+
+			// Check if the result is null and handle it
+			if (result != null) {
+				// If the result is a Number, we can safely cast it to a double
+				if (result instanceof Number) {
+					sum = ((Number) result).doubleValue();
+				} else {
+					// Handle unexpected result types
+					System.err.println("Unexpected result type: " + result.getClass().getName());
+				}
+			}
+		} catch (NoResultException e) {
+			// No results found, returning 0.0 as the sum
+			sum = 0.0;
+		} catch (Exception e) {
+			// Catch other exceptions and log them
+			e.printStackTrace();
+		} finally {
+			// Ensure the entity manager is closed to release resources
+			entityManager.close();
+		}
+
+		return sum;
+	}
+
 
 	public void close() {
 		 if (entityManagerFactory != null) { entityManagerFactory.close(); }

@@ -68,6 +68,24 @@ public class OrderDAO extends JpaDAO<ProductOrder> implements GenericDAO<Product
 		return super.findWithNamedQuery("ProductOrder.findAll", 0, 3);
 	}
 
+	public List<Object[]> getSalesForAllProducts(Date startDate, Date endDate) {
+		Map<String, Object> parameters = Map.of(
+				"startDate", startDate,
+				"endDate", endDate
+		);
+		return super.findWithNamedQueryObjects("OrderDetail.fetchSalesForAllProducts", parameters);
+	}
+
+	public List<Object[]> getSalesForSpecificProduct(Integer productId, Date startDate, Date endDate) {
+		Map<String, Object> parameters = Map.of(
+				"productId", productId,
+				"startDate", startDate,
+				"endDate", endDate
+		);
+		return super.findWithNamedQueryObjects("OrderDetail.fetchSalesForSpecificProduct", parameters);
+	}
+
+
 	public Double totalSales() {
 		double sum = sumWithNamedQuery("ProductOrder.sumTotal");
 		BigDecimal bd = new BigDecimal(Double.toString(sum));
@@ -90,6 +108,63 @@ public class OrderDAO extends JpaDAO<ProductOrder> implements GenericDAO<Product
 		double sum = sumWithNamedQuery("ProductOrder.sumSubToTal");
 		BigDecimal bd = new BigDecimal(Double.toString(sum));
 		bd = bd.setScale(2, RoundingMode.HALF_UP); // Làm tròn đến 2 chữ số thập phân
+		return bd.doubleValue();
+	}
+
+	/**
+	 * Get total sales for orders within a specific date range.
+	 */
+	public Double totalSales(Date startDate, Date endDate) {
+		Map<String, Object> parameters = Map.of(
+				"startDate", startDate,
+				"endDate", endDate
+		);
+		double sum = sumWithNamedQuery("ProductOrder.sumTotalByDate", parameters);
+		return roundToTwoDecimalPlaces(sum);
+	}
+
+	/**
+	 * Get total tax for orders within a specific date range.
+	 */
+	public Double totalTax(Date startDate, Date endDate) {
+		Map<String, Object> parameters = Map.of(
+				"startDate", startDate,
+				"endDate", endDate
+		);
+		double sum = sumWithNamedQuery("ProductOrder.sumTaxByDate", parameters);
+		return roundToTwoDecimalPlaces(sum);
+	}
+
+	/**
+	 * Get total shipping fees for orders within a specific date range.
+	 */
+	public Double totalShippingFee(Date startDate, Date endDate) {
+		Map<String, Object> parameters = Map.of(
+				"startDate", startDate,
+				"endDate", endDate
+		);
+		double sum = sumWithNamedQuery("ProductOrder.sumShippingFeeByDate", parameters);
+		return roundToTwoDecimalPlaces(sum);
+	}
+
+	/**
+	 * Get total subtotal for orders within a specific date range.
+	 */
+	public Double totalSubToTal(Date startDate, Date endDate) {
+		Map<String, Object> parameters = Map.of(
+				"startDate", startDate,
+				"endDate", endDate
+		);
+		double sum = sumWithNamedQuery("ProductOrder.sumSubToTalByDate", parameters);
+		return roundToTwoDecimalPlaces(sum);
+	}
+
+	/**
+	 * Helper method to round values to two decimal places.
+	 */
+	private Double roundToTwoDecimalPlaces(double value) {
+		BigDecimal bd = new BigDecimal(Double.toString(value));
+		bd = bd.setScale(2, RoundingMode.HALF_UP);
 		return bd.doubleValue();
 	}
 }

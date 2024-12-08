@@ -101,9 +101,14 @@ public class CustomerService {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("customer_form.jsp");
 			dispatcher.forward(request, response);
 		} else {
-			// Create new customer
+			// Create new customer with hashed password
 			Customer newCustomer = new Customer();
 			updateCustomerFieldsFromForm(newCustomer);
+
+			// Encrypt password before saving
+			String hashedPassword = PasswordUtil.hashPassword(newCustomer.getPassword());
+			newCustomer.setPassword(hashedPassword);
+
 			customerDAO.create(newCustomer);
 			String message = "New customer has been created successfully";
 			listCustomers(message, "success");
@@ -165,6 +170,14 @@ public class CustomerService {
 		} else {
 			Customer customerById = customerDAO.get(customerId);
 			updateCustomerFieldsFromForm(customerById);
+
+			// If the password field is not empty, hash it before updating
+			String password = request.getParameter("password");
+			if (password != null && !password.isEmpty()) {
+				String hashedPassword = PasswordUtil.hashPassword(password);
+				customerById.setPassword(hashedPassword);
+			}
+
 			customerDAO.update(customerById);
 			String message = "The customer has been updated successfully";
 			listCustomers(message, "success");
@@ -184,21 +197,29 @@ public class CustomerService {
 		Customer existCustomer = customerDAO.findByEmail(email);
 		String message = "";
 		if (existCustomer != null) {
-			message = "Could not register you. Email " + email + " is already registred by another customer";
+			message = "Could not register you. Email " + email + " is already registered by another customer";
 		} else {
 			Customer newCustomer = new Customer();
 			updateCustomerFieldsFromForm(newCustomer);
+
+			// Encrypt password before creating the customer
+			String hashedPassword = PasswordUtil.hashPassword(newCustomer.getPassword());
+			newCustomer.setPassword(hashedPassword);
+
 			customerDAO.create(newCustomer);
-            String title = "Register Successfully !!!";
-            String body = "Thank you for your registration at KeyBoard Store!\n" +
-                    "If you have any questions or need further assistance, please contact us at Website or call (+84) 0398641860.\n" +
-                    "Have a great day!\n" +
-                    "Best regards.";
-            //gửi mail
+
+			String title = "Register Successfully !!!";
+			String body = "Thank you for your registration at KeyBoard Store!\n" +
+					"If you have any questions or need further assistance, please contact us at Website or call (+84) 0398641860.\n" +
+					"Have a great day!\n" +
+					"Best regards.";
+
+			// Send mail
 			MailServices mailServices = new MailServices();
 			mailServices.SendMail(email, title, body);
-			message = "You have been registered  succesefully.Thank you.<br/>"
-					+ "<a href='login'>Click here</a> to login";
+
+			message = "You have been registered successfully. Thank you.<br/>" +
+					"<a href='login'>Click here</a> to login";
 		}
 		String messagePage = "frontend/message.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(messagePage);

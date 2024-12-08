@@ -22,7 +22,17 @@ import javax.persistence.Table;
 			query = "SELECT od.product FROM OrderDetail od GROUP by od.product.productId "
 					+ "ORDER BY SUM(od.quantity) DESC"),
 	@NamedQuery(name = "OrderDetail.countByGame",
-				query = "SELECT COUNT(*) FROM OrderDetail od WHERE od.product.productId =:productId")
+				query = "SELECT COUNT(*) FROM OrderDetail od WHERE od.product.productId =:productId"),
+		@NamedQuery(name = "OrderDetail.fetchSalesForAllProducts",
+				query = "SELECT od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) "
+						+ "FROM OrderDetail od "
+						+ "WHERE od.productOrder.orderDate BETWEEN :startDate AND :endDate "
+						+ "GROUP BY od.product.productId, od.product.productName"),
+		@NamedQuery(name = "OrderDetail.fetchSalesForSpecificProduct",
+				query = "SELECT od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) "
+						+ "FROM OrderDetail od "
+						+ "WHERE od.product.productId = :productId AND od.productOrder.orderDate BETWEEN :startDate AND :endDate "
+						+ "GROUP BY od.product.productId, od.product.productName")
 	
 })
 public class OrderDetail implements java.io.Serializable {

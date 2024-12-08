@@ -60,7 +60,9 @@ public class UserServices {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("user_form.jsp");
 			dispatcher.forward(request, response);
 		} else {
-			Users newUser = new Users(email, fullname, password,role);
+			// Encrypt the password before saving
+			String hashedPassword = PasswordUtil.hashPassword(password);
+			Users newUser = new Users(email, fullname, hashedPassword, role);
 			userDAO.create(newUser);
 			listUser("New user created successfully", "success");  // Success message type
 		}
@@ -82,25 +84,32 @@ public class UserServices {
 		String fullName = request.getParameter("fullname");
 		String password = request.getParameter("password");
 		String role = request.getParameter("role");
-		
+
 		Users userById = userDAO.get(userId);
 		Users userByEmail = userDAO.findByEmail(email);
-		
-		if(userByEmail != null && userByEmail.getUserId() != userById.getUserId()) {
+
+		if (userByEmail != null && userByEmail.getUserId() != userById.getUserId()) {
 			String message = "Could not update user. User with email " + email + " already exists.";
 			request.setAttribute("message", message);
 			request.setAttribute("messageType", "error");  // Error message type
 			// Set attributes to retain entered data
-			Users user = userDAO.get(userId);
-			request.setAttribute("user", user);
+			request.setAttribute("user", userById);
 			request.setAttribute("email", email);
 			request.setAttribute("fullname", fullName);
 			request.setAttribute("role", role);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("user_form.jsp");
 			dispatcher.forward(request, response);
 		} else {
-			Users user = new Users(userId,email, fullName, password,role);
-			userDAO.update(user);
+			// If password is provided, hash it; otherwise, keep the existing password
+			String hashedPassword;
+			if (password != null && !password.isEmpty()) {
+				hashedPassword = PasswordUtil.hashPassword(password);
+			} else {
+				hashedPassword = userById.getPassword();  // Keep the existing password if it's not changed
+			}
+
+			Users updatedUser = new Users(userId, email, fullName, hashedPassword, role);
+			userDAO.update(updatedUser);
 
 			String message = "User is updated successfully";
 			listUser(message, "success");  // Success message type
