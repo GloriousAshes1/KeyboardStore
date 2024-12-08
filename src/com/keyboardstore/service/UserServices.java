@@ -179,7 +179,10 @@ public class UserServices {
 						response.sendRedirect(request.getContextPath() + "/admin/");
 					} else if ("Sale Staff".equalsIgnoreCase(role)) {
 						response.sendRedirect(request.getContextPath() + "/salestaff/");
-					} else {
+					} else if ("Warehouser".equalsIgnoreCase(role)) {
+						response.sendRedirect(request.getContextPath() + "/warehouser/");
+					}
+					else {
 						String message = "Invalid user role!";
 						request.setAttribute("message", message);
 						RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
