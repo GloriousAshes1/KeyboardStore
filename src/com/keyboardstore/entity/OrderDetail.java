@@ -24,19 +24,15 @@ import javax.persistence.Table;
 	@NamedQuery(name = "OrderDetail.countByGame",
 				query = "SELECT COUNT(*) FROM OrderDetail od WHERE od.product.productId =:productId"),
 		@NamedQuery(name = "OrderDetail.fetchSalesForAllProducts",
-				query = "SELECT od.product.productId, od.product.productName, od.productOrder.orderDate, SUM(od.quantity), SUM(od.subtotal) "
+				query = "SELECT od.productOrder.orderDate, od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) "
 						+ "FROM OrderDetail od "
 						+ "WHERE od.productOrder.orderDate BETWEEN :startDate AND :endDate "
-						+ "GROUP BY od.product.productId, od.product.productName, od.productOrder.orderDate "
-						+ "ORDER BY od.productOrder.orderDate ASC"),
+						+ "GROUP BY od.productOrder.orderDate, od.product.productId, od.product.productName"),
 		@NamedQuery(name = "OrderDetail.fetchSalesForSpecificProduct",
-				query = "SELECT od.product.productId, od.product.productName, od.productOrder.orderDate, SUM(od.quantity), SUM(od.subtotal) "
+				query = "SELECT od.productOrder.orderDate, od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) "
 						+ "FROM OrderDetail od "
 						+ "WHERE od.product.productId = :productId AND od.productOrder.orderDate BETWEEN :startDate AND :endDate "
-						+ "GROUP BY od.product.productId, od.product.productName, od.productOrder.orderDate "
-						+ "ORDER BY od.productOrder.orderDate ASC")
-
-
+						+ "GROUP BY od.productOrder.orderDate, od.product.productId, od.product.productName")
 })
 public class OrderDetail implements java.io.Serializable {
 
