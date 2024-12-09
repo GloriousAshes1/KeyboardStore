@@ -39,7 +39,7 @@
   <c:set var="endIndex" value="${startIndex + itemsPerPage > totalItems ? totalItems : startIndex + itemsPerPage}" />
   <!-- Product Table -->
   <table class="table table-striped table-hover caption-top">
-    <thead>
+    <thead class="table-primary">
     <tr>
       <th>Product ID</th>
       <th>Product Name</th>

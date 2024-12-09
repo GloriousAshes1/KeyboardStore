@@ -1,4 +1,4 @@
-package com.keyboardstore.controller.admin.warehouser;
+package com.keyboardstore.controller.warehouser;
 
 import com.keyboardstore.dao.ImportDAO;
 import com.keyboardstore.entity.Import;

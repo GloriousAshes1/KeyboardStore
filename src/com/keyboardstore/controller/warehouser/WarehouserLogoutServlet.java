@@ -1,4 +1,4 @@
-package com.keyboardstore.controller.admin.warehouser;
+package com.keyboardstore.controller.warehouser;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,7 +19,7 @@ public class WarehouserLogoutServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.removeAttribute("useremail");
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/warehouser/login.jsp");
         dispatcher.forward(request, response);
     }
 }

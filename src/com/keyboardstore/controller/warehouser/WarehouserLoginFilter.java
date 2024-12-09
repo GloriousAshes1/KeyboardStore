@@ -1,4 +1,4 @@
-package com.keyboardstore.controller.admin.warehouser;
+package com.keyboardstore.controller.warehouser;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

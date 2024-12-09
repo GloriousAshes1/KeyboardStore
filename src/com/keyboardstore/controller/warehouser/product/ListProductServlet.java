@@ -1,4 +1,4 @@
-package com.keyboardstore.controller.admin.warehouser.product;
+package com.keyboardstore.controller.warehouser.product;
 
 import com.keyboardstore.controller.BaseServlet;
 import com.keyboardstore.service.ProductServices;

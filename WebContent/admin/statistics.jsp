@@ -42,10 +42,9 @@
 
         // Process sales data to extract labels (dates) and sales numbers
         for (var i = 0; i < salesData.length; i++) {
-            console.log(salesData[i]);  // Log each data item for debugging
-            var date = new Date(salesData[i][0]);  // Convert date string to Date object if necessary
+            var date = new Date(salesData[i][2]);  // Assuming the date is at index 2
             labels.push(date.toLocaleDateString());  // Format the date as a string
-            data.push(salesData[i][1]);  // Sales amount
+            data.push(salesData[i][3]);  // Assuming sales amount (subtotal) is at index 3
         }
 
         // Chart.js configuration

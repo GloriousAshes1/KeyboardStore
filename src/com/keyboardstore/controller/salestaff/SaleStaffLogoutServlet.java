@@ -18,7 +18,7 @@ public class SaleStaffLogoutServlet extends BaseServlet {
         HttpSession session = request.getSession();
         session.removeAttribute("useremail");
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/login.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/salestaff/login.jsp");
         dispatcher.forward(request, response);
     }
 }

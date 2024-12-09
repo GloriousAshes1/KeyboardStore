@@ -1,4 +1,4 @@
-package com.keyboardstore.controller.admin.warehouser.order;
+package com.keyboardstore.controller.warehouser.order;
 
 import com.keyboardstore.service.OrderServices;
 

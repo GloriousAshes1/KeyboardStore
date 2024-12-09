@@ -1,4 +1,4 @@
-package com.keyboardstore.controller.admin.warehouser.category;
+package com.keyboardstore.controller.warehouser.category;
 
 import com.keyboardstore.controller.BaseServlet;
 import com.keyboardstore.service.CategoryServices;

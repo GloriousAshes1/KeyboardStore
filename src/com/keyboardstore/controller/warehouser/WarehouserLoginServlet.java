@@ -1,6 +1,6 @@
-package com.keyboardstore.controller.admin.warehouser.imports;
+package com.keyboardstore.controller.warehouser;
 
-import com.keyboardstore.service.ImportService;
+import com.keyboardstore.service.UserServices;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/warehouser/create_import")
-public class CreateImportServlet extends HttpServlet {
+@WebServlet("/warehouser/login")
+public class WarehouserLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    public CreateImportServlet() {super();}
+    public WarehouserLoginServlet() {}
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ImportService importService = new ImportService(request, response);
-        importService.addImport();
+        UserServices userServices = new UserServices(request, response);
+        userServices.login();
     }
 }

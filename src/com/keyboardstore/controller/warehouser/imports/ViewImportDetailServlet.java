@@ -1,4 +1,4 @@
-package com.keyboardstore.controller.admin.warehouser.imports;
+package com.keyboardstore.controller.warehouser.imports;
 
 import com.keyboardstore.service.ImportService;
 
@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/warehouser/list_import")
-public class ListImportServlet extends HttpServlet {
+@WebServlet("/warehouser/view_import")
+public class ViewImportDetailServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    public ListImportServlet() {super();}
+    public ViewImportDetailServlet() {super();}
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ImportService importService = new ImportService(request, response);
-        importService.listAllImports();
+        ImportService importService = new ImportService(request,response);
+        importService.viewImportDetail();
     }
 }
