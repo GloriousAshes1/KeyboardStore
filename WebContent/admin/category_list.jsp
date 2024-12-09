@@ -24,7 +24,7 @@
 		<form method="GET" action="new_category">
 			<button type="submit" class="btn-add">+ Add Category</button>
 		</form>
-		</div>
+	</div>
 
 		<!-- Set Page -->
 		<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />

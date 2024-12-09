@@ -299,9 +299,6 @@ public class OrderServices {
 		String country = request.getParameter("country");
 		String zipcode = request.getParameter("zipcode");
 
-		float shippingFee = Float.parseFloat(request.getParameter("shippingFee"));
-		float tax = Float.parseFloat(request.getParameter("tax"));
-
 		String paymentMethod = request.getParameter("paymentMethod");
 		String orderStatus = request.getParameter("orderStatus");
 
@@ -314,8 +311,6 @@ public class OrderServices {
 		order.setState(state);
 		order.setCountry(country);
 		order.setZipcode(zipcode);
-		order.setShippingFee(shippingFee);
-		order.setTax(tax);
 		order.setPaymentMethod(paymentMethod);
 		order.setStatus(orderStatus);
 
@@ -351,8 +346,6 @@ public class OrderServices {
 		}
 
 		order.setSubtotal(totalAmount);
-		totalAmount += shippingFee;
-		totalAmount += tax;
 
 		order.setTotal(totalAmount);
 

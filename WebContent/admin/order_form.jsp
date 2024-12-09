@@ -100,35 +100,35 @@
 				<table>
 			<tr>
 				<td><b>First Name: </b></td>
-				<td><input type="text" name="firstname" id="firstname" value="${order.firstname}" size="45" /></td>
+				<td><input type="text" name="firstname" id="firstname" value="${order.firstname}" /></td>
 			</tr>
 			<tr>
 				<td><b>Last Name: </b></td>
-				<td><input type="text" name="lastname" id="lastname" value="${order.lastname}" size="45" /></td>
+				<td><input type="text" name="lastname" id="lastname" value="${order.lastname}"/></td>
 			</tr>
 			<tr>
 				<td><b>Phone: </b></td>
-				<td><input type="text" name="phone" id="phone" value="${order.phone}" size="45" /></td>
+				<td><input type="text" name="phone" id="phone" value="${order.phone}"/></td>
 			</tr>
 			<tr>
 				<td><b>Address Line 1: </b></td>
-				<td><input type="text" name="address1" id="address1" value="${order.addressLine1}" size="45" /></td>
+				<td><input type="text" name="address1" id="address1" value="${order.addressLine1}"/></td>
 			</tr>
 			<tr>
 				<td><b>Address Line 2: </b></td>
-				<td><input type="text" name="address2" id="address2" value="${order.addressLine2}" size="45" /></td>
+				<td><input type="text" name="address2" id="address2" value="${order.addressLine2}" /></td>
 			</tr>
 			<tr>
 				<td><b>City: </b></td>
-				<td><input type="text" name="city" id="city" value="${order.city}" size="45" /></td>
+				<td><input type="text" name="city" id="city" value="${order.city}" /></td>
 			</tr>
 			<tr>
 				<td><b>State: </b></td>
-				<td><input type="text" name="state" id="state" value="${order.state}" size="45" /></td>
+				<td><input type="text" name="state" id="state" value="${order.state}" /></td>
 			</tr>
 			<tr>
 				<td><b>Zipcode: </b></td>
-				<td><input type="text" name="zipcode" id="zipcode" value="${order.zipcode}" size="45" /></td>
+				<td><input type="text" name="zipcode" id="zipcode" value="${order.zipcode}" /></td>
 			</tr>
 			<tr>
 				<td><b>Country:</b></td>
@@ -144,7 +144,7 @@
 		</table>
 		</div>
 		<div align="center">
-			<h2>Ordered Games</h2>
+			<h2>Ordered Products</h2>
 			<table class="table custom-table caption-top table-success table-hover table-bordered" border="1">
     <thead>
         <tr>
@@ -168,7 +168,7 @@
 						<fmt:formatNumber value="${orderDetail.product.sellingPrice}" type="currency" />
 					</td>
                 <td>
-                    <input type="hidden" name="gameId" value="${orderDetail.product.productId}" />
+                    <input type="hidden" name="productId" value="${orderDetail.product.productId}" />
                     <input type="text" name="quantity${status.index + 1}" id="quantity" value="${orderDetail.quantity}" size="5" />
                 </td>
                 <td>
@@ -195,7 +195,7 @@
 
 		<div align="center">
 			<br /> 
-			<button class="btn btn-info" onclick="javascript:showAddGamePopup()"><b>Add Games</b></button>
+			<button class="btn btn-info" onclick="javascript:showAddGamePopup()"><b>Add Products</b></button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<button class="btn btn-primary" type="submit">Save</button>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -253,6 +253,12 @@
 			return false;
 		}
 
+		if (firstName.length > 50) {
+			showError("First Name", "OVER_LENGTH_ERROR")
+			$("firstName").focus();
+			return false;
+		}
+
 		if (!/^[a-zA-Z]+$/.test(firstName)) {
 			showError("First Name", "INVALID_INPUT");
 			$("#firstname").focus();
@@ -264,6 +270,12 @@
 		if (lastName === "") {
 			showError("Last Name", "NULL_INPUT");
 			$("#lastname").focus();
+			return false;
+		}
+
+		if (lastName.length > 50) {
+			showError("Last Name", "OVER_LENGTH_ERROR")
+			$("lastname").focus();
 			return false;
 		}
 
