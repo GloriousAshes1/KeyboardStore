@@ -108,85 +108,104 @@ public class ImportService {
     public void showAddImportForm() throws ServletException, IOException {
         List<Product> listProduct = productDAO.listAllSortedByStock();
         request.setAttribute("listProduct", listProduct);
+
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+        Users user = userDAO.get(userId);
+        String fullName = user.getFullName();
+        System.out.println("FullName: " + fullName); // Kiểm tra giá trị fullName
+        request.setAttribute("fullName", fullName);
         String addPage = "import_form.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(addPage);
         dispatcher.forward(request, response);
     }
 
-    public void addImport() throws ServletException, IOException {
-        // Read import info like sumPrice, tax, shippingFee
-        Import imp = readImportInfo();
 
+    private void addImport(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Đọc thông tin nhập hàng
+        Import imp = readImportInfo(request);
+
+        // Lấy thông tin người dùng từ phiên làm việc
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
 
-        // Set the user (seller)
+        // Thiết lập người dùng (người bán)
         Users user = userDAO.get(userId);
         imp.setUser(user);
 
-        // Get product details from the form (handle multiple products)
+        // Lấy chi tiết sản phẩm từ form
         String[] productIds = request.getParameterValues("productId");
         String[] quantities = request.getParameterValues("quantity");
         String[] importPrices = request.getParameterValues("importPrice");
 
+        // Kiểm tra tính hợp lệ của dữ liệu
+        if (productIds == null || quantities == null || importPrices == null ||
+                productIds.length != quantities.length || quantities.length != importPrices.length) {
+            throw new ServletException("Thông tin sản phẩm không hợp lệ.");
+        }
+
+        // Tạo bộ sưu tập để lưu trữ chi tiết nhập hàng
         Set<ImportDetail> importDetails = new HashSet<>();
         float totalSumPrice = 0;
 
-        // Validate product data
-        if (productIds == null || quantities == null || importPrices == null ||
-                productIds.length != quantities.length || quantities.length != importPrices.length) {
-            throw new ServletException("Invalid product details.");
-        }
-
-        // Process each product row
+        // Xử lý từng sản phẩm
         for (int i = 0; i < productIds.length; i++) {
             try {
+                // Chuyển đổi dữ liệu
                 Integer productId = Integer.parseInt(productIds[i]);
                 int quantity = Integer.parseInt(quantities[i]);
                 float importPrice = Float.parseFloat(importPrices[i]);
 
-                if (quantity <= 0 || importPrice <= 0) {
-                    throw new NumberFormatException("Quantity and import price must be positive.");
+                // Kiểm tra tính hợp lệ
+                if (productId <= 0 || quantity <= 0 || importPrice <= 0) {
+                    throw new ServletException("Dữ liệu sản phẩm không hợp lệ.");
                 }
 
-                // Retrieve product and calculate subtotal (price * quantity)
+                // Lấy sản phẩm từ cơ sở dữ liệu
                 Product product = productDAO.get(productId);
-                float subtotal = quantity * importPrice;
 
-                // Update product stock based on imported quantity
+                // Cập nhật số lượng tồn kho
                 int updatedStock = product.getStock() + quantity;
                 product.setStock(updatedStock);
 
-                // Persist the product with the updated stock
+                // Cập nhật sản phẩm
                 productDAO.update(product);
 
-                // Create ImportDetail and add it to the import
+                // Tạo chi tiết nhập hàng
                 ImportDetail importDetail = new ImportDetail();
                 importDetail.setProduct(product);
                 importDetail.setQuantity(quantity);
                 importDetail.setImportPrice(importPrice);
-                importDetail.setImportEntity(imp); // Set the import for this detail
+                importDetail.setImportEntity(imp);
 
+                // Thêm chi tiết nhập hàng vào bộ sưu tập
                 importDetails.add(importDetail);
 
-                // Accumulate sum for total import price
-                totalSumPrice += subtotal;
+                // Tính tổng giá trị nhập hàng
+                totalSumPrice += quantity * importPrice;
 
             } catch (NumberFormatException e) {
-                throw new ServletException("Invalid data in the import details (quantity or importPrice).", e);
+                throw new ServletException("Dữ liệu sản phẩm không hợp lệ.", e);
             }
         }
 
-        // Set import details and sum price for the import
+        // Thiết lập chi tiết nhập hàng và tổng giá trị cho nhập hàng
         imp.setImportDetails(importDetails);
         imp.setSumPrice(totalSumPrice);
 
-        // Save the import in the database
+        // Lưu nhập hàng vào cơ sở dữ liệu
         importDAO.create(imp);
 
-        // Return success message and redirect
-        String message = "New import has been added successfully!";
-        listAllImports(message);
+        // Trả về thông báo thành công và chuyển hướng
+        String message = "Nhập hàng mới đã được thêm thành công!";
+}
+
+    private Import readImportInfo(HttpServletRequest request) {
+        // Đọc thông tin nhập hàng từ form
+        Import imp = new Import();
+        // ...
+
+        return imp;
     }
 
     // Delete an import

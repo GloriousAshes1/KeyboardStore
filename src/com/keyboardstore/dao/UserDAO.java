@@ -60,4 +60,12 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
 		return super.findWithNamedQuery("Users.search", "query", "%" + query + "%");
 	}
 
+	public String findFullNameByUserId(Integer userId) {
+		Users user = super.find(Users.class, userId);
+		if (user != null) {
+			return user.getFullName(); // Giả sử entity `Users` có phương thức `getFullName`
+		}
+		return null;
+	}
+
 }
