@@ -1,19 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="baseUrl" value="/KeyboardStore/admin/list_customer" />
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>Customer List - Legendary Product Store Administration</title>
-	<jsp:include page="/admin/head.jsp"/>
+	<jsp:include page="head.jsp"/>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
 	<div class="content">
 		<h1 align="center">Customer Management</h1>
 		<!-- Add Notificaiton -->
-		<jsp:directive.include file="/admin/notification.jsp"/>
+		<jsp:directive.include file="notification.jsp"/>
+
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<!-- Add Search -->
 			<input class="form-control" id="myInput" type="text" placeholder="Search..">
@@ -37,7 +39,6 @@
 				<th scope="col">State</th>
 				<th scope="col">Country</th>
 				<th scope="col">Register Date</th>
-				<th scope="col">Actions</th>
 			</tr>
 			</thead>
 			<tbody id="myTable">
@@ -52,18 +53,23 @@
 					<td>${customer.state}</td>
 					<td>${customer.countryName}</td>
 					<td>${customer.registerDate}</td>
-					<td><a href="edit_customer?id=${customer.customerId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a>
-						&nbsp; <a href="javascript:confirmDelete(${customer.customerId})"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
-					</td>
 				</tr>
 			</c:forEach>
 			</tbody>
 		</table>
-		<!-- Page Navigation -->
-		<jsp:directive.include file="/admin/page_navigation.jsp"/>
-		<jsp:directive.include file="footer.jsp" />
+	<!-- Page Navigation -->
+	<jsp:directive.include file="page_navigation.jsp"/>
+	<jsp:directive.include file="footer.jsp" />
 	</div>
+
 	<script type="text/javascript">
+		function confirmDelete(customerId) {
+			if (confirm('Are you sure you want to delete cusgtomer with ID '
+					+ customerId + '?')) {
+				window.location = 'delete_customer?id=' + customerId;
+			}
+		}
+
 		$(document).ready(function(){
 			$("#myInput").on("keyup", function() {
 				var value = $(this).val().toLowerCase();

@@ -1,0 +1,7 @@
+code,message
+NULL_INPUT, is required!
+INVALID_INPUT, is not in correct format!
+SHORT_LENGTH_ERROR, is too short!
+OVER_LENGTH_ERROR, is too long!
+PASSWORD_MISMATCH, is not match to Password!
+FILE_TOO_LARGE, is too large (filesize > 2MB)!

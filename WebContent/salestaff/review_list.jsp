@@ -1,23 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="baseUrl" value="/KeyboardStore/admin/list_review" />
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Review Management</title>
-	<jsp:include page="/admin/head.jsp"/>
+	<jsp:include page="head.jsp"/>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
 	<div class="content">
 		<h1 align="center">Review Management</h1>
 		<!-- Add Notificaiton -->
-		<jsp:directive.include file="/admin/notification.jsp"/>
+		<jsp:directive.include file="notification.jsp"/>
 
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<!-- Add Search -->
 			<input class="form-control" id="myInput" type="text" placeholder="Search..">
 		</div>
+
 		<!-- Set Page -->
 		<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
 		<c:set var="itemsPerPage" value="10" />
@@ -25,7 +27,7 @@
 		<c:set var="totalPages" value="${(totalItems / itemsPerPage) + (totalItems % itemsPerPage > 0 ? 1 : 0)}" />
 		<c:set var="startIndex" value="${(currentPage - 1) * itemsPerPage}" />
 		<c:set var="endIndex" value="${startIndex + itemsPerPage > totalItems ? totalItems : startIndex + itemsPerPage}" />
-	<div align="center">
+
 		<table class="table table-hover table-striped caption-top">
 			<thead class="table-primary">
 			<tr>
@@ -36,7 +38,6 @@
 				<th scope="col">Headline</th>
 				<th scope="col">Customer</th>
 				<th scope="col">Review On</th>
-				<th scope="col">Actions</th>
 			</tr>
 			</thead>
 			<tbody id="myTable">
@@ -49,19 +50,16 @@
 					<td>${review.headline}</td>
 					<td>${review.customer.fullname}</td>
 					<td>${review.reviewTime}</td>
-					<td>
-						<a href="edit_review?id=${review.reviewId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
-						<a href="javascript:confirmDelete(${review.reviewId})" id="${review.reviewId}"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
-				</td>
 				</tr>
 			</c:forEach>
 			</tbody>
 		</table>
-	</div>
+
 		<!-- Page navigation -->
-		<jsp:directive.include file="/admin/page_navigation.jsp" />
+		<jsp:directive.include file="page_navigation.jsp" />
 		<jsp:directive.include file="footer.jsp" />
-	</div>
+		</div>
+
 	<script>
 		function confirmDelete(reviewId){
 			if(confirm('Are you sure about deleting review with ID '+ reviewId + '?')){
@@ -78,5 +76,7 @@
 			});
 		});
 	</script>
+
+
 </body>
 </html>

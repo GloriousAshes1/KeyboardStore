@@ -173,16 +173,6 @@
 	});
 
 	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
-	var isEditMode = false;
-
-	<%
-        Object userObj = request.getAttribute("product");
-        if (userObj != null) {
-    %>
-	isEditMode = true;
-	<%
-        }
-    %>
 	// Xử lý khi form được submit
 		$(document).ready(function() {
 			$("#productForm").on("submit", function(event) {
@@ -246,7 +236,7 @@
 
 		// Kiểm tra hình ảnh
 		var imageField = $("#image");
-		if (imageField.length > 0 && imageField[0].files.length === 0 && !isEditMode) {
+		if (imageField.length > 0 && imageField[0].files.length === 0) {
 			showError("Image", "NULL_INPUT");
 			imageField.focus();
 			return false;

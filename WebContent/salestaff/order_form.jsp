@@ -3,16 +3,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ include file="read_message.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Edit Order - Administration</title>
-<link rel="stylesheet" href="../css/style.css">
-<link rel="icon" type="image/x-icon" href="../images/Logo.png">
-<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-
+<jsp:directive.include file="head.jsp"/>
 <style>
 .modal {
     display: none;
@@ -104,35 +100,35 @@
 				<table>
 			<tr>
 				<td><b>First Name: </b></td>
-				<td><input type="text" name="firstname" id="firstname" value="${order.firstname}" size="45" /></td>
+				<td><input type="text" name="firstname" id="firstname" value="${order.firstname}" /></td>
 			</tr>
 			<tr>
 				<td><b>Last Name: </b></td>
-				<td><input type="text" name="lastname" id="lastname" value="${order.lastname}" size="45" /></td>
+				<td><input type="text" name="lastname" id="lastname" value="${order.lastname}"/></td>
 			</tr>
 			<tr>
 				<td><b>Phone: </b></td>
-				<td><input type="text" name="phone" value="${order.phone}" size="45" /></td>
+				<td><input type="text" name="phone" id="phone" value="${order.phone}"/></td>
 			</tr>
 			<tr>
 				<td><b>Address Line 1: </b></td>
-				<td><input type="text" name="address1" id="address1" value="${order.addressLine1}" size="45" /></td>
+				<td><input type="text" name="address1" id="address1" value="${order.addressLine1}"/></td>
 			</tr>
 			<tr>
 				<td><b>Address Line 2: </b></td>
-				<td><input type="text" name="address2" id="address2" value="${order.addressLine2}" size="45" /></td>
+				<td><input type="text" name="address2" id="address2" value="${order.addressLine2}" /></td>
 			</tr>
 			<tr>
 				<td><b>City: </b></td>
-				<td><input type="text" name="city" value="${order.city}" size="45" /></td>
+				<td><input type="text" name="city" id="city" value="${order.city}" /></td>
 			</tr>
 			<tr>
 				<td><b>State: </b></td>
-				<td><input type="text" name="state" value="${order.state}" size="45" /></td>
+				<td><input type="text" name="state" id="state" value="${order.state}" /></td>
 			</tr>
 			<tr>
 				<td><b>Zipcode: </b></td>
-				<td><input type="text" name="zipcode" value="${order.zipcode}" size="45" /></td>
+				<td><input type="text" name="zipcode" id="zipcode" value="${order.zipcode}" /></td>
 			</tr>
 			<tr>
 				<td><b>Country:</b></td>
@@ -148,7 +144,7 @@
 		</table>
 		</div>
 		<div align="center">
-			<h2>Ordered Games</h2>
+			<h2>Ordered Products</h2>
 			<table class="table custom-table caption-top table-success table-hover table-bordered" border="1">
     <thead>
         <tr>
@@ -168,12 +164,12 @@
                 <td>${orderDetail.product.productName}</td>
                 <td>${orderDetail.product.brand}</td>
                 <td>
-						<input type="hidden" name="price" value="${orderDetail.product.sellingPrice}" />
+						<input type="hidden" name="price" id="price" value="${orderDetail.product.sellingPrice}" />
 						<fmt:formatNumber value="${orderDetail.product.sellingPrice}" type="currency" />
 					</td>
                 <td>
-                    <input type="hidden" name="gameId" value="${orderDetail.product.productId}" />
-                    <input type="text" name="quantity${status.index + 1}" value="${orderDetail.quantity}" size="5" />
+                    <input type="hidden" name="productId" value="${orderDetail.product.productId}" />
+                    <input type="text" name="quantity${status.index + 1}" id="quantity" value="${orderDetail.quantity}" size="5" />
                 </td>
                 <td>
                     <fmt:formatNumber value="${orderDetail.subtotal}" type="currency" />
@@ -187,8 +183,8 @@
             <td colspan="5"></td>
             <td colspan="1">
                 <p>Subtotal: <fmt:formatNumber value="${order.subtotal}" type="currency" /></p>
-                <p>Tax: <input type="text" size="5" name="tax" id="tax" value="${order.tax}" /></p>
-                <p>Shipping Fee: <input type="text" size="5" name="shippingFee" id="shippingFee" value="${order.shippingFee}" /></p>
+                <p>Tax: <fmt:formatNumber value="${order.tax}" type="currency" /></p>
+                <p>Shipping Fee: <fmt:formatNumber value="${order.shippingFee}" type="currency" /></p>
                 <p>Total: <fmt:formatNumber value="${order.total}" type="currency" /></p>
             </td>
             <td colspan="1"></td>
@@ -199,7 +195,7 @@
 
 		<div align="center">
 			<br /> 
-			<button class="btn btn-info" onclick="javascript:showAddGamePopup()"><b>Add Games</b></button>
+			<button class="btn btn-info" onclick="javascript:showAddGamePopup()"><b>Add Products</b></button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<button class="btn btn-primary" type="submit">Save</button>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -212,7 +208,7 @@
 	<div id="addGameModal" class="modal">
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
-	        <iframe src="add_game_form" width="100%" height="250px" frameborder="0"></iframe>
+	        <iframe src="add_product_form" width="100%" height="250px" frameborder="0"></iframe>
 	    </div>
 	</div>
 	</div>
@@ -238,63 +234,139 @@
 	        modal.style.display = "none";
 	    }
 	}
-	$(document).ready(function(){
-		$("#orderForm").validate({
-			rules: {
-				firstname: "required",
-				lastname: "required",
-				phone: "required",
-				address1: "required",
-				address2: "required",
-				city: "required",
-				state: "required",
-				zipcode: "required",
-				country: "required",
-				
-				<c:forEach items="${order.orderDetails}" var="product" varStatus="status">
-					quantity${status.index+1} : {
-						required:true,
-						number:true,
-						min: 1
-					},
-				</c:forEach>
-				
-				shippingFee: {required: true, number: true,min: 0},
-				tax: {required: true, number: true,min: 0},
-			},
-			
-			messages: {
-				firstname: "First Name is required!",
-				lastname: "Last Name is required!",
-				phone: "Phone is required!",
-				address1: "Address Line 1 is required!",
-				address2: "Address Line 2 is required!",
-				city: "City is required!",
-				state: "State is required!",
-				zipcode: "zipcode is required!",
-				country: "Country is required!",
-				
-				<c:forEach items="${order.orderDetails}" var="product" varStatus="status">
-					quantity${status.index+1} : {
-						required: "Please Enter Quantity",
-						number: "Quantity must be a number",
-						min: "Quantity must be greater than 0"
-					},
-				</c:forEach>
-					
-				shippingFee:{
-					required: "Please enter shipping fee",
-					number: "Shipping Fee must be a number",
-					min: "Shipping fee must be greater than equal to 0"
-				},
-				tax:{
-					required: "Please enter Tax",
-					number: "Tax must be a number",
-					min: "Tax must be greater than equal to 0"
-				}
+
+	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
+	$(document).ready(function () {
+		$("#orderForm").on("submit", function (event) {
+			if (!validateRecipientInfo()) {
+				event.preventDefault();
 			}
 		});
-		});		
+	});
+
+	function validateRecipientInfo() {
+		// First Name validation
+		var firstName = $("#firstname").val().trim();
+		if (firstName === "") {
+			showError("First Name", "NULL_INPUT");
+			$("#firstname").focus();
+			return false;
+		}
+
+		if (firstName.length > 50) {
+			showError("First Name", "OVER_LENGTH_ERROR")
+			$("firstName").focus();
+			return false;
+		}
+
+		if (!/^[a-zA-Z]+$/.test(firstName)) {
+			showError("First Name", "INVALID_INPUT");
+			$("#firstname").focus();
+			return false;
+		}
+
+		// Last Name validation
+		var lastName = $("#lastname").val().trim();
+		if (lastName === "") {
+			showError("Last Name", "NULL_INPUT");
+			$("#lastname").focus();
+			return false;
+		}
+
+		if (lastName.length > 50) {
+			showError("Last Name", "OVER_LENGTH_ERROR")
+			$("lastname").focus();
+			return false;
+		}
+
+		if (!/^[a-zA-Z]+$/.test(lastName)) {
+			showError("Last Name", "INVALID_INPUT");
+			$("#lastname").focus();
+			return false;
+		}
+
+		// Phone validation
+		var phone = $("#phone").val().trim();
+		if (phone === "") {
+			showError("Phone", "NULL_INPUT");
+			$("#phone").focus();
+			return false;
+		}
+
+		if (!/^\d{10,11}$/.test(phone)) {
+			showError("Phone", "INVALID_INPUT");
+			$("#phone").focus();
+			return false;
+		}
+
+		// Address Line 1 validation
+		var address1 = $("#address1").val().trim();
+		if (address1 === "") {
+			showError("Address Line 1", "NULL_INPUT");
+			$("#address1").focus();
+			return false;
+		}
+
+		// Address Line 2 validation
+		var address2 = $("#address2").val().trim();
+		if (address2 === "") {
+			showError("Address Line 2", "NULL_INPUT");
+			$("#address2").focus();
+			return false;
+		}
+
+		// City validation
+		var city = $("#city").val().trim();
+		if (city === "") {
+			showError("City", "NULL_INPUT");
+			$("#city").focus();
+			return false;
+		}
+
+		// State validation
+		var state = $("#state").val().trim();
+		if (state === "") {
+			showError("State", "NULL_INPUT");
+			$("#state").focus();
+			return false;
+		}
+
+		// Zipcode validation
+		var zipcode = $("#zipcode").val().trim();
+		if (zipcode === "") {
+			showError("Zipcode", "NULL_INPUT");
+			$("#zipcode").focus();
+			return false;
+		}
+
+		if (!/^\d{5}$/.test(zipcode)) {
+			showError("Zipcode", "INVALID_INPUT");
+			$("#zipcode").focus();
+			return false;
+		}
+
+		//Quantity validation
+		var quantity = $("#quantity").val().trim();
+		if (quantity === "") {
+			showError("Quantity", "NULL_INPUT");
+			$("#quantity").focus();
+			return false;
+		}
+		if (!/^\d+$/.test(quantity) || parseInt(quantity) < 1) {
+			showError("Quantity", "INVALID_INPUT");
+			$("#quantity").focus();
+			return false;
+		}
+
+		return true;
+	}
+
+	function showError(fieldName, code) {
+		var message = errorMessages[code];
+		if (message) {
+			toastr.error(fieldName + ": " + message);
+		}
+	}
 	</script>
 </body>
 </html>

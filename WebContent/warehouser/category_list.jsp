@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="baseUrl" value="/KeyboardStore/admin/list_category" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +26,7 @@
 		<form method="GET" action="new_category">
 			<button type="submit" class="btn-add">+ Add Category</button>
 		</form>
-		</div>
+	</div>
 
 		<!-- Set Page -->
 		<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
@@ -41,6 +43,7 @@
 					<th scope="col">Index</th>
 					<th scope="col">ID</th>
 					<th scope="col">Name</th>
+					<th scope="col">Actions</th>
 				</tr>
 			</thead>
 			<tbody id="myTable">
@@ -50,6 +53,10 @@
 							<td>${status.index + 1}</td>
 							<td>${cat.categoryId}</td>
 							<td>${cat.name}</td>
+							<td>
+								<a href="edit_category?id=${cat.categoryId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;
+								<a href="javascript:confirmDelete(${cat.categoryId})"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
+							</td>
 						</tr>
 					</c:if>
 				</c:forEach>

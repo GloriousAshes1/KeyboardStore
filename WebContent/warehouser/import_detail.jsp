@@ -12,6 +12,9 @@
 <div class = "content">
   <h2 align="center">Import Details</h2>
 
+  <!-- Display the user information -->
+  <h3><strong>Created by:</strong> ${fullName} (User ID: ${userId})</h3>
+
   <!-- Display the list of products in the import -->
   <table class="table table-hover table-striped caption-top">
     <thead class="table-primary">

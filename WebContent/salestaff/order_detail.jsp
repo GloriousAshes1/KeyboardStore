@@ -110,8 +110,9 @@
 				varStatus="status">
 				<tr>
 					<td>${status.index + 1}</td>
-					<td><img class="product-small"
-						src="${orderDetail.product.image}" /></td>
+					<td>
+						<img src="${orderDetail.product.image}" style="width: 150px; height: 100px; object-fit: cover;">
+					</td>
 					<td>${orderDetail.product.productName}</td>
 					<td>${orderDetail.product.brand}</td>
 					<td>${orderDetail.product.code}</td>

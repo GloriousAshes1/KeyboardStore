@@ -47,8 +47,14 @@
 			<tr>
 				<td align="right">Role:</td>
 				<td align="left">
-					<input type="text" name="role" id="role"
-						   value="${role != null ? role : (user != null ? user.role : '')}">
+					<select name="role" id="role" class="form-control" required>
+						<option value="Sale Staff" ${role == 'Sale Staff' || (user != null && user.role == 'Sale Staff') ? 'selected' : ''}>
+							Saler
+						</option>
+						<option value="Warehouser" ${role == 'Warehouser' || (user != null && user.role == 'Warehouser') ? 'selected' : ''}>
+							Warehouser
+						</option>
+					</select>
 				</td>
 			</tr>
 
@@ -73,7 +79,6 @@
 	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
 	var isEditMode = false;
 
-	// Kiểm tra chế độ Edit/Create từ JSP
 	<%
         Object userObj = request.getAttribute("user");
         if (userObj != null) {

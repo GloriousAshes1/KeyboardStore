@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="baseUrl" value="/KeyboardStore/admin/list_import" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,6 +38,8 @@
     <table class="table table-hover table-striped caption-top">
         <thead class="table-primary">
         <tr>
+            <th>User ID</th>
+            <th>User Name</th>
             <th>Import Date</th>
             <th>Total Price</th>
             <th>Actions</th>
@@ -45,10 +48,13 @@
         <tbody id="myTable">
         <c:forEach var="imp" items="${listImports}" varStatus="status">
             <tr>
+                <td>${imp.user.userId}</td>
+                <td>${imp.user.fullName}</td> <!-- Assuming `user.username` is available -->
                 <td>${imp.importDate}</td>
                 <td>${imp.sumPrice}</td>
                 <td>
                     <a href="view_import?id=${imp.importId}"><i class="fa-solid fa-circle-info" style="color: mediumslateblue;"></i></a>&nbsp;
+                    <a href="javascript:confirmDelete(${imp.importId})"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>&nbsp;
             </tr>
         </c:forEach>
         </tbody>
