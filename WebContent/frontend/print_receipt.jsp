@@ -6,8 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Payment Receipt - Legendary Games</title>
-<link rel="stylesheet" href="../css/style.css">
+<title>Payment Receipt - KeyBoard Store</title>
 <link rel="icon" type="image/x-icon" href="images/Logo.png">
 
 </head>

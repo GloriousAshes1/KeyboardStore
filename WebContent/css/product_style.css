@@ -239,3 +239,66 @@ footer {
     color: red;
     font-weight: bold;
 }
+.reviews-grid.modern-style {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px; /* Khoảng cách giữa các review */
+    padding: 20px; /* Khoảng cách bên ngoài grid */
+    background-color: #ffffff; /* Màu nền */
+    border-radius: 10px; /* Bo góc tổng thể */
+}
+
+.review-card {
+    background: #fff; /* Nền trắng */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+    padding: 20px; /* Khoảng cách bên trong card */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng hover */
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.review-rating {
+    display: flex;
+    gap: 5px; /* Khoảng cách giữa các ngôi sao */
+    margin-bottom: 10px;
+}
+
+.review-content {
+    margin-bottom: 15px;
+}
+
+.review-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.review-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #555;
+}
+
+.reviewer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.reviewer-name {
+    font-weight: bold;
+    color: #444;
+}
+
+.review-date {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+

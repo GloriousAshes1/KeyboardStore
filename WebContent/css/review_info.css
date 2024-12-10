@@ -1,0 +1,94 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.review-wrapper {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.review-header {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.review-username {
+    font-size: 1.2rem;
+    color: #777;
+}
+
+.product-review {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.product-info {
+    flex: 1;
+    max-width: 300px;
+    text-align: center;
+}
+
+.product-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.product-image {
+    min-width: 250px;
+    max-height: 175px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-details {
+    flex: 2;
+    max-width: 400px;
+    text-align: left;
+}
+
+.rating-stars {
+    margin-bottom: 10px;
+}
+
+.review-headline {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+}
+
+.review-comment {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    resize: none;
+    height: 120px;
+}
+footer {
+    width: 100%;
+    position: fixed; /* Hoặc `fixed` nếu muốn footer luôn nằm ở dưới */
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #f8f9fa;
+}
