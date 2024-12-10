@@ -34,15 +34,10 @@
 					<tr>
 						<td align="right">Category:</td>
 						<td align="left">
-							<select name="category">
+							<select name="category" id="category">
 								<c:forEach items="${listCategory}" var="category">
-									<c:if test="${category.categoryId eq product.category.categoryId}">
-										<option value="${category.categoryId}" selected>
-									</c:if>
-									<c:if test="${category.categoryId ne product.category.categoryId}">
-										<option value="${category.categoryId}">
-									</c:if>
-										${category.name}
+									<option value="${category.categoryId}" ${category.categoryId == product.category.categoryId ? 'selected' : ''}>
+											${category.name}
 									</option>
 								</c:forEach>
 							</select>

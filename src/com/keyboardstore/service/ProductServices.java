@@ -105,13 +105,38 @@ public class ProductServices {
 	}
 
 	public void readProductFields(Product product) throws ServletException, IOException {
-		Integer categoryId = Integer.parseInt(request.getParameter("category"));
+		// Handling categoryId safely
+		String categoryStr = request.getParameter("category");
+		Integer categoryId = null;
+		if (categoryStr != null && !categoryStr.isEmpty()) {
+			try {
+				categoryId = Integer.parseInt(categoryStr);
+			} catch (NumberFormatException e) {
+				throw new ServletException("Invalid category ID format.");
+			}
+		} else {
+			throw new ServletException("Category is required and cannot be empty.");
+		}
+
+		// Handling sellingPrice safely
+		String priceStr = request.getParameter("sellingPrice");
+		Float price = null;
+		if (priceStr != null && !priceStr.isEmpty()) {
+			try {
+				price = Float.parseFloat(priceStr);
+			} catch (NumberFormatException e) {
+				throw new ServletException("Invalid price format.");
+			}
+		} else {
+			throw new ServletException("Price is required and cannot be empty.");
+		}
+
 		String productName = request.getParameter("productName");
 		String code = request.getParameter("code");
 		String brand = request.getParameter("brand");
 		String description = request.getParameter("description");
-		Float price = Float.parseFloat(request.getParameter("sellingPrice"));
 		String existingImage = request.getParameter("existingImage");
+
 		final String newFormat = "yyyy-MM-dd";
 		SimpleDateFormat sdf = new SimpleDateFormat(newFormat);
 		Date publishDate = null;
@@ -134,13 +159,16 @@ public class ProductServices {
 		product.setDescription(description);
 		product.setSellingPrice(price);
 		product.setPublishDate(publishDate);
+
+		// Handle category
 		Category category = categoryDAO.get(categoryId);
 		product.setCategory(category);
+
 		// Set default stock
 		int stock = 0;
 		product.setStock(stock);
 
-		// Handle the image upload to S3
+		// Handle image upload to S3
 		Part part = request.getPart("image");
 		if (part == null) {
 			product.setImage(existingImage);
@@ -163,6 +191,7 @@ public class ProductServices {
 			product.setImage(imageUrl); // Assuming you have a field like imageUrl in your Product entity
 		}
 	}
+
 
 	public void editProduct() throws ServletException, IOException {
 		Integer productId = Integer.parseInt(request.getParameter("id"));

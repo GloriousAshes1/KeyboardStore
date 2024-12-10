@@ -50,6 +50,7 @@ public class Product implements java.io.Serializable {
 	private String brand;
 	private String description;
 	private float sellingPrice;
+	private float importPrice;
 	private Date publishDate;
 	private int stock;
 	private Set<OrderDetail> orderDetails = new HashSet<OrderDetail>(0);
@@ -67,7 +68,7 @@ public class Product implements java.io.Serializable {
 	}
 
 	public Product(Category category, String productName, String code, String brand, String description,
-				   String image, float sellingPrice, Date publishDate, int stock) {
+				   String image, float sellingPrice, float importPrice ,Date publishDate, int stock) {
 		this.category = category;
 		this.productName = productName;
 		this.code = code;
@@ -75,12 +76,13 @@ public class Product implements java.io.Serializable {
 		this.description = description;
 		this.image = image;
 		this.sellingPrice = sellingPrice;
+		this.importPrice = importPrice;
 		this.publishDate = publishDate;
 		this.stock = stock;
 	}
 
 	public Product(Category category, String productName, String code, String brand, String description,
-				   String image, float sellingPrice, Date publishDate, int stock, Set<OrderDetail> orderDetails,
+				   String image, float sellingPrice, float importPrice , Date publishDate, int stock, Set<OrderDetail> orderDetails,
 				   Set<Review> reviews) {
 		this.category = category;
 		this.productName = productName;
@@ -89,6 +91,7 @@ public class Product implements java.io.Serializable {
 		this.description = description;
 		this.image = image;
 		this.sellingPrice = sellingPrice;
+		this.importPrice = importPrice;
 		this.publishDate = publishDate;
 		this.stock = stock;
 		this.orderDetails = orderDetails;
@@ -169,6 +172,15 @@ public class Product implements java.io.Serializable {
 
 	public void setSellingPrice(float price) {
 		this.sellingPrice = price;
+	}
+
+	@Column(name = "import_price", nullable = false, precision = 12, scale = 0)
+	public float getImportPrice() {
+		return this.importPrice;
+	}
+
+	public void setImportPrice(float importPrice) {
+		this.sellingPrice = importPrice;
 	}
 
 	@Temporal(TemporalType.DATE)
