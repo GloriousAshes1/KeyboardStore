@@ -39,6 +39,7 @@
 					<th scope="col">Code</th>
 					<th scope="col">Category</th>
 					<th scope="col">Selling Price</th>
+					<th scope="col">Import Price</th>
 					<th scope="col">Publish date</th>
 					<th scope="col">Actions</th>
 				</tr>
@@ -57,6 +58,7 @@
 							<td>${product.code}</td>
 							<td>${product.category.name}</td>
 							<td>$${product.sellingPrice}</td>
+							<td>$${product.importPrice}</td>
 							<td><fmt:formatDate pattern="dd/MM/yyyy" value='${product.publishDate}'/></td>
 							<td>
 								<a href="edit_product?id=${product.productId}"><i class="fa-solid fa-pen-to-square" style="color: mediumslateblue;"></i></a> &nbsp;

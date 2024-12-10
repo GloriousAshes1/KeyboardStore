@@ -31,7 +31,7 @@
 			<li><a href="list_review" class="d-flex align-items-center"><img src="../images/review.png" alt="Review Icon">Review</a></li>
 			<li><a href="list_order" class="d-flex align-items-center"><img src="../images/order.png" alt="Order Icon">Order</a></li>
 			<li><a href="show_stock" class="d-flex align-items-center"><img src="../images/import.png" alt="Import Icon">Import</a></li>
-			<li><a href="statistics" class="d-flex align-items-center"><img src="../images/review.png" alt="Statistic Icon">Statistic</a></li>
+			<li><a href="statistics" class="d-flex align-items-center"><img src="../images/statistics.png" alt="Statistic Icon">Statistic</a></li>
 		</ul>
 	</div>
 	<div class="sidebar-footer">

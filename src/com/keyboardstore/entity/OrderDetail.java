@@ -23,13 +23,13 @@ import javax.persistence.Table;
 					+ "ORDER BY SUM(od.quantity) DESC"),
 	@NamedQuery(name = "OrderDetail.countByGame",
 				query = "SELECT COUNT(*) FROM OrderDetail od WHERE od.product.productId =:productId"),
-		@NamedQuery(name = "OrderDetail.fetchSalesForAllProducts",
-				query = "SELECT od.productOrder.orderDate, od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) "
+		@NamedQuery(name = "OrderDetail.fetchProfitsForAllProducts",
+				query = "SELECT od.productOrder.orderDate, od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) - SUM(od.quantity * od.product.importPrice) AS profit "
 						+ "FROM OrderDetail od "
 						+ "WHERE od.productOrder.orderDate BETWEEN :startDate AND :endDate "
 						+ "GROUP BY od.productOrder.orderDate, od.product.productId, od.product.productName"),
-		@NamedQuery(name = "OrderDetail.fetchSalesForSpecificProduct",
-				query = "SELECT od.productOrder.orderDate, od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) "
+		@NamedQuery(name = "OrderDetail.fetchProfitsForSpecificProduct",
+				query = "SELECT od.productOrder.orderDate, od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) - SUM(od.quantity * od.product.importPrice) AS profit "
 						+ "FROM OrderDetail od "
 						+ "WHERE od.product.productId = :productId AND od.productOrder.orderDate BETWEEN :startDate AND :endDate "
 						+ "GROUP BY od.productOrder.orderDate, od.product.productId, od.product.productName")

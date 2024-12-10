@@ -1,22 +1,23 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="ISO-8859-1">
-	<title>Page Not Found Error</title>
-	<link rel="icon" type="image/x-icon" href="images/Logo.png">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>500 Error</title>
+
+	<!-- Link to the external CSS file -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/500.css">
+
 </head>
 <body>
-	<div align="center">
-		<img src="images/Logo.png" height="200" width="200" alt="Store Logo" />
-	</div>
-	<div align="center">
-		<h2>Oops! Some thing went wrong while fulfilling your request</h2>
-		<h3>Please check again later</h3>
-	</div>
-	<div align="center">
-		<a href="javascript:history.go(-1);">Go Back</a>
-	</div>
+<div id="error">
+	Error
+</div>
+<div class="error-num">
+	500
+	<div class="error-num__clip">500</div>
+</div>
+<p id="desc">Uh oh, there seems to be a problem.</p>
+<p>Let me help you find <a href="javascript:history.go(-1);">a way out</a></p>
 </body>
 </html>
