@@ -68,21 +68,21 @@ public class OrderDAO extends JpaDAO<ProductOrder> implements GenericDAO<Product
 		return super.findWithNamedQuery("ProductOrder.findAll", 0, 3);
 	}
 
-	public List<Object[]> getSalesForAllProducts(Date startDate, Date endDate) {
+	public List<Object[]> getProfitsForAllProducts(Date startDate, Date endDate) {
 		Map<String, Object> parameters = Map.of(
 				"startDate", startDate,
 				"endDate", endDate
 		);
-		return super.findWithNamedQueryObjects("OrderDetail.fetchSalesForAllProducts", parameters);
+		return super.findWithNamedQueryObjects("OrderDetail.fetchProfitsForAllProducts", parameters);
 	}
 
-	public List<Object[]> getSalesForSpecificProduct(Integer productId, Date startDate, Date endDate) {
+	public List<Object[]> getProfitsForSpecificProduct(Integer productId, Date startDate, Date endDate) {
 		Map<String, Object> parameters = Map.of(
 				"productId", productId,
 				"startDate", startDate,
 				"endDate", endDate
 		);
-		return super.findWithNamedQueryObjects("OrderDetail.fetchSalesForSpecificProduct", parameters);
+		return super.findWithNamedQueryObjects("OrderDetail.fetchProfitsForSpecificProduct", parameters);
 	}
 
 

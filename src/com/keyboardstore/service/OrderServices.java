@@ -394,7 +394,7 @@ public class OrderServices {
 			e.printStackTrace();
 		}
 
-		List<Object[]> salesData = orderDAO.getSalesForSpecificProduct(productId, startDate, endDate);
+		List<Object[]> salesData = orderDAO.getProfitsForSpecificProduct(productId, startDate, endDate);
 		request.setAttribute("salesData", salesData);
 		request.setAttribute("productId", productId);  // Pass productId
 		request.setAttribute("startDate", startDate);  // Pass startDate
@@ -425,7 +425,7 @@ public class OrderServices {
 			e.printStackTrace();
 		}
 
-		List<Object[]> salesData = orderDAO.getSalesForAllProducts(startDate, endDate);
+		List<Object[]> salesData = orderDAO.getProfitsForAllProducts(startDate, endDate);
 		request.setAttribute("salesData", salesData);
 		request.setAttribute("productId", productId);  // Pass null for all products
 		request.setAttribute("startDate", startDate);  // Pass startDate

@@ -67,11 +67,11 @@ public class DisplayChartServlet extends HttpServlet {
             // Check if a specific product is selected
             if (productIdStr != null && !productIdStr.isEmpty()) {
                 productId = Integer.parseInt(productIdStr);
-                salesData = orderDAO.getSalesForSpecificProduct(productId, startDate, endDate);
+                salesData = orderDAO.getProfitsForSpecificProduct(productId, startDate, endDate);
                 request.setAttribute("productId", productId);
             } else {
                 // Get sales for all products if no specific product is selected
-                salesData = orderDAO.getSalesForAllProducts(startDate, endDate);
+                salesData = orderDAO.getProfitsForAllProducts(startDate, endDate);
             }
 
             // Aggregate sales data by date (using TreeMap to ensure the dates are sorted)
@@ -123,8 +123,8 @@ public class DisplayChartServlet extends HttpServlet {
         headerRow.createCell(0).setCellValue("Date");
         headerRow.createCell(1).setCellValue("Product Name");
         headerRow.createCell(2).setCellValue("Quantity Sold");
-        headerRow.createCell(3).setCellValue("Sales Price");
-        headerRow.createCell(4).setCellValue("Total Sales");
+        headerRow.createCell(3).setCellValue("Profits");
+        headerRow.createCell(4).setCellValue("Total Profits");
 
         // Prepare to format date as dd/MM/yyyy
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
