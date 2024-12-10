@@ -92,7 +92,7 @@ public class PaymentServices {
 
 	private List<Transaction> getTransactionInformation(ProductOrder order) {
 		Transaction transaction = new Transaction();
-		transaction.setDescription("Gamestores orders");
+		transaction.setDescription("KeyBoardStore orders");
 		Amount amount = getAmountDetails(order);
 		transaction.setAmount(amount);
 

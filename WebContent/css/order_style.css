@@ -117,14 +117,7 @@
     object-fit: contain;
     width: 24px;
 }
-footer {
-    width: 100%;
-    position: relative;
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-    background-color: #f8f9fa;
-}
+
 .information-container{
     width: 100%;
     box-sizing: border-box;
