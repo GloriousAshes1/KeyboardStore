@@ -11,7 +11,7 @@
           <a class="page-link" href="${baseUrl}?page=${i}">${i}</a>
         </li>
       </c:forEach>
-      <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+      <li class="page-item ${currentPage >= totalPages-1 ? 'disabled' : ''}">
         <a class="page-link" href="${baseUrl}?page=${currentPage + 1}" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
