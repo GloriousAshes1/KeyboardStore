@@ -120,17 +120,23 @@ public class ProductServices {
 			throw new ServletException("Category is required and cannot be empty.");
 		}
 
-		// Handling sellingPrice safely
 		String priceStr = request.getParameter("sellingPrice");
 		Float price = null;
+
 		if (priceStr != null && !priceStr.isEmpty()) {
 			try {
 				price = Float.parseFloat(priceStr);
+
+				// Kiểm tra nếu giá nhỏ hơn 1, chỉnh về 1
+				if (price < 1) {
+					price = 1.0f;
+				}
 			} catch (NumberFormatException e) {
 				throw new ServletException("Invalid price format.");
 			}
 		} else {
-			throw new ServletException("Price is required and cannot be empty.");
+			// Nếu không có giá thì thiết lập về 1
+			price = 1.0f;
 		}
 
 		String productName = request.getParameter("productName");

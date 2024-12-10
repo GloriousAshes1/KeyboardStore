@@ -8,6 +8,7 @@
 	<title>Create New User</title>
 	<jsp:directive.include file="head.jsp"/>
 </head>
+<jsp:directive.include file="table_config.jsp" />
 <body>
 <jsp:directive.include file="notification.jsp"/>
 <jsp:directive.include file="header.jsp"/>
@@ -18,47 +19,53 @@
 		${user != null ? 'Edit User' : 'Create New User'}
 	</h2>
 	<form id="userForm" action="${user != null ? 'update_user' : 'create_user'}" method="post">
-		<table align="center">
+		<table class="form">
 			<!-- Hidden input for userId, only set when updating -->
 			<c:if test="${user.userId != null}">
 				<input type="hidden" name="userId" value="${user.userId}">
 			</c:if>
+
+			<!-- Row 1: Email -->
 			<tr>
-				<td><label for="email">Email:</label></td>
-				<td>
+				<td align="right">Email:</td>
+				<td align="left">
 					<input type="email" name="email" id="email"
 						   value="${email != null ? email : (user != null ? user.email : '')}">
 				</td>
 			</tr>
+
+			<!-- Row 2: Full Name -->
 			<tr>
-				<td><label for="fullname">Full Name:</label></td>
-				<td>
+				<td align="right">Full Name:</td>
+				<td align="left">
 					<input type="text" name="fullname" id="fullname"
 						   value="${fullname != null ? fullname : (user != null ? user.fullName : '')}">
 				</td>
 			</tr>
+
+			<!-- Row 3: Role -->
 			<tr>
-				<td><label for="role">Role:</label></td>
-				<td>
+				<td align="right">Role:</td>
+				<td align="left">
 					<input type="text" name="role" id="role"
 						   value="${role != null ? role : (user != null ? user.role : '')}">
 				</td>
 			</tr>
+
+			<!-- Row 4: Password -->
 			<tr>
-				<td><label for="password">Password:</label></td>
-				<td>
+				<td align="right">Password:</td>
+				<td align="left">
 					<input type="password" name="password" id="password" value="">
-					<!-- Note: Do not pre-fill the password for security reasons -->
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="text-align: center;">
-					<button class="btn btn-primary" type="submit">Save</button>
-					<button class="btn btn-secondary" type="button" onclick="history.go(-1);">Cancel</button>
 				</td>
 			</tr>
 		</table>
+		<div class="button-container" align="center">
+			<button type="submit" class="btn btn-primary">Save</button>
+			<button type="button" class="btn btn-secondary" onclick="history.go(-1);">Cancel</button>
+		</div>
 	</form>
+
 	<jsp:directive.include file="footer.jsp"/>
 </div>
 </body>

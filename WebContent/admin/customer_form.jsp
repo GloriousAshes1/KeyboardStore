@@ -6,12 +6,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Lengendary Games Administration</title>
+	<title>Lengendary Keyboard Administration</title>
 	<jsp:directive.include file="head.jsp" />
 </head>
 <body>
 	<jsp:directive.include file="notification.jsp"/>
 	<jsp:directive.include file="header.jsp" />
+	<jsp:directive.include file="table_config.jsp"/>
 	<div class="content">
 		<h1 align="center">
 			<c:if test="${customer != null}">
@@ -22,7 +23,7 @@
 			</c:if>
 		</h1>
 
-	<div align="center">
+	<div align="center" class="form-group">
 		<c:if test="${customer != null}">
 			<form action="update_customer" method="post" id="customerForm"
 				style="max-width: 400px; margin: 0 auto;">
@@ -31,7 +32,7 @@
 		</c:if>
 		<c:if test="${customer == null}">
 			<form action="create_customer" method="post" id="customerForm"
-				style="max-width: 400px; margin: 0 auto;">
+				style="max-width: 700px; margin: 0 auto;">
 		</c:if>
 	<jsp:directive.include file="../common/customer_form.jsp" />
 		</form>
