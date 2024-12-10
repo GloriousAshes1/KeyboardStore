@@ -43,6 +43,7 @@ public class OrderServices {
 
 	public void listAllOrder(String message) throws ServletException, IOException {
 		List<ProductOrder> listOrder = orderDAO.listAll();
+		listOrder.sort((c1, c2) -> Integer.compare(c2.getOrderId(), c1.getOrderId()));
 
 		request.setAttribute("listOrder", listOrder);
 

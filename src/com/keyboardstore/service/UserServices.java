@@ -29,6 +29,7 @@ public class UserServices {
 
 	public void listUser(String message, String messageType) throws ServletException, IOException {
 		List<Users> listUsers = userDAO.listAll();
+		listUsers.sort((c1, c2) -> Integer.compare(c2.getUserId(), c1.getUserId()));
 
 		request.setAttribute("listUsers", listUsers);
 		if (message != null) {

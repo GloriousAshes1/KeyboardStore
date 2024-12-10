@@ -9,6 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class CategoryServices{
@@ -30,6 +32,7 @@ public class CategoryServices{
 
 	public void listCategory(String message, String messageType)throws ServletException, IOException {
 		List<Category> listCategory = categoryDAO.listAll();
+		listCategory.sort((c1, c2) -> Integer.compare(c2.getCategoryId(), c1.getCategoryId()));
 
 		request.setAttribute("listCategory", listCategory);
 		if(message!=null) {

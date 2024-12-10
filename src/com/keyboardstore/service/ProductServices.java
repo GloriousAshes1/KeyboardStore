@@ -44,6 +44,8 @@ public class ProductServices {
 
 	public void listProducts(String message, String messageType) throws ServletException, IOException {
 		List<Product> listProducts = productDAO.listAll();
+		listProducts.sort((c1, c2) -> Integer.compare(c2.getProductId(), c1.getProductId()));
+
 		request.setAttribute("listProducts", listProducts);
 		
 		if(message != null) {

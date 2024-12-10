@@ -32,6 +32,8 @@ public class ReviewService{
 
 	public void listAllReview(String message) throws ServletException, IOException {
 		List<Review> listReviews = reviewDAO.listAll();
+		listReviews.sort((c1, c2) -> Integer.compare(c2.getReviewId(), c1.getReviewId()));
+
 		request.setAttribute("listReviews", listReviews);
 		if (message != null) {
 			request.setAttribute("message", message);

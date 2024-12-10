@@ -33,6 +33,8 @@ public class CustomerService {
 
 	public void listCustomers(String message, String messageType) throws ServletException, IOException {
 		List<Customer> listCustomer = customerDAO.listAll();
+		listCustomer.sort((c1, c2) -> Integer.compare(c2.getCustomerId(), c1.getCustomerId()));
+
 		if (message != null) {
 			request.setAttribute("message", message);
 			request.setAttribute("messageType", messageType);

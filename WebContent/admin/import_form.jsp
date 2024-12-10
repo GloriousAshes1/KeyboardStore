@@ -48,7 +48,7 @@
           </select>
         </td>
         <td>
-          <input type="number" class="form-control" name="quantity" id="quantityInput${index}" required onchange="updateTotals()" value="1" min="1">
+          <input type="number" class="form-control" name="quantity" id="quantityInput${index}" required onchange="updateTotals()" oninput="if(this.value<1){this.value=1}" value="1" min="1" step="1">
         </td>
         <td>
             <input type="number" class="form-control" name="importPrice" id="importPrice" required onchange="updateTotals()" oninput="if(this.value<1){this.value=1}" value="1.00" min="1" step="0.01">
@@ -132,7 +132,7 @@
             </select>
           </td>
           <td>
-            <input type="number" class="form-control" name="quantity" id="quantityInput0" required onchange="updateTotals()" value="1" min="1">
+            <input type="number" class="form-control" name="quantity" id="quantityInput0" required onchange="updateTotals()" oninput="if(this.value<1){this.value=1}" value="1" min="1" step="1">
           </td>
           <td>
             <input type="number" class="form-control" name="importPrice" id="importPrice" required onchange="updateTotals()" oninput="if(this.value<1){this.value=1}" value="1.00" min="1" step="0.01">

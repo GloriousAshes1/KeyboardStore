@@ -51,6 +51,7 @@ public class ImportService {
 
     public void listAllImports(String message) throws ServletException, IOException {
         List<Import> listImports = importDAO.listAll();
+        listImports.sort((c1, c2) -> Integer.compare(c2.getImportId(), c1.getImportId()));
 
         request.setAttribute("listImports", listImports);
 
