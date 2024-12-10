@@ -54,7 +54,7 @@ public class AdminLoginFilter extends HttpFilter implements Filter {
 				chain.doFilter(request, response);
 			} else {
 				// If the user is not staff, redirect to an appropriate page (e.g., Admin or Home)
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/accessDenied.jsp");  // Customize as needed
+				RequestDispatcher dispatcher = request.getRequestDispatcher("../error/403.jsp");  // Customize as needed
 				dispatcher.forward(request, response);
 			}
 		} else if (loginRequest || loginPage) {

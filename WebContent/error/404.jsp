@@ -1,21 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="ISO-8859-1">
-	<title>Page Not Found Error</title>
-	<link rel="icon" type="image/x-icon" href="images/Logo.png">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>404 Error</title>
+
+	<!-- Link to the external CSS file -->
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/404.css">
+
+	<!-- Link to Font Awesome (for the icon) -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+	<!-- Link to the external JS file -->
+	<script src="${pageContext.request.contextPath}/js/403.js" defer></script>
 </head>
 <body>
-	<div align="center">
-		<img src="images/Logo.png" height="200" width="200" alt="Store Logo" />
-	</div>
-	<div align="center">
-		<h2>Sorry, the requested page could not be found</h2>
-	</div>
-	<div align="center">
-		<a href="javascript:history.go(-1);">Go Back</a>
-	</div>
+<div align="center">
+<h1>4<span><i class="fas fa-ghost"></i></span>4</h1>
+<h2>Error: 404 page not found</h2>
+<p>Sorry, the page you're looking for cannot be accessed</p>
+	<p><a href="javascript:history.go(-1);">Go Back</a></p>
+</div>
 </body>
 </html>

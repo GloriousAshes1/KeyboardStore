@@ -63,8 +63,8 @@
                         <button class="write-review-btn" onclick="window.location = 'write_review?product_id=' + ${product.productId}">Write a review</button>
                     </div>
                 </div>
-                <div class="reviews-grid">
-                    <c:forEach items="${product.reviews}" var="review" varStatus="loop">
+                <div class="reviews-grid modern-style">
+                    <c:forEach items="${product.reviews}" var="review" varStatus="loop" begin="0" end="4">
                         <div class="review-card">
                             <div class="review-rating">
                                 <c:forTokens items="${review.stars}" delims="," var="star">
@@ -77,18 +77,19 @@
                                 </c:forTokens>
                             </div>
                             <div class="review-content">
-                            <h3 class="review-title">${review.headline}</h3>
-                            <p class="review-text">${review.comment}</p>
+                                <h3 class="review-title">${review.headline}</h3>
+                                <p class="review-text">${review.comment}</p>
                             </div>
                             <div class="reviewer">
-                            <div class="reviewer-info">
-                                <p class="reviewer-name">${review.customer.fullname}</p>
-                                <time class="review-date"><fmt:formatDate value="${review.reviewTime}" pattern="yyyy-MM-dd HH:mm" /></time>
+                                <div class="reviewer-info">
+                                    <p class="reviewer-name">${review.customer.fullname}</p>
+                                    <time class="review-date"><fmt:formatDate value="${review.reviewTime}" pattern="yyyy-MM-dd HH:mm" /></time>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </c:forEach>
                 </div>
+
             </div>
         </div>
 

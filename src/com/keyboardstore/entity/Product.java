@@ -180,7 +180,7 @@ public class Product implements java.io.Serializable {
 	}
 
 	public void setImportPrice(float importPrice) {
-		this.sellingPrice = importPrice;
+		this.importPrice = importPrice;
 	}
 
 	@Temporal(TemporalType.DATE)

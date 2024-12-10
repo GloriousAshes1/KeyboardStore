@@ -89,3 +89,10 @@ body {
 .form-submit:hover {
     border: 1px solid #54a0ff;
 }
+a {
+    text-decoration: none;    /* Removes the underline */
+    color: white;             /* Changes text color to white */
+    text-align: right;        /* Aligns the text to the right */
+    display: block;           /* Makes the link take the full width so it can align properly */
+    margin-top: 10px;         /* Optional: Adds some space above the link */
+}

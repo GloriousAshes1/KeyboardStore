@@ -17,76 +17,90 @@
     </style>
 </head>
 <body>
-    <%@ include file="header.jsp" %>
-    
-    <div align="center">
-        <form id="reviewForm" action="submit_review" method="post">
-            <table class="normal" width="80%">
-                <tr>
-                    <td><h2>Your Reviews</h2></td>
-                    <td>&nbsp;</td>
-                    <td><h2>${loggedCustomer.fullname}</h2></td>
-                </tr>
-                <tr>
-                    <td colspan="3"><hr/></td>
-                </tr>
-                <tr>
-                    <td>
-                        <span id="product-title">${product.productName}</span><br/>
-                        <img class="product-large" src="${product.image}"/>
-                    </td>
-                    <td>
-                        <div id="rateYo"></div>
-                        <input type="hidden" id="rating" name="rating" />
-                        <input type="hidden" name="productId" value="${product.productId}" />
-                        
-                        <br/>
-                        <input type="text" name="headline" size="60" placeholder="Headline or Summary for your review (required)" />
-                        <br/><br/>
-                        <textarea name="comment" cols="70" rows="10" placeholder="Write your review details..."></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3" align="center">
-                        <button type="submit">Submit</button>
-                        &nbsp;&nbsp;
-                        <button id="buttonCancel" >Cancel</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    
-    <%@ include file="footer.jsp" %>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<%@ include file="header.jsp" %>
 
-    <script type="text/javascript">
-        $.noConflict();
-        jQuery(document).ready(function($) {
-            $("#buttonCancel").click(function() {
-                history.go(-1);
-            });
-            
-            $("#reviewForm").validate({
-                rules: {
-                    headline: "required",
-                    comment: "required",
-                },
-                
-                messages: {
-                    headline: "Please enter headline",
-                    comment: "Please enter review details"
-                }
-            });
-            
-            $("#rateYo").rateYo({
-                starWidth: "40px",
-                fullStar: true,
-                onSet: function (rating, rateYoInstance){
-                    $("#rating").val(rating);   
-                }
-             });
+<div style="margin: 20px auto; width: 80%;">
+    <h2 style="text-align: center;">Your Review</h2>
+    <form id="reviewForm" action="submit_review" method="post" style="border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
+        <div style="display: flex; align-items: flex-start; gap: 20px;">
+            <!-- Product Information -->
+            <div style="flex: 1; text-align: center;">
+                <span id="product-title" style="display: block; font-weight: bold;">${product.productName}</span>
+                <img class="product-large" src="${product.image}" style="width: 200px; height: 200px; border: 1px solid #ddd; border-radius: 4px;"/>
+            </div>
+
+            <!-- Review Inputs -->
+            <div style="flex: 2;">
+                <!-- Rating -->
+                <div id="rateYo" style="margin-bottom: 10px;"></div>
+                <input type="hidden" id="rating" name="rating" />
+                <input type="hidden" name="productId" value="${product.productId}" />
+
+                <!-- Review Title -->
+                <input
+                        type="text"
+                        name="headline"
+                        size="60"
+                        placeholder="Review title"
+                        style="display: block; width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;"/>
+
+                <!-- Review Details -->
+                <textarea
+                        name="comment"
+                        cols="70"
+                        rows="10"
+                        placeholder="Review Detail"
+                        style="display: block; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+            </div>
+        </div>
+
+        <!-- Submit and Cancel Buttons -->
+        <div style="text-align: center; margin-top: 20px; margin-left: auto;">
+            <button
+                    type="submit"
+                    style="background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;margin-left: auto;">Submit</button>
+            &nbsp;&nbsp;
+            <button
+                    id="buttonCancel"
+                    type="button"
+                    style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;margin-left: auto;">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<%@ include file="footer.jsp" %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
+<script type="text/javascript">
+    $.noConflict();
+    jQuery(document).ready(function($) {
+        // Cancel button action
+        $("#buttonCancel").click(function() {
+            history.go(-1);
         });
-    </script>
+
+        // Form validation
+        $("#reviewForm").validate({
+            rules: {
+                headline: "required",
+                comment: "required",
+            },
+            messages: {
+                headline: "Please enter the review title",
+                comment: "Please enter the review details"
+            }
+        });
+
+        // Star rating
+        $("#rateYo").rateYo({
+            starWidth: "30px",
+            fullStar: true,
+            onSet: function (rating, rateYoInstance) {
+                $("#rating").val(rating);
+            }
+        });
+    });
+</script>
 </body>
 </html>
