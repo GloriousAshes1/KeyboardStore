@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/search")
-public class SearchGameServlet extends BaseServlet {
+public class SearchProductServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
-    public SearchGameServlet() {
+    public SearchProductServlet() {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

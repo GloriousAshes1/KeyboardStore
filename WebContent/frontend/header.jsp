@@ -36,7 +36,7 @@
 				<form role="search" action="search" method="get">
 					<div class="z">
 						<div class="z va">
-							<input type="search" class="g input-search bd" name="q" placeholder="Tìm kiếm sản phẩm" autocomplete="off" value="">
+							<input type="search" class="g input-search bd" name="keyword" placeholder="Tìm kiếm sản phẩm" autocomplete="off" value="">
 							<button type="submit" class="btn-search border1" aria-label="Search"><img class="format-svg" src="css/images/search.svg"></button>
 						</div>
 					</div>

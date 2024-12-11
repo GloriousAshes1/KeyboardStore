@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Search - Legendary Games</title>
+	<title>Search - Keyboard Store</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -31,7 +31,7 @@
                     		<img src="${product.image}" class="card-img-top" alt="${product.productName}">
                     	</a>
                         <div class="card-body">
-                            <h5 class="card-title"><a href="view_game?id=${product.productId}"> <b>${product.productName}</b></a></h5>
+                            <h5 class="card-title"><a href="view_product?id=${product.productId}"> <b>${product.productName}</b></a></h5>
                             <p class="card-text product-description" data-product-id="${product.productId}">
                                 ${product.description}
                             </p>
