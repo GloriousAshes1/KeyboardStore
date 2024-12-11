@@ -77,3 +77,50 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+ .card-container {
+     display: flex;
+     justify-content: space-around; /* This ensures cards are evenly spaced */
+     align-items: center;
+     gap: 20px; /* Adds some spacing between cards */
+     margin-top: 20px;
+ }
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 200px;
+    display: flex;                /* Flexbox layout to center content */
+    flex-direction: column;       /* Align items vertically */
+    align-items: center;          /* Horizontally center the content */
+    justify-content: center;      /* Vertically center the content */
+}
+
+.card img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+    display: block;               /* Ensure the image is treated as a block element */
+}
+
+.card h3 {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.card p {
+    font-size: 1.5em;
+    margin: 5px 0;
+}
+
+.percentage {
+    font-size: 0.9em;
+    color: green;
+}
+
+.negative {
+    color: red;
+}

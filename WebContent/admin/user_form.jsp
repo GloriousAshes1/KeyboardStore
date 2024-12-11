@@ -49,7 +49,7 @@
 				<td align="left">
 					<select name="role" id="role" class="form-control" required>
 						<option value="Sale Staff" ${role == 'Sale Staff' || (user != null && user.role == 'Sale Staff') ? 'selected' : ''}>
-							Saler
+							Sale Staff
 						</option>
 						<option value="Warehouser" ${role == 'Warehouser' || (user != null && user.role == 'Warehouser') ? 'selected' : ''}>
 							Warehouser

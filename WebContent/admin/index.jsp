@@ -13,24 +13,24 @@
 <div class="content">
 <div align="center">
 	<hr width="60%" />
-	<h1><b>Administrative Dashboard</b></h1>
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h3>Total Product: ${totalProducts}</h3>
-		<h3>Total Customer: ${totalCustomers}</h3>
-		<h3>Total Order: ${totalOrders}</h3>
-	</div>
-</div>
-<div align="center">
-	<div class="row mb-5 ">
-		<div class="col-md-7 text-center"></div>
-		<div class="col-md-15 text-left">
-			<h2 class="page-heading">Revenue</h2>
-			<hr class="w-50 mx-auto">
-			<div id="chart"></div>
-			<div> <h3>Gross Revenue: ${totalSales}</h3></div>
+	<h1><b>Administrative Homepage</b></h1>
+		<div class="card-container">
+			<div class="card">
+				<img src="../images/keyboard.png" alt="Product">
+				<h3>Total Product</h3>
+				<p>${totalProducts}</p>
+			</div>
+			<div class="card">
+				<img src="../images/guest.png" alt="Customer">
+				<h3>Total Customer</h3>
+				<p>${totalCustomers}</p>
+			</div>
+			<div class="card">
+				<img src="../images/wallet.png" alt="Total Sales">
+				<h3>Total Sales</h3>
+				<p>$${totalSubToTal}</p>
+			</div>
 		</div>
-	</div>
-
 <%--	Recent Order--%>
 	<div align="center">
 		<hr width="60%" />
