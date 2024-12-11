@@ -21,7 +21,7 @@
     <tr>
       <th scope="col">Product ID</th>
       <th scope="col">Product Name</th>
-      <th scope="col">Code</th>
+      <th scope="col">Image</th>
       <th scope="col">Import Price</th>
       <th scope="col">Quantity</th>
       <th scope="col">Total</th>
@@ -32,7 +32,7 @@
       <tr>
         <td>${detail.product.productId}</td>
         <td>${detail.product.productName}</td>
-        <td>${detail.product.code}</td>
+        <td><img src="${detail.product.image}" style="width: 150px; height: 100px; object-fit: cover;"></td>
         <td>${detail.importPrice}</td>
         <td>${detail.quantity}</td>
         <td>${detail.quantity * detail.importPrice}</td>
