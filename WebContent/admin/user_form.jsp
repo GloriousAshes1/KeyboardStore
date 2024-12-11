@@ -102,6 +102,7 @@
 			{ id: 'email', label: 'E-mail' },
 			{ id: 'fullname', label: 'Full Name' },
 			{ id: 'role', label: 'Role' },
+			{ id: 'password', label: 'Password' }
 		];
 		for (var i = 0; i < fields.length; i++) {
 			var field = fields[i];
@@ -109,7 +110,7 @@
 			var inputValue = fieldName.value.trim();
 
 			// Check for empty value
-			if (inputValue.length === 0) {
+			if (field.id !== 'password' && inputValue.length === 0) {
 				showError(field.label, "NULL_INPUT");
 				fieldName.focus();
 				return false;
@@ -126,21 +127,24 @@
 				fieldName.focus();
 				return false;
 			}
-		}
-		var password = document.getElementById('password').value;
-		if (password.length === 0 && !isEditMode) {
-			showError("Password", "NULL_INPUT");
-			password.focus();
-			return false;
-		}
-		if (password.length < 6 && password.length > 0) {
-			showError("Password", "SHORT_LENGTH_ERROR");
-			fieldName.focus;
-			return false;
-		} else if (password.length > 16) {
-			showError("Password", "OVER_LENGTH_ERROR");
-			fieldName.focus;
-			return false;
+			if (field.id === 'password') {
+				if (inputValue.length === 0) {
+					if (!isEditMode) {
+						showError("Password", "NULL_INPUT");
+						fieldName.focus();
+						return false;
+					}
+				}
+				if (inputValue.length < 6 && password.length > 0) {
+					showError("Password", "SHORT_LENGTH_ERROR");
+					fieldName.focus;
+					return false;
+				} else if (password.length > 16) {
+					showError("Password", "OVER_LENGTH_ERROR");
+					fieldName.focus;
+					return false;
+				}
+			}
 		}
 		return true;
 	}

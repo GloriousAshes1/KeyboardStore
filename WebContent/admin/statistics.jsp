@@ -11,7 +11,7 @@
 </head>
 <body>
 <jsp:directive.include file="header.jsp"/>
-<div class="content">
+<div class="content" align="center">
     <h1 align="center">Sales Report</h1>
 
     <!-- Form to input Product ID, Start Date, End Date, and Action -->
@@ -25,6 +25,7 @@
         <label for="endDate">End Date:</label>
         <input type="text" name="endDate" id="endDate" value="${endDate != null ? endDate : ''}" />
 
+        <br><br>
         <button type="submit" name="view">View</button>
         <button type="submit" name="export" value="true">Export to Excel</button>
     </form>
@@ -140,8 +141,8 @@
     <!-- Print salesData in JSP -->
     <c:if test="${not empty salesData}">
         <h2>Sales Data:</h2>
-        <table border="1">
-            <thead>
+        <table class="table table-hover">
+            <thead class="table-primary">
             <tr>
                 <th>Date</th>
                 <th>Product Name</th>
@@ -168,8 +169,6 @@
     <c:if test="${empty salesData}">
         <p>No sales data available for the selected date range.</p>
     </c:if>
-    <p>${startDate}</p>
-    <p>${endDate}</p>
 </div>
 </body>
 </html>
