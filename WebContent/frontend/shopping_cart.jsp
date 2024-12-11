@@ -2,7 +2,7 @@
 		 pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ include file="read_message.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +18,20 @@
 	<link rel="stylesheet" href="css/shopping_cart_style.css">
 </head>
 <body>
+
+<c:if test="${not empty param.errorCode}">
+	<%
+		String errorCode = request.getParameter("errorCode");
+		String errorMessage = new ErrorMessageUtil().getErrorMessage(errorCode, application);
+		if (errorMessage == null) {
+			errorMessage = "An unidentified error occurred. Please contact support.";
+		}
+	%>
+	<div class="alert alert-danger" role="alert">
+		<%= errorMessage %>
+	</div>
+</c:if>
+
 <header><jsp:directive.include file="header.jsp" /></header>
 <div class="shopping-cart">
 	<!-- message null-->
@@ -43,25 +57,25 @@
 	</c:if>
 	<!-- Cart -->
 	<c:if test="${cart.totalItems > 0}">
-	<div class="div">
-		<div class="main-cart">
-			<div class="overlap-group">
-				<div class="title">Shopping cart<img class="svg" src="css/images/shopping-cart.svg"/> </div>
-				<p class="p">${cart.totalQuantity} item(s)</p>
-			</div>
-			<div class="container">
-				<!-- Cart Form -->
-				<form action="update_cart" method="post" id="cart-form">
-					<c:forEach items="${cart.items}" var="items" varStatus="status">
-						<div class="item-container">
-							<div class="item-card">
-								<div class="item-detail-card">
-									<div class="rectangle">
-										<a href="view_product?id=${items.key.productId}" type="hidden"><img src="${items.key.image}" width="80px" height="80px" border="1px" alt="${items.key.productName}"></a>
-									</div>
-									<div class="item-detail">
-										<div class="item-card-text">${items.key.productName}</div>
-									</div>
+		<div class="div">
+			<div class="main-cart">
+				<div class="overlap-group">
+					<div class="title">Shopping cart<img class="svg" src="css/images/shopping-cart.svg"/> </div>
+					<p class="p">${cart.totalQuantity} item(s)</p>
+				</div>
+				<div class="container">
+					<!-- Cart Form -->
+					<form action="update_cart" method="post" id="cart-form">
+						<c:forEach items="${cart.items}" var="items" varStatus="status">
+							<div class="item-container">
+								<div class="item-card">
+									<div class="item-detail-card">
+										<div class="rectangle">
+											<a href="view_product?id=${items.key.productId}" type="hidden"><img src="${items.key.image}" width="80px" height="80px" border="1px" alt="${items.key.productName}"></a>
+										</div>
+										<div class="item-detail">
+											<div class="item-card-text">${items.key.productName}</div>
+										</div>
 
 										<input type="hidden" name="productId" value="${items.key.productId}">
 										<div class="inc-dec-value">
@@ -69,40 +83,42 @@
 											<input type="text" name="quantity${status.index + 1}" class="quantity" value="${items.value}" id="${items.key.productId}" readonly required>
 											<button type="button" class="inc" onclick="updateQuantity(${items.key.productId}, 'increase',${items.key.stock})">+</button>
 										</div>
-									<div class="subtotal-text"><fmt:formatNumber
-											value="${items.value * items.key.sellingPrice}" type="currency" /></div>
-									<div class="trash-bin">
-										<a href="javascript:void(0);" onclick="confirmDelete(${items.key.productId})">
-											<img class="trash-bin" src="css/images/trash-bin.png" alt="Delete">
-										</a>
+										<div class="subtotal-text"><fmt:formatNumber
+												value="${items.value * items.key.sellingPrice}" type="currency" /></div>
+										<div class="trash-bin">
+											<a href="javascript:void(0);" onclick="confirmDelete(${items.key.productId})">
+												<img class="trash-bin" src="css/images/trash-bin.png" alt="Delete">
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</c:forEach>
-				</form>
-				<!-- Checkout Card -->
-				<div class="checkout-container">
-					<div class="checkout-card">
-						<div class="checkout-detail-card">
-							<div class="checkout-title">Checkout Infomation<img class="svg" src="css/images/detail.svg"/></div>
-							<div class="text-wrappers">
-								<div class="text-wrapper">Subtotal: <div><fmt:formatNumber value="${cart.totalAmount}" type="currency"/></div></div>
-								<div class="text-wrapper">Tax: <div><fmt:formatNumber value="${cart.tax}" type="currency"/></div></div>
-								<div class="text-wrapper">Shipping Fee: <div><fmt:formatNumber value="${cart.shippingFee}" type="currency"/></div></div>
-								<div class="text-wrapper">Total: <div><fmt:formatNumber value="${cart.totalPrice}" type="currency"/></div></div>
+						</c:forEach>
+					</form>
+					<!-- Checkout Card -->
+					<div class="checkout-container">
+						<div class="checkout-card">
+							<div class="checkout-detail-card">
+								<div class="checkout-title">Checkout Infomation<img class="svg" src="css/images/detail.svg"/></div>
+								<div class="text-wrappers">
+									<div class="text-wrapper">Subtotal: <div><fmt:formatNumber value="${cart.totalAmount}" type="currency"/></div></div>
+									<div class="text-wrapper">Tax: <div><fmt:formatNumber value="${cart.tax}" type="currency"/></div></div>
+									<div class="text-wrapper">Shipping Fee: <div><fmt:formatNumber value="${cart.shippingFee}" type="currency"/></div></div>
+									<div class="text-wrapper">Total: <div><fmt:formatNumber value="${cart.totalPrice}" type="currency"/></div></div>
+								</div>
+								<div class="checkout" onclick="window.location='checkout'">Checkout &gt;</div>
 							</div>
-							<div class="checkout" onclick="window.location='checkout'">Checkout &gt;</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	</c:if>
 </div>
 <footer><jsp:directive.include file="footer.jsp" /></footer>
 <script type="text/javascript">
+	var errorMessages = <%= new com.google.gson.Gson().toJson(errorMessages) %>;
+
 	const confirmDelete = (productId) => {
 		let id = productId
 		let str = `remove_from_cart?product_id=`
@@ -129,7 +145,7 @@
 			if (currentQuantity < stock) {
 				currentQuantity += 1;
 			} else {
-				alert("Cannot add more. Stock limit reached!");
+				alert(errorMessages["OUT_OF_STOCK_ERROR"]);
 				return;
 			}
 		} else if (action === 'decrease') {
@@ -155,7 +171,8 @@
 		if (form) {
 			form.submit();
 		} else {
-			console.error("Form not found for productId:", productId);
+			var message = errorMessages["PRODUCT_NOT_FOUND"] + " " + productId;
+			console.error(message);
 		}
 	};
 </script>

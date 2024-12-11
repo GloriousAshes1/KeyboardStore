@@ -3,7 +3,7 @@
 <%
   Map<String, String> errorMessages = new HashMap<>();
   try {
-    BufferedReader br = new BufferedReader(new FileReader(config.getServletContext().getRealPath("/admin/error.csv")));
+    BufferedReader br = new BufferedReader(new FileReader(config.getServletContext().getRealPath("/frontend/error.csv")));
     String line;
     br.readLine(); // Skip the first line
     while ((line = br.readLine()) != null) {
