@@ -2,7 +2,7 @@
 		 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="baseUrl" value="/KeyboardStore/admin/list_products" />
+<c:set var="baseUrl" value="/KeyboardStore/salestaff/list_products" />
 <!DOCTYPE html>
 <html>
 <head>

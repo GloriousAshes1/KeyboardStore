@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="baseUrl" value="/KeyboardStore/admin/list_customer" />
+<c:set var="baseUrl" value="/KeyboardStore/salestaff/list_customer" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +19,12 @@
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<!-- Add Search -->
 			<input class="form-control" id="myInput" type="text" placeholder="Search..">
+
+			<form method="GET" action="new_customer">
+				<button type="submit" class="btn-add">+ Add Customer</button>
+			</form>
 		</div>
+
 		<c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
 		<c:set var="itemsPerPage" value="10" />
 		<c:set var="totalItems" value="${listCustomer != null ? listCustomer.size() : 0}" />

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="baseUrl" value="/KeyboardStore/admin/list_review" />
+<c:set var="baseUrl" value="/KeyboardStore/salestaff/list_review" />
 <!DOCTYPE html>
 <html>
 <head>
