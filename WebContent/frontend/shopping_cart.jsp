@@ -103,8 +103,6 @@
 								<div class="text-wrappers">
 									<div class="text-wrapper">Subtotal: <div><fmt:formatNumber value="${cart.totalAmount}" type="currency"/></div></div>
 									<div class="text-wrapper">Tax: <div><fmt:formatNumber value="${cart.tax}" type="currency"/></div></div>
-									<div class="text-wrapper">Shipping Fee: <div><fmt:formatNumber value="${cart.shippingFee}" type="currency"/></div></div>
-									<div class="text-wrapper">Total: <div><fmt:formatNumber value="${cart.totalPrice}" type="currency"/></div></div>
 								</div>
 								<div class="checkout" onclick="window.location='checkout'">Checkout &gt;</div>
 							</div>

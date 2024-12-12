@@ -7,6 +7,7 @@ import com.keyboardstore.entity.Customer;
 import com.keyboardstore.entity.OrderDetail;
 import com.keyboardstore.entity.Product;
 import com.keyboardstore.entity.ProductOrder;
+import com.keyboardstore.util.NominatimAPI;
 import com.paypal.api.payments.ItemList;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.ShippingAddress;
@@ -70,11 +71,17 @@ public class OrderServices {
 	public void showCheckOutForm() throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("cart");
+		Customer customer = (Customer) session.getAttribute("loggedCustomer");
+		String address = customer.getAddressLine1() + ", " + customer.getCity() + ", " + customer.getState() + ", " + customer.getCountry();
+		String origin = "Nam Kỳ Khởi Nghĩa, Vo Thi Sau Ward, District 3, Ho Chi Minh City, 70150, Vietnam";
+		NominatimAPI api = new NominatimAPI();
 
 		// tax 10%
 		float tax = shoppingCart.getTotalAmount() * 0.1f;
-		// shipping 0.1$ per copy
-		float shippingFee = shoppingCart.getTotalQuantity() * 1.0f;
+
+		float distance = (float) api.calculateDistance(origin ,address);
+
+		float shippingFee = shipcal(distance);
 
 
 		float total = shoppingCart.getTotalAmount() + tax + shippingFee;
@@ -87,6 +94,25 @@ public class OrderServices {
 		String checkOutPage = "frontend/checkout.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(checkOutPage);
 		dispatcher.forward(request, response);
+	}
+	public float shipcal(float distance){
+		if(distance < 5) {
+			return distance * 0f;
+		} else if (distance < 10) {
+			return distance * 0.1f;
+		}else if (distance < 20) {
+			return distance * 0.15f;
+		}else if (distance < 50) {
+			return distance * 0.2f;
+		}else if (distance < 100) {
+			return distance * 0.25f;
+		}else if (distance < 1000) {
+			return 30f;
+		} else if (distance < 2000) {
+			return 50f;
+		} else {
+			return 100f;
+		}
 	}
 
 	public void placeOrder() throws ServletException, IOException {
@@ -159,7 +185,9 @@ public class OrderServices {
 
 	private Integer saveOrder(ProductOrder order) {
 		ProductOrder savedOrder = orderDAO.create(order);
-
+		for(OrderDetail orderDetail : order.getOrderDetails()) {
+			new JpaDAO<>().updateStock(orderDetail.getProduct().getProductId(), orderDetail.getQuantity());
+		}
 		ShoppingCart shoppingCart = (ShoppingCart) request.getSession().getAttribute("cart");
 		shoppingCart.clear(); // clear cart as order placed
 
@@ -369,8 +397,7 @@ public class OrderServices {
 		}
 
 		request.setAttribute("message", message);
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
-		requestDispatcher.forward(request, response);
+		listOrderByCustomer();
 	}
 
 	public void showSalesReportForSpecificProduct() throws ServletException, IOException {

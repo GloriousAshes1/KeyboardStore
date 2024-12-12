@@ -257,5 +257,35 @@ public class JpaDAO<E> {
 			entityManager.close();
 		}
 	}
+	public void updateStock(int productId, int addQuantity) {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
+		try {
+			entityManager.getTransaction().begin();
+
+			String jpql = "UPDATE Product p SET p.stock = p.stock - ?1 WHERE p.productId = ?2";
+			Query query = entityManager.createQuery(jpql);
+
+			query.setParameter(1, addQuantity);
+			query.setParameter(2, productId);
+
+			int rowsUpdated = query.executeUpdate();
+
+			entityManager.getTransaction().commit();
+
+			if (rowsUpdated == 0) {
+				System.out.println("Không có bản ghi nào được cập nhật");
+			} else {
+				System.out.println("Đã cập nhật số lượng thành công");
+			}
+
+		} catch (Exception e) {
+			if (entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+	}
 }

@@ -29,9 +29,9 @@
                                 <div class="card-title">Checkout Infomation<img class="svg" src="css/images/detail.svg"/></div>
                                 <div class="text-wrappers">
                                     <div class="text-wrapper">Subtotal: <div><fmt:formatNumber value="${cart.totalAmount}" type="currency"/></div></div>
-                                    <div class="text-wrapper">Tax: <div><fmt:formatNumber value="${cart.tax}" type="currency"/></div></div>
-                                    <div class="text-wrapper">Shipping Fee: <div><fmt:formatNumber value="${cart.shippingFee}" type="currency"/></div></div>
-                                    <div class="text-wrapper">Total: <div><fmt:formatNumber value="${cart.totalPrice}" type="currency"/></div></div>
+                                    <div class="text-wrapper">Tax: <div><fmt:formatNumber value="${tax}" type="currency"/></div></div>
+                                    <div class="text-wrapper">Shipping Fee: <div><fmt:formatNumber value="${shippingFee}" type="currency"/></div></div>
+                                    <div class="text-wrapper">Total: <div><fmt:formatNumber value="${total}" type="currency"/></div></div>
                                 </div>
                                 <div class="edit-cart" onclick="window.location='view_cart'">&lt; Edit Cart</div>
                             </div>
@@ -62,7 +62,9 @@
                                         <option value="Cash On Delivery">Cash On Delivery</option>
                                         <option value="paypal">Paypal</option>
                                     </select> </div>
+
                                     <div class="place-order" onclick="submitForm()">Place Order &gt;</div>
+                                    <!--<div class="place-order" onclick="updateShippingFee()">Update Address</div>-->
                                 </div>
                             </div>
                         </div>
@@ -83,6 +85,17 @@
             }else {
                 console.error("form not found");
             }
+        }
+        function updateShippingFee() {
+            const address1 = document.getElementById("address1").value;
+            const city = document.getElementById("city").value;
+            const state = document.getElementById("state").value;
+            const zipcode = document.getElementById("zipcode").value;
+            const country = document.getElementById("country").value;
+            const address = address1 + ", " + city+ ", "  + state + ", "  + zipcode + ", "  + country;
+            $.post("update_shipping_fee", { address: address }, function() {
+                location.reload(); // Reload lại trang sau khi cập nhật
+            });
         }
     </script>
 </body>

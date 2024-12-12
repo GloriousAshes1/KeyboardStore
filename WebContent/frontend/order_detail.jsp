@@ -54,9 +54,9 @@
                     <div class="text-wrapper">Total Amount:<input class="input-box" name="totalAmount" value="${order.total}"disabled id="custom-disabled"></div>
                 </div>
             </div>
-            <c:if test="${order.status == 'Processing'}">
+            <div style="display: flex; justify-content: center; margin-left: auto !important;"><c:if test="${order.status == 'Processing'}">
                 <button type="submit" class="btn btn-danger" style="margin-left: auto">Cancel Order</button>
-            </c:if>
+            </c:if></div>
         </div>
     </div>
     </form>
@@ -86,10 +86,6 @@
             </article>
         </c:forEach>
     </section>
-        <c:if test="${order.status == 'Processing'}">
-            <button type="submit">Cancel Order</button>
-        </c:if>
-
 </div>
 <jsp:directive.include file="footer.jsp" />
 </body>

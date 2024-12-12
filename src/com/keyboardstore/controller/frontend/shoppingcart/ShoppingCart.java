@@ -51,19 +51,18 @@ public class ShoppingCart {
 	}
 
 	public float getTax(){
-        return getTotalAmount() * 0.01f;
+        return getTotalAmount() * 0.1f;
 	}
 
-	public float getShippingFee(){
-		return getTotalAmount() * 0.01f;
-	}
+
+
 	public float getTotalPrice() {
-		return getTotalAmount() + getTax() + getShippingFee();
+		return getTotalAmount() + getTax();
 	}
 
-	public void updateCart(int[] gameIds, int[] quantities) {
-		for(int i = 0; i < gameIds.length; i++) {
-			Product key = new Product(gameIds[i]);
+	public void updateCart(int[] productIds, int[] quantities) {
+		for(int i = 0; i < productIds.length; i++) {
+			Product key = new Product(productIds[i]);
 			Integer value = quantities[i];
 			cart.put(key, value);
 		}
