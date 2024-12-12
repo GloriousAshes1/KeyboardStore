@@ -1,8 +1,10 @@
 package com.keyboardstore.controller.frontend.order;
 
 import com.keyboardstore.entity.Customer;
+import com.keyboardstore.service.CommonUtility;
 import com.keyboardstore.util.NominatimAPI;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,8 +16,10 @@ import java.io.IOException;
 @WebServlet("/update_shipping_fee")
 public class UpdateShippingFeeServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+
+        // Get form input values
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String phone = request.getParameter("phone");
@@ -25,6 +29,8 @@ public class UpdateShippingFeeServlet extends HttpServlet {
         String state = request.getParameter("state");
         String zipCode = request.getParameter("zipcode");
         String country = request.getParameter("country");
+
+        // Update customer info
         Customer customer = (Customer) session.getAttribute("loggedCustomer");
         customer.setFirstname(firstName);
         customer.setLastname(lastName);
@@ -36,17 +42,23 @@ public class UpdateShippingFeeServlet extends HttpServlet {
         customer.setState(state);
         customer.setCountry(country);
 
-        String customerAddress = request.getParameter("address"); // Lấy địa chỉ từ form
+        // Calculate shipping fee based on address
+        String customerAddress = address1 + ", " + city + ", " + state + ", " + zipCode + ", " + country;
         String origin = "Nam Kỳ Khởi Nghĩa, Vo Thi Sau Ward, District 3, Ho Chi Minh City, 70150, Vietnam";
 
         NominatimAPI api = new NominatimAPI();
         float distance = (float) api.calculateDistance(origin, customerAddress);
+        float shippingFee = distance * 0.1f; // Calculate shipping fee
 
-        float shippingFee = distance * 0.1f; // Tính phí vận chuyển
-
+        // Set attributes
         request.setAttribute("shippingFee", shippingFee);
         request.setAttribute("loggedCustomer", customer);
-        request.getRequestDispatcher("/checkout.jsp"); // Chuyển về trang checkout.jsp
+
+        // Generate the country list for the JSP page
+        CommonUtility.generateCountryList(request);
+
+        // Forward to the checkout page
+        RequestDispatcher dispatcher = request.getRequestDispatcher("frontend/checkout.jsp");
+        dispatcher.forward(request, response);
     }
 }
-

@@ -62,8 +62,9 @@
                                         <option value="Cash On Delivery">Cash On Delivery</option>
                                         <option value="paypal">Paypal</option>
                                     </select> </div>
-
+                                    <div class="place-order" onclick="submitUpdate()">Update &gt;</div>
                                     <div class="place-order" onclick="submitForm()">Place Order &gt;</div>
+
                                     <!--<div class="place-order" onclick="updateShippingFee()">Update Address</div>-->
                                 </div>
                             </div>
@@ -78,6 +79,12 @@
 
     <jsp:directive.include file="footer.jsp" />
     <script>
+        function submitUpdate() {
+            // Change form action to update_checkout before submitting
+            document.getElementById('informationForm').action = 'update_shipping_fee';
+            document.getElementById('informationForm').submit();
+        }
+
         function submitForm() {
             const form = document.getElementById('informationForm');
             if(form){
@@ -85,17 +92,6 @@
             }else {
                 console.error("form not found");
             }
-        }
-        function updateShippingFee() {
-            const address1 = document.getElementById("address1").value;
-            const city = document.getElementById("city").value;
-            const state = document.getElementById("state").value;
-            const zipcode = document.getElementById("zipcode").value;
-            const country = document.getElementById("country").value;
-            const address = address1 + ", " + city+ ", "  + state + ", "  + zipcode + ", "  + country;
-            $.post("update_shipping_fee", { address: address }, function() {
-                location.reload(); // Reload lại trang sau khi cập nhật
-            });
         }
     </script>
 </body>

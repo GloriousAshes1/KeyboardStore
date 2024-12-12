@@ -81,7 +81,7 @@ public class OrderServices {
 
 		float distance = (float) api.calculateDistance(origin ,address);
 
-		float shippingFee = shipcal(distance);
+		float shippingFee = distance * 0.1f;
 
 
 		float total = shoppingCart.getTotalAmount() + tax + shippingFee;
