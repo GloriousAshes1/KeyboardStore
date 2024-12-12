@@ -7,8 +7,8 @@ import java.util.Properties;
 
 public class MailServices {
     public static void SendMail(String recipient, String subject, String content){
-        String username = "michaelhung31102003@gmail.com";  // Your Gmail address
-        String password = "eqbf yskj bkic vzmi";  // Your App Password
+        String username = "lephu1703@gmail.com";  // Your Gmail address
+        String password = "ivvm tcbp pxvq icax";  // Your App Password
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");

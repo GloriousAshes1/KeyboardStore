@@ -28,7 +28,7 @@
             <!-- product content -->
             <div class="product-content">
                 <div class="product-img">
-                    <img class="product-img" src="${product.image}" alt="${product.productName}">
+                    <img class="product-img" src="${product.image}" alt="${product.productName}" style="width: 400px; height: 300px; object-fit: scale-down;" >
                 </div>
                 <div class="detail">
                     <div class="row">

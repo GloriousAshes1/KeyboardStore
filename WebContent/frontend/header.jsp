@@ -24,6 +24,11 @@
 
 <title>KeyBoard Store</title>
 </head>
+<style>
+	img {
+		object-fit: cover;
+	}
+</style>
 <body>
 	<nav class="navbar navbar-expand-lg nav-link" style="background-color: #2579f2;">
 		<div class="container-fluid">

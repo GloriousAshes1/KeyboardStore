@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class OrderServices {
@@ -31,6 +33,51 @@ public class OrderServices {
 	private OrderDAO orderDAO;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
+
+	private void sendEmailToCustomer(int orderId){
+		//lấy email hiện tại ra
+		HttpSession session = request.getSession();
+		Customer loggedCustomer = (Customer) session.getAttribute("loggedCustomer");
+		String email = loggedCustomer.getEmail();
+		String name = loggedCustomer.getFirstname();
+		String title = "Order Confirmation from KEYBOARD STORE";
+		String body = formEmail(name, orderId);
+		//gửi mail
+		MailServices.SendMail(email,title,body);
+	}
+
+	public String formEmail(String name, int orderId) {
+		String form = "KEYBOARD STORE\r\n"
+				+ "\r\n"
+				+ "Order Confirmation and Thank You\r\n"
+				+ "\r\n"
+				+ "Dear " + name + ",\r\n"
+				+ "\r\n"
+				+ "Thank you for placing an order with KEYBOARD STORE. We are excited to process your order and ensure you receive your items as soon as possible.\r\n"
+				+ "\r\n"
+				+ "Order Details:\r\n"
+				+ "\r\n"
+				+ "Order Number: " + orderId + "\r\n"
+				+ "Order Date: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + "\r\n"
+				+ "Product Details:" + readOrderInfo() + "\r\n"
+				+ "We appreciate your trust in us and strive to deliver the highest quality products and services. Your satisfaction is our top priority.\r\n"
+				+ "\r\n"
+				+ "Next Steps:\r\n"
+				+ "\r\n"
+				+ "You will receive a notification once your order is shipped, including tracking information.\r\n"
+				+ "If you have any special instructions or need to make changes to your order, please contact us promptly.\r\n"
+				+ "Customer Support:\r\n"
+				+ "If you have any questions or require further assistance, our customer service team is here to help. You can reach us at keyboardstore@gmail.com or call us at 0123456789.\r\n"
+				+ "\r\n"
+				+ "Thank you once again for your purchase. We look forward to serving you and hope you enjoy your new items!\r\n"
+				+ "\r\n"
+				+ "Best regards,\r\n"
+				+ "\r\n"
+				+ "KEYBOARD STORE\r\n"
+				+ "\r\n"
+				+ "";
+		return form;
+	}
 
 	public OrderServices(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
@@ -122,11 +169,12 @@ public class OrderServices {
 		
 		if(paymentMethod.equals("paypal")) {
 			PaymentServices paymentServices = new PaymentServices(request, response);
-			
 			request.getSession().setAttribute("order4Paypal", order);
+			sendEmailToCustomer(order.getOrderId());
 			paymentServices.authorizePayment(order);
 		}else {
 			placeOrderCOD(order);
+			sendEmailToCustomer(order.getOrderId());
 		}
 	}
 
@@ -259,18 +307,6 @@ public class OrderServices {
 
 	private void placeOrderCOD(ProductOrder order) throws ServletException, IOException {
 		saveOrder(order);
-		
-		HttpSession session = request.getSession();
-		Customer customer = (Customer) session.getAttribute("loggedCustomer");
-		String email = customer.getEmail();
-		String title = "Order Successfully !!!";
-        String body = "Thank you. We have received your order!\n" +
-                "Your order will be delivered soon!\n" +
-                "Have a great day!\n" +
-                "Best regards.";
-      //gửi mail
-		MailServices mailServices = new MailServices();
-		mailServices.SendMail(email, title, body);
 
 		String message = "Your order have been recieved. Thanks for shopping with us.";
 		request.setAttribute("message", message);
@@ -297,18 +333,6 @@ public class OrderServices {
 		order.setState(shippingAddress.getState());
 		order.setCountry(shippingAddress.getCountryCode());
 		order.setPhone(shippingPhoneNumber);
-		
-		HttpSession session = request.getSession();
-		Customer customer = (Customer) session.getAttribute("loggedCustomer");
-		String email = customer.getEmail();
-		String title = "Order Successfully !!!";
-        String body = "Thank you. We have received your order!\n" +
-                "Your order will be delivered soon!\n" +
-                "Have a great day!\n" +
-                "Best regards.";
-      //gửi mail
-		MailServices mailServices = new MailServices();
-		mailServices.SendMail(email, title, body);
 		
 		return saveOrder(order);
 	}

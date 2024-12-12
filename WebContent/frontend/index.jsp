@@ -24,7 +24,7 @@
 		<div class="product-grid">
 <c:forEach items="${listNewProducts}" var="product">
 			<article class="product-card <c:if test="${product.stock == 0}">out-of-stock</c:if>">
-				<a href="view_product?id=${product.productId}"><img src="${product.image}" alt="Product image" class="product-image" loading="lazy" /></a>
+				<a href="view_product?id=${product.productId}"><img src="${product.image}" alt="Product image" style="object-fit: scale-down" class="product-image" loading="lazy" /></a>
 				<div class="product-content">
 					<a href="view_product?id=${product.productId}"><h3 class="product-name">${product.productName}</h3></a>
 					<p class="product-price">
@@ -44,7 +44,7 @@
 		<div class="product-grid">
 <c:forEach items="${listBestSellingProducts}" var="product">
 	<article class="product-card <c:if test="${product.stock == 0}">out-of-stock</c:if>">
-		<a href="view_product?id=${product.productId}"><img src="${product.image}" alt="Product image" class="product-image" loading="lazy" /></a>
+		<a href="view_product?id=${product.productId}"><img src="${product.image}" alt="Product image" style="object-fit: scale-down" class="product-image" loading="lazy" /></a>
 		<div class="product-content">
 			<a href="view_product?id=${product.productId}"><h3 class="product-name">${product.productName}</h3></a>
 			<p class="product-price">
@@ -64,7 +64,7 @@
 		<div class="product-grid">
 <c:forEach items="${listMostFavoredProducts}" var="product">
 	<article class="product-card <c:if test="${product.stock == 0}">out-of-stock</c:if>">
-		<a href="view_product?id=${product.productId}"><img src="${product.image}" alt="Product image" class="product-image" loading="lazy" /></a>
+		<a href="view_product?id=${product.productId}"><img src="${product.image}" alt="Product image" style="object-fit: scale-down" class="product-image" loading="lazy" /></a>
 		<div class="product-content">
 			<a href="view_product?id=${product.productId}"><h3 class="product-name">${product.productName}</h3></a>
 			<p class="product-price">

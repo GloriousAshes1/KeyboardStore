@@ -11,8 +11,10 @@
 
     <style>
         .product-large {
-            width: 300.35px;
-            height: 180.92px;
+            width: 350px; /* Chiều rộng tự động theo khối cha */
+            height: 338px; /* Đảm bảo tỷ lệ hình ảnh */
+            max-width: 100%; /* Không vượt quá khối cha */
+            object-fit: contain; /* Đảm bảo hình ảnh không bị cắt */
         }
     </style>
 </head>
@@ -23,20 +25,20 @@
     <h2 style="text-align: center;">Your Review</h2>
     <form id="reviewForm" action="submit_review" method="post" style="border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
         <div style="display: flex; align-items: flex-start; gap: 20px;">
-            <!-- Product Information -->
+            <!-- Thông tin sản phẩm -->
             <div style="flex: 1; text-align: center;">
                 <span id="product-title" style="display: block; font-weight: bold;">${product.productName}</span>
-                <img class="product-large" src="${product.image}" style="width: 200px; height: 200px; border: 1px solid #ddd; border-radius: 4px;"/>
+                <img class="product-large" src="${product.image}" />
             </div>
 
-            <!-- Review Inputs -->
+            <!-- Đầu vào đánh giá -->
             <div style="flex: 2;">
-                <!-- Rating -->
+                <!-- Đánh giá sao -->
                 <div id="rateYo" style="margin-bottom: 10px;"></div>
                 <input type="hidden" id="rating" name="rating" />
                 <input type="hidden" name="productId" value="${product.productId}" />
 
-                <!-- Review Title -->
+                <!-- Tiêu đề đánh giá -->
                 <input
                         type="text"
                         name="headline"
@@ -44,7 +46,7 @@
                         placeholder="Review title"
                         style="display: block; width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;"/>
 
-                <!-- Review Details -->
+                <!-- Nội dung đánh giá -->
                 <textarea
                         name="comment"
                         cols="70"
@@ -54,16 +56,16 @@
             </div>
         </div>
 
-        <!-- Submit and Cancel Buttons -->
-        <div style="text-align: center; margin-top: 20px; margin-left: auto;">
+        <!-- Nút Gửi và Hủy -->
+        <div style="text-align: center; margin-top: 20px;">
             <button
                     type="submit"
-                    style="background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;margin-left: auto;">Submit</button>
+                    style="background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Submit</button>
             &nbsp;&nbsp;
             <button
                     id="buttonCancel"
                     type="button"
-                    style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;margin-left: auto;">Cancel</button>
+                    style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Cancel</button>
         </div>
     </form>
 </div>
@@ -75,12 +77,12 @@
 <script type="text/javascript">
     $.noConflict();
     jQuery(document).ready(function($) {
-        // Cancel button action
+        // Hành động nút hủy
         $("#buttonCancel").click(function() {
             history.go(-1);
         });
 
-        // Form validation
+        // Xác thực biểu mẫu
         $("#reviewForm").validate({
             rules: {
                 headline: "required",
@@ -92,7 +94,7 @@
             }
         });
 
-        // Star rating
+        // Đánh giá sao
         $("#rateYo").rateYo({
             starWidth: "30px",
             fullStar: true,

@@ -28,7 +28,7 @@
                 <div class="col">
                     <div class="card h-100">
                     	<a href="view_product?id=${product.productId}">
-                    		<img src="${product.image}" class="card-img-top" alt="${product.productName}">
+                    		<img src="${product.image}" class="card-img-top" alt="${product.productName}" style="width: 354px; height: 555px; object-fit: contain">
                     	</a>
                         <div class="card-body">
                             <h5 class="card-title"><a href="view_product?id=${product.productId}"> <b>${product.productName}</b></a></h5>

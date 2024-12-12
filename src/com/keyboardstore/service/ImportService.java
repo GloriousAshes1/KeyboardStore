@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -123,95 +124,98 @@ public class ImportService {
 
 
     public void addImport() throws ServletException, IOException {
-        // Read import information
-        Import imp = readImportInfo();
+        try {
+            // Bắt đầu giao dịch
+            importDAO.beginTransaction();
 
-        // Get the user from the session
-        HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
+            // Tạo đối tượng Import
+            Import imp = new Import();
+            imp.setImportDate(new java.util.Date());
 
-        // Set the user (seller)
-        Users user = userDAO.get(userId);
-        imp.setUser(user);
+            // Lấy thông tin user từ session
+            HttpSession session = request.getSession();
+            Integer userId = (Integer) session.getAttribute("userId");
 
-        // Get product details from the form
-        String[] productIds = request.getParameterValues("productId");
-        String[] quantities = request.getParameterValues("quantity");
-        String[] importPrices = request.getParameterValues("importPrice");
+            Users user = userDAO.get(userId);
+            if (user == null) {
+                throw new ServletException("User not found.");
+            }
+            imp.setUser(user);
 
-        // Validate the input data
-        if (productIds == null || quantities == null || importPrices == null ||
-                productIds.length != quantities.length || quantities.length != importPrices.length) {
-            throw new ServletException("Product information is invalid.");
-        }
+            // Lấy thông tin sản phẩm từ form
+            String[] productIds = request.getParameterValues("productId");
+            String[] quantities = request.getParameterValues("quantity");
+            String[] importPrices = request.getParameterValues("importPrice");
 
-        // Create a collection to store import details
-        Set<ImportDetail> importDetails = new HashSet<>();
-        float totalSumPrice = 0;
+            for (String s : Arrays.asList("Product IDs: " + productIds, "Quantities: " + quantities, "Import Prices: " + importPrices)) {
+                System.out.println(s);
+            }
 
-        // Process each product
-        for (int i = 0; i < productIds.length; i++) {
-            try {
-                // Convert input data
+            // Kiểm tra dữ liệu đầu vào
+            if (productIds == null || quantities == null || importPrices == null ||
+                    productIds.length != quantities.length || quantities.length != importPrices.length) {
+                throw new ServletException("Product information is invalid.");
+            }
+
+            // Tạo danh sách ImportDetail
+            Set<ImportDetail> importDetails = new HashSet<>();
+            float totalSumPrice = 0;
+
+            for (int i = 0; i < productIds.length; i++) {
                 Integer productId = Integer.parseInt(productIds[i]);
                 int quantity = Integer.parseInt(quantities[i]);
                 float importPrice = Float.parseFloat(importPrices[i]);
 
-                // Validate the product data
                 if (productId <= 0 || quantity <= 0 || importPrice <= 0) {
                     throw new ServletException("Invalid product data.");
                 }
 
-                // Retrieve the product from the database
                 Product product = productDAO.get(productId);
+                if (product == null) {
+                    throw new ServletException("Product not found.");
+                }
 
-                // Calculate the new import price (weighted average)
-                float oldImportPrice = product.getImportPrice(); // Assuming you have an import price field
-                int currentStock = product.getStock(); // Current stock before the import
-
-                // Weighted average formula for new import price
+                // Cập nhật thông tin sản phẩm
+                float oldImportPrice = product.getImportPrice();
+                int currentStock = product.getStock();
                 float newImportPrice = (oldImportPrice * currentStock + importPrice * quantity) / (currentStock + quantity);
+                product.setImportPrice(newImportPrice);
+                product.setStock(currentStock + quantity);
 
-                // Update the product's import price
-                product.setImportPrice(newImportPrice);  // Assuming there is a method to set the import price
-
-                // Update the stock
-                int updatedStock = currentStock + quantity;
-                product.setStock(updatedStock);
-
-                // Update the product in the database
                 productDAO.update(product);
 
-                // Create import detail
+                // Tạo ImportDetail
                 ImportDetail importDetail = new ImportDetail();
                 importDetail.setProduct(product);
                 importDetail.setQuantity(quantity);
                 importDetail.setImportPrice(importPrice);
                 importDetail.setImportEntity(imp);
 
-                // Add import detail to the set
                 importDetails.add(importDetail);
-
-                // Add the total price for this product to the sum
                 totalSumPrice += quantity * importPrice;
-
-            } catch (NumberFormatException e) {
-                throw new ServletException("Invalid product data.", e);
             }
+
+            // Gắn các ImportDetail vào Import
+            imp.setImportDetails(importDetails);
+            imp.setSumPrice(totalSumPrice);
+
+            // Lưu Import
+            importDAO.create(imp);
+
+            // Commit giao dịch
+            importDAO.commit();
+
+            // Thông báo thành công
+            String message = "The new import has been successfully added!";
+            listAllImports(message);
+
+        } catch (Exception e) {
+            // Rollback giao dịch nếu có lỗi
+            importDAO.rollback();
+            throw new ServletException("Failed to add import.", e);
         }
-
-        // Set the import details and total sum price for the import
-        imp.setImportDetails(importDetails);
-        imp.setSumPrice(totalSumPrice);
-
-        // Save the import to the database
-        importDAO.create(imp);
-
-        // Return success message and redirect
-        String message = "The new import has been successfully added!";
-        // Redirect or forward to the appropriate page
-        listAllImports(message);
     }
+
 
 
     // Delete an import

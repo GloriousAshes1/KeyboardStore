@@ -22,7 +22,7 @@
 	<div class="product-review">
 
 		<div class="product-info">
-			<img class="product-image" src="${product.image}" alt="${product.productName}" />
+			<img class="product-image" src="${product.image}" alt="${product.productName}" style="object-fit: " />
 		</div>
 
 		<div class="review-details">
