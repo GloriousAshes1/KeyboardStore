@@ -146,21 +146,18 @@
             <tr>
                 <th>Date</th>
                 <th>Product Name</th>
-                <th>Sales Amount</th>
+                <th>Quantity</th>
+                <th>Profit</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="entry" items="${salesData}">
-                <c:set var="date" value="${entry.key}" />
-                <c:forEach var="productEntry" items="${entry.value}">
-                    <c:set var="productName" value="${productEntry.key}" />
-                    <c:set var="salesAmount" value="${productEntry.value}" />
-                    <tr>
-                        <td>${date}</td>
-                        <td>${productName}</td>
-                        <td>${salesAmount}</td>
-                    </tr>
-                </c:forEach>
+            <c:forEach var="row" items="${salesDataExcel}">
+                <tr>
+                    <td>${row[1]}</td> <!-- Product ID -->
+                    <td>${row[2]}</td> <!-- Product Name -->
+                    <td>${row[3]}</td> <!-- Quantity Sold -->
+                    <td>${row[4]}</td> <!-- Profit -->
+                </tr>
             </c:forEach>
             </tbody>
         </table>

@@ -123,8 +123,7 @@ public class DisplayChartServlet extends HttpServlet {
         headerRow.createCell(0).setCellValue("Date");
         headerRow.createCell(1).setCellValue("Product Name");
         headerRow.createCell(2).setCellValue("Quantity Sold");
-        headerRow.createCell(3).setCellValue("Profits");
-        headerRow.createCell(4).setCellValue("Total Profits");
+        headerRow.createCell(3).setCellValue("Profits");;
 
         // Prepare to format date as dd/MM/yyyy
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -180,8 +179,6 @@ public class DisplayChartServlet extends HttpServlet {
                             }
                         }
                     }
-
-                    // Sales Price (row[4] holds the sales price)
                     double salesPrice = 0.0;
                     if (row[4] != null) {
                         if (row[4] instanceof Double) {
@@ -196,11 +193,6 @@ public class DisplayChartServlet extends HttpServlet {
                             }
                         }
                     }
-
-                    // Calculate total sales as quantitySold * salesPrice
-                    double totalSales = quantitySold * salesPrice;
-                    dataRow.createCell(4).setCellValue(totalSales);
-                    totalSalesSum += totalSales; // Add to total sales sum
                 }
             }
 
