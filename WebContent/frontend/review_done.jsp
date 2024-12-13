@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Review Posted - Legendary Games</title>
+<title>Review Posted - KeyBoard Store</title>
 <link rel="icon" type="image/x-icon" href="images/Logo.png">
 <script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>

@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign In - Legendary Gamestore</title>
+    <title>Register - KeyBoard Store</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="images/Logo.png">
     <script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>

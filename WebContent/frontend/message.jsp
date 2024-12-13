@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Legendary Games</title>
+<title>KeyBoard Store</title>
 <link rel="icon" type="image/x-icon" href="images/Logo.png">
 	<style>
 		footer {

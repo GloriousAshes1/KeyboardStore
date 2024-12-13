@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Review - Legendary Games</title>
+<title>Review - Key Board Store</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <link rel="icon" type="image/x-icon" href="images/Logo.png">
 <script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
