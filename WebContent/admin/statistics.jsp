@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -153,7 +154,7 @@
             <tbody>
             <c:forEach var="row" items="${salesDataExcel}">
                 <tr>
-                    <td>${row[1]}</td> <!-- Product ID -->
+                    <td><fmt:formatDate value="${row[0]}" pattern="dd/MM/yyyy" /></td> <!-- Formatted Sale Date -->
                     <td>${row[2]}</td> <!-- Product Name -->
                     <td>${row[3]}</td> <!-- Quantity Sold -->
                     <td>${row[4]}</td> <!-- Profit -->
