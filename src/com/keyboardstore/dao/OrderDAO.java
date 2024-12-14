@@ -167,4 +167,5 @@ public class OrderDAO extends JpaDAO<ProductOrder> implements GenericDAO<Product
 		bd = bd.setScale(2, RoundingMode.HALF_UP);
 		return bd.doubleValue();
 	}
+
 }

@@ -34,19 +34,19 @@ public class OrderServices {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
-	private void sendEmailToCustomer(int orderId){
+	private void sendEmailToCustomer(){
 		//lấy email hiện tại ra
 		HttpSession session = request.getSession();
 		Customer loggedCustomer = (Customer) session.getAttribute("loggedCustomer");
 		String email = loggedCustomer.getEmail();
 		String name = loggedCustomer.getFirstname();
 		String title = "Order Confirmation from KEYBOARD STORE";
-		String body = formEmail(name, orderId);
+		String body = formEmail(name);
 		//gửi mail
 		MailServices.SendMail(email,title,body);
 	}
 
-	public String formEmail(String name, int orderId) {
+	public String formEmail(String name) {
 		String form = "KEYBOARD STORE\r\n"
 				+ "\r\n"
 				+ "Order Confirmation and Thank You\r\n"
@@ -57,7 +57,6 @@ public class OrderServices {
 				+ "\r\n"
 				+ "Order Details:\r\n"
 				+ "\r\n"
-				+ "Order Number: " + orderId + "\r\n"
 				+ "Order Date: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + "\r\n"
 				+ "Product Details:" + readOrderInfo() + "\r\n"
 				+ "We appreciate your trust in us and strive to deliver the highest quality products and services. Your satisfaction is our top priority.\r\n"
@@ -170,11 +169,11 @@ public class OrderServices {
 		if(paymentMethod.equals("paypal")) {
 			PaymentServices paymentServices = new PaymentServices(request, response);
 			request.getSession().setAttribute("order4Paypal", order);
-			sendEmailToCustomer(order.getOrderId());
 			paymentServices.authorizePayment(order);
+			sendEmailToCustomer();
 		}else {
 			placeOrderCOD(order);
-			sendEmailToCustomer(order.getOrderId());
+			sendEmailToCustomer();
 		}
 	}
 
@@ -368,9 +367,9 @@ public class OrderServices {
 		order.setStatus(orderStatus);
 
 		// order details
-		String[] arrayGameId = request.getParameterValues("gameId");
+		String[] arrayProductId = request.getParameterValues("gameId");
 		String[] arrayPrice = request.getParameterValues("price");
-		String[] arrayQuantity = new String[arrayGameId.length];
+		String[] arrayQuantity = new String[arrayProductId.length];
 
 		for (int i = 1; i <= arrayQuantity.length; i++) {
 			arrayQuantity[i - 1] = request.getParameter("quantity" + i);
@@ -380,8 +379,8 @@ public class OrderServices {
 		orderDetails.clear();
 
 		float totalAmount = 0.0f;
-		for (int i = 0; i < arrayGameId.length; i++) {
-			int gameId = Integer.parseInt(arrayGameId[i]);
+		for (int i = 0; i < arrayProductId.length; i++) {
+			int gameId = Integer.parseInt(arrayProductId[i]);
 			int quantity = Integer.parseInt(arrayQuantity[i]);
 			float price = Float.parseFloat(arrayPrice[i]);
 

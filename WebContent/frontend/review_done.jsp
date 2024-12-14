@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"
+		 pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +36,7 @@
 			<tr>
 				<td style="text-align: center;">
 					<span id="product-title" style="display: block; font-weight: bold;">${product.productName}</span><br/>
-					<img class="product-large" src="${product.image}" style="width: 200px; height: 200px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;"/>
+					<img class="product-large" src="${product.image}" alt="${product.productName}" style="width: 200px; height: 200px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;"/>
 				</td>
 				<td colspan="2" style="text-align: center;">
 					<h3>Your review has been posted. Thank you!</h3>

@@ -147,7 +147,7 @@
                 <tr>
                     <td colspan="2" style="text-align: center;">
                         <button type="submit" class="btn btn-primary">Sign Up</button>
-                        <button type="button" class="btn btn-secondary" onclick="javascript:history.go(-1);">Cancel</button>
+                        <button type="button" class="btn btn-secondary" onclick="history.go(-1);">Cancel</button>
                     </td>
                 </tr>
             </table>
