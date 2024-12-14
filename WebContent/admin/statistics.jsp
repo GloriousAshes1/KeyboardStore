@@ -155,9 +155,9 @@
             <c:forEach var="row" items="${salesDataExcel}">
                 <tr>
                     <td><fmt:formatDate value="${row[0]}" pattern="dd/MM/yyyy" /></td> <!-- Formatted Sale Date -->
+                    <td>${row[1]}</td>
                     <td>${row[2]}</td> <!-- Product Name -->
                     <td>${row[3]}</td> <!-- Quantity Sold -->
-                    <td>${row[4]}</td> <!-- Profit -->
                 </tr>
             </c:forEach>
             </tbody>

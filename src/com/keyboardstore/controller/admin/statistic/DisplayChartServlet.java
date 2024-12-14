@@ -1,9 +1,7 @@
 package com.keyboardstore.controller.admin.statistic;
 
 import com.keyboardstore.dao.OrderDAO;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.RequestDispatcher;
@@ -79,9 +77,9 @@ public class DisplayChartServlet extends HttpServlet {
 
             for (Object[] row : salesData) {
                 Date saleDate = (Date) row[0];
-                String productName = (String) row[2]; // Assuming the product name is in row[2]
+                String productName = (String) row[1];
                 String formattedDate = dateFormat.format(saleDate);  // Format date to dd/MM/yyyy
-                Double subtotal = (Double) row[4]; // Assuming the subtotal is in row[4]
+                Double subtotal = Double.parseDouble(row[3].toString());
 
                 // Initialize the map for this date if it doesn't exist
                 salesByDateAndProduct.putIfAbsent(formattedDate, new TreeMap<>());
@@ -90,6 +88,7 @@ public class DisplayChartServlet extends HttpServlet {
                 // Sum sales for the same product on the same date
                 productSales.put(productName, productSales.getOrDefault(productName, 0.0) + subtotal);
             }
+
 
             // Set the sales data, start date, and end date as request attributes
             request.setAttribute("salesData", salesByDateAndProduct);
@@ -111,8 +110,6 @@ public class DisplayChartServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher(reportPage);
         dispatcher.forward(request, response);
     }
-
-    // Method to export sales data to an Excel file
     private void exportToExcel(HttpServletResponse response, List<Object[]> salesData, Date startDate, Date endDate) throws IOException {
         // Create an Excel workbook
         Workbook workbook = new XSSFWorkbook();
@@ -120,10 +117,39 @@ public class DisplayChartServlet extends HttpServlet {
 
         // Create a header row
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Date");
-        headerRow.createCell(1).setCellValue("Product Name");
-        headerRow.createCell(2).setCellValue("Quantity Sold");
-        headerRow.createCell(3).setCellValue("Profits");;
+
+        // Create a CellStyle for the header with borders
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setBorderTop(BorderStyle.THIN);
+        headerCellStyle.setBorderBottom(BorderStyle.THIN);
+        headerCellStyle.setBorderLeft(BorderStyle.THIN);
+        headerCellStyle.setBorderRight(BorderStyle.THIN);
+        headerCellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        // Set header cells and apply style
+        Cell cell0 = headerRow.createCell(0);
+        cell0.setCellValue("Date");
+        cell0.setCellStyle(headerCellStyle);
+
+        Cell cell1 = headerRow.createCell(1);
+        cell1.setCellValue("Product Name");
+        cell1.setCellStyle(headerCellStyle);
+
+        Cell cell2 = headerRow.createCell(2);
+        cell2.setCellValue("Quantity Sold");
+        cell2.setCellStyle(headerCellStyle);
+
+        Cell cell3 = headerRow.createCell(3);
+        cell3.setCellValue("Profits");
+        cell3.setCellStyle(headerCellStyle);
+
+        // Create a CellStyle for the data cells with borders
+        CellStyle dataCellStyle = workbook.createCellStyle();
+        dataCellStyle.setBorderTop(BorderStyle.THIN);
+        dataCellStyle.setBorderBottom(BorderStyle.THIN);
+        dataCellStyle.setBorderLeft(BorderStyle.THIN);
+        dataCellStyle.setBorderRight(BorderStyle.THIN);
 
         // Prepare to format date as dd/MM/yyyy
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -146,7 +172,6 @@ public class DisplayChartServlet extends HttpServlet {
 
             // Loop over salesData to check if there's a sale for the current date
             for (Object[] row : salesData) {
-                // Assuming row[0] is the Date object of the sale
                 Date saleDate = (Date) row[0];
                 String formattedSaleDate = dateFormat.format(saleDate);
 
@@ -155,51 +180,49 @@ public class DisplayChartServlet extends HttpServlet {
 
                     // Set formatted date only for the first sale of the day
                     if (!saleFound) {
-                        dataRow.createCell(0).setCellValue(formattedSaleDate);
+                        Cell dateCell = dataRow.createCell(0);
+                        dateCell.setCellValue(formattedSaleDate);
+                        dateCell.setCellStyle(dataCellStyle);
                         saleFound = true;
                     }
 
-                    // Product Name (row[2] holds the product name)
-                    if (row[2] != null) {
-                        dataRow.createCell(1).setCellValue(row[2].toString());
+                    // Product Name
+                    Cell productNameCell = dataRow.createCell(1);
+                    if (row[1] != null) {
+                        productNameCell.setCellValue(row[1].toString());
+                    } else {
+                        productNameCell.setCellValue("");
                     }
+                    productNameCell.setCellStyle(dataCellStyle);
 
-                    // Quantity Sold (row[3] holds the quantity sold)
-                    int quantitySold = 0;
+                    // Quantity Sold
+                    Cell quantityCell = dataRow.createCell(2);
+                    if (row[2] != null) {
+                        int quantitySold = row[2] instanceof Integer ? (Integer) row[2] : Integer.parseInt(row[2].toString());
+                        quantityCell.setCellValue(quantitySold);
+                    } else {
+                        quantityCell.setCellValue(0);
+                    }
+                    quantityCell.setCellStyle(dataCellStyle);
+
+                    // Profits
+                    Cell profitCell = dataRow.createCell(3);
                     if (row[3] != null) {
-                        if (row[3] instanceof Integer) {
-                            quantitySold = (Integer) row[3];
-                            dataRow.createCell(2).setCellValue(quantitySold);
-                        } else {
-                            try {
-                                quantitySold = Integer.parseInt(row[3].toString());
-                                dataRow.createCell(2).setCellValue(quantitySold);
-                            } catch (NumberFormatException e) {
-                                dataRow.createCell(2).setCellValue(0); // Fallback to 0 if not valid
-                            }
-                        }
+                        double salesPrice = row[3] instanceof Double ? (Double) row[3] : Double.parseDouble(row[3].toString());
+                        profitCell.setCellValue(salesPrice);
+                    } else {
+                        profitCell.setCellValue(0.0);
                     }
-                    double salesPrice = 0.0;
-                    if (row[4] != null) {
-                        if (row[4] instanceof Double) {
-                            salesPrice = (Double) row[4];
-                            dataRow.createCell(3).setCellValue(salesPrice);
-                        } else {
-                            try {
-                                salesPrice = Double.parseDouble(row[4].toString());
-                                dataRow.createCell(3).setCellValue(salesPrice);
-                            } catch (NumberFormatException e) {
-                                dataRow.createCell(3).setCellValue(0.0); // Fallback to 0.0 if not valid double
-                            }
-                        }
-                    }
+                    profitCell.setCellStyle(dataCellStyle);
                 }
             }
 
             // If no sale was found for the current date, add an empty row with just the date
             if (!saleFound) {
                 Row emptyRow = sheet.createRow(rowNum++);
-                emptyRow.createCell(0).setCellValue(formattedCurrentDate); // Set the date only
+                Cell dateCell = emptyRow.createCell(0);
+                dateCell.setCellValue(formattedCurrentDate);
+                dateCell.setCellStyle(dataCellStyle);
             }
 
             // Move to the next day
@@ -217,4 +240,5 @@ public class DisplayChartServlet extends HttpServlet {
         outputStream.flush();
         outputStream.close();
     }
+
 }

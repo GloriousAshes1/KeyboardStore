@@ -24,15 +24,18 @@ import javax.persistence.Table;
 	@NamedQuery(name = "OrderDetail.countByGame",
 				query = "SELECT COUNT(*) FROM OrderDetail od WHERE od.product.productId =:productId"),
 		@NamedQuery(name = "OrderDetail.fetchProfitsForAllProducts",
-				query = "SELECT od.productOrder.orderDate, od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) - SUM(od.quantity * od.product.importPrice) AS profit "
+				query = "SELECT DATE(od.productOrder.orderDate), od.product.productName, SUM(od.quantity), SUM(od.subtotal) - SUM(od.quantity * od.product.importPrice) AS profit "
 						+ "FROM OrderDetail od "
 						+ "WHERE od.productOrder.orderDate BETWEEN :startDate AND :endDate "
-						+ "GROUP BY od.productOrder.orderDate, od.product.productId, od.product.productName"),
+						+ "GROUP BY DATE(od.productOrder.orderDate), od.product.productName "
+						+ "ORDER BY DATE(od.productOrder.orderDate), od.product.productName"),
+
 		@NamedQuery(name = "OrderDetail.fetchProfitsForSpecificProduct",
-				query = "SELECT od.productOrder.orderDate, od.product.productId, od.product.productName, SUM(od.quantity), SUM(od.subtotal) - SUM(od.quantity * od.product.importPrice) AS profit "
+				query = "SELECT DATE(od.productOrder.orderDate), od.product.productName, SUM(od.quantity), SUM(od.subtotal) - SUM(od.quantity * od.product.importPrice) AS profit "
 						+ "FROM OrderDetail od "
 						+ "WHERE od.product.productId = :productId AND od.productOrder.orderDate BETWEEN :startDate AND :endDate "
-						+ "GROUP BY od.productOrder.orderDate, od.product.productId, od.product.productName")
+						+ "GROUP BY DATE(od.productOrder.orderDate), od.product.productName "
+						+ "ORDER BY DATE(od.productOrder.orderDate), od.product.productName")
 })
 public class OrderDetail implements java.io.Serializable {
 
