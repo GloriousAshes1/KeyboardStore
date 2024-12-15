@@ -17,8 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PaymentServices {
-	private static final String CLIENT_ID = "AVrq6buBDpZl8IVKyTOp5W2KS6RwFVyLLM-X6mRXIe8mHVM_n8dLBKK25MR_cSVzxtBeqipJFM3kI6TP";
-	private static final String CLIENT_SECRET = "ELGWVgYgAntlGXLU55SDiqEPBFrdpWarSY0_tLeMYbrF5q0RnCqpBZeq4SZmWlQ5zVzCsrdHetBnqMBE";
+	private static final String CLIENT_ID = "Aa6vtPvmRZOnebJGj4XtTy5VPZpUUnv6lZ7iQHtie5FsERX1nvP5eBFxumRVzQZbn0ZTfLCh5S_i3qdC";
+	private static final String CLIENT_SECRET = "ELYzys39v0MvlrmSR7xcM9lCnVNSR-JrJF0239G_nGqn2yp85pkpE6eKe9ZES7oncKVu_YysTg6WbkHv";
 	private String mode = "sandbox";
 
 	private HttpServletRequest request;
