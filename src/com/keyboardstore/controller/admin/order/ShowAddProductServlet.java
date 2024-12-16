@@ -15,10 +15,10 @@ import com.keyboardstore.entity.Product;
 
 
 @WebServlet("/admin/add_product_form")
-public class ShowAddGameServlet extends HttpServlet {
+public class ShowAddProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public ShowAddGameServlet() {
+    public ShowAddProductServlet() {
         super();
     }
 

@@ -367,7 +367,7 @@ public class OrderServices {
 		order.setStatus(orderStatus);
 
 		// order details
-		String[] arrayProductId = request.getParameterValues("gameId");
+		String[] arrayProductId = request.getParameterValues("productId");
 		String[] arrayPrice = request.getParameterValues("price");
 		String[] arrayQuantity = new String[arrayProductId.length];
 

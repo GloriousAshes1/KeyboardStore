@@ -16,10 +16,10 @@ import com.keyboardstore.entity.ProductOrder;
 import com.keyboardstore.entity.OrderDetail;
 
 @WebServlet("/admin/remove_game_from_order")
-public class RemoveGameFromOrderServlet extends HttpServlet {
+public class RemoveProductFromOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public RemoveGameFromOrderServlet() {
+    public RemoveProductFromOrderServlet() {
         super();
     }
 

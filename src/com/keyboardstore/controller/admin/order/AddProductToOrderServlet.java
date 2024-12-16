@@ -16,10 +16,10 @@ import com.keyboardstore.entity.ProductOrder;
 import com.keyboardstore.entity.OrderDetail;
 
 @WebServlet("/admin/add_product_to_order")
-public class AddGameToOrderServlet extends HttpServlet {
+public class AddProductToOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public AddGameToOrderServlet() {
+    public AddProductToOrderServlet() {
         super();
     }
 
