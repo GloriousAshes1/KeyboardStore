@@ -17,7 +17,7 @@
 </div>
 	<div align="center">
 		<hr width="60%" />
-		<h2 class="page-heading">Recent Sales:</h2>
+		<h2 class="page-heading">Recent Import:</h2>
 		<table class="table table-hover table-striped caption-top">
 			<thead class="table-primary">
 			<tr>

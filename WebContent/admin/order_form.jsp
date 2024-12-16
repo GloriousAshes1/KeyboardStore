@@ -48,8 +48,8 @@
 </style>
 </head>
 <body>
-	<jsp:directive.include file="header.jsp" />
-	<div class="content">
+<jsp:directive.include file="header.jsp" />
+<div class="content">
 	<div align="center">
 		<h2 class="page-heading">Edit Order ID: ${order.orderId}</h2>
 	</div>
@@ -61,92 +61,98 @@
 	</c:if>
 
 	<form action="update_order" method="post" id="orderForm">
-		<div align="center">
+		<div class="order-container" style="display: flex; justify-content: space-between; gap: 20px;">
 
-			<table>
-				<tr>
-					<td><b>Ordered By: </b></td>
-					<td>${order.customer.fullname}</td>
-				</tr>
-				<tr>
-					<td><b>Order Date: </b></td>
-					<td>${order.orderDate}</td>
-				</tr>
-				<tr>
-					<td><b>Payment Method: </b></td>
-					<td><select name="paymentMethod">
-							<option value="Cash On Delivery" <c:if test="${order.paymentMethod eq 'Cash On Delivery'}">selected='selected'</c:if>>Cash On Delivery</option>
-							<option value="paypal" <c:if test="${order.paymentMethod eq 'paypal'}">selected='selected'</c:if>>Pay Pal</option>
-					</select></td>
-				</tr>
-
-				<tr>
-					<td><b>Order Status: </b></td>
-					<td><select name="orderStatus">
-							<option value="Processing"
-								<c:if test="${order.status eq 'Processing' }">selected='selected'</c:if>>Processing</option>
-							<option value="Shipping"
-								<c:if test="${order.status eq 'Shipping' }">selected='selected'</c:if>>Shipping</option>
-							<option value="Delivered"
-								<c:if test="${order.status eq 'Delivered' }">selected='selected'</c:if>>Delivered</option>
-							<option value="Completed"
-								<c:if test="${order.status eq 'Completed' }">selected='selected'</c:if>>Completed</option>
-							<option value="Cancelled"
-								<c:if test="${order.status eq 'Cancelled' }">selected='selected'</c:if>>Cancelled</option>
-					</select></td>
-				</tr>
-				</table>
-				<h2>Recipient Information</h2>
+			<!-- Order Info Section -->
+			<div class="order-info" style="flex: 1; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+				<h3>Order Info</h3>
 				<table>
-			<tr>
-				<td><b>First Name: </b></td>
-				<td><input type="text" name="firstname" id="firstname" value="${order.firstname}" /></td>
-			</tr>
-			<tr>
-				<td><b>Last Name: </b></td>
-				<td><input type="text" name="lastname" id="lastname" value="${order.lastname}"/></td>
-			</tr>
-			<tr>
-				<td><b>Phone: </b></td>
-				<td><input type="text" name="phone" id="phone" value="${order.phone}"/></td>
-			</tr>
-			<tr>
-				<td><b>Address Line 1: </b></td>
-				<td><input type="text" name="address1" id="address1" value="${order.addressLine1}"/></td>
-			</tr>
-			<tr>
-				<td><b>Address Line 2: </b></td>
-				<td><input type="text" name="address2" id="address2" value="${order.addressLine2}" /></td>
-			</tr>
-			<tr>
-				<td><b>City: </b></td>
-				<td><input type="text" name="city" id="city" value="${order.city}" /></td>
-			</tr>
-			<tr>
-				<td><b>State: </b></td>
-				<td><input type="text" name="state" id="state" value="${order.state}" /></td>
-			</tr>
-			<tr>
-				<td><b>Zipcode: </b></td>
-				<td><input type="text" name="zipcode" id="zipcode" value="${order.zipcode}" /></td>
-			</tr>
-			<tr>
-				<td><b>Country:</b></td>
-				<td>
-					<select name="country" id="country">
-						<c:forEach items="${mapCountries}" var="country">
-							<option value="${country.value}"
-								<c:if test='${order.country eq country.value}'>selected='selected'</c:if>>${country.key}</option>
-						</c:forEach>
-					</select>
-				</td>
-			</tr>
-		</table>
+					<tr>
+						<td><b>Ordered By: </b></td>
+						<td>${order.customer.fullname}</td>
+					</tr>
+					<tr>
+						<td><b>Order Date: </b></td>
+						<td>${order.orderDate}</td>
+					</tr>
+					<tr>
+						<td><b>Payment Method: </b></td>
+						<td>
+							<select name="paymentMethod">
+								<option value="Cash On Delivery" <c:if test="${order.paymentMethod eq 'Cash On Delivery'}">selected='selected'</c:if>>Cash On Delivery</option>
+								<option value="paypal" <c:if test="${order.paymentMethod eq 'paypal'}">selected='selected'</c:if>>Pay Pal</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td><b>Order Status: </b></td>
+						<td>
+							<select name="orderStatus">
+								<option value="Processing" <c:if test="${order.status eq 'Processing' }">selected='selected'</c:if>>Processing</option>
+								<option value="Shipping" <c:if test="${order.status eq 'Shipping' }">selected='selected'</c:if>>Shipping</option>
+								<option value="Delivered" <c:if test="${order.status eq 'Delivered' }">selected='selected'</c:if>>Delivered</option>
+								<option value="Completed" <c:if test="${order.status eq 'Completed' }">selected='selected'</c:if>>Completed</option>
+								<option value="Cancelled" <c:if test="${order.status eq 'Cancelled' }">selected='selected'</c:if>>Cancelled</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<!-- Recipient Info Section -->
+			<div class="recipient-info" style="flex: 1; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+				<h3>Recipient Information</h3>
+				<table>
+					<tr>
+						<td><b>First Name: </b></td>
+						<td><input type="text" name="firstname" id="firstname" value="${order.firstname}" /></td>
+					</tr>
+					<tr>
+						<td><b>Last Name: </b></td>
+						<td><input type="text" name="lastname" id="lastname" value="${order.lastname}"/></td>
+					</tr>
+					<tr>
+						<td><b>Phone: </b></td>
+						<td><input type="text" name="phone" id="phone" value="${order.phone}"/></td>
+					</tr>
+					<tr>
+						<td><b>Address Line 1: </b></td>
+						<td><input type="text" name="address1" id="address1" value="${order.addressLine1}"/></td>
+					</tr>
+					<tr>
+						<td><b>Address Line 2: </b></td>
+						<td><input type="text" name="address2" id="address2" value="${order.addressLine2}" /></td>
+					</tr>
+					<tr>
+						<td><b>City: </b></td>
+						<td><input type="text" name="city" id="city" value="${order.city}" /></td>
+					</tr>
+					<tr>
+						<td><b>State: </b></td>
+						<td><input type="text" name="state" id="state" value="${order.state}" /></td>
+					</tr>
+					<tr>
+						<td><b>Zipcode: </b></td>
+						<td><input type="text" name="zipcode" id="zipcode" value="${order.zipcode}" /></td>
+					</tr>
+					<tr>
+						<td><b>Country:</b></td>
+						<td>
+							<select name="country" id="country">
+								<c:forEach items="${mapCountries}" var="country">
+									<option value="${country.value}" <c:if test='${order.country eq country.value}'>selected='selected'</c:if>>${country.key}</option>
+								</c:forEach>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
+		<br><br>
 		<div align="center">
 			<h2>Ordered Products</h2>
-			<table class="table custom-table caption-top table-success table-hover table-bordered" border="1">
-    <thead>
+			<table class="table custom-table caption-top table-hover table-bordered" border="1">
+    <thead class="table-primary">
         <tr>
             <th>No</th>
             <th>Product</th>
@@ -175,7 +181,7 @@
                     <fmt:formatNumber value="${orderDetail.subtotal}" type="currency" />
                 </td>
                 <td>
-                    <a href="remove_game_from_order?id=${orderDetail.product.productId}">Remove</a>
+                    <a href="remove_game_from_order?id=${orderDetail.product.productId}"><i class="fa-solid fa-trash" style="color: mediumslateblue;"></i></a>
                 </td>
             </tr>
         </c:forEach>
